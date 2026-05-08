@@ -1,0 +1,42 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:david-chambaud.fr)",
+      "WebSearch",
+      "Read(//Users/mathieuchambaud/**)",
+      "Bash(python3 .claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/.claude/skills/ui-ux-pro-max/scripts/search.py \"luxury catering personal chef french gastronomy elegant refined\" --design-system -p \"David Chambaud Traiteur\" -f markdown)",
+      "Bash(bun add *)",
+      "Bash(bun run *)",
+      "Bash(echo \"Dev server PID: $!\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(python3 -c \"import sys,json; d=sys.stdin.read\\(\\); print\\('ERROR' if 'statusCode\\\\\":500' in d or 'had an error' in d else 'OK'\\)\")",
+      "Bash(python3 -c \"import sys,json; d=sys.stdin.read\\(\\); start=d.find\\('message'\\); print\\(d[start:start+300]\\)\")",
+      "Bash(node *)",
+      "Bash(python3 -c \"import sys; d=sys.stdin.read\\(\\); print\\('OK' if 'statusCode\\\\\":500' not in d and 'had an error' not in d and 'DOCTYPE' in d else 'ERROR: ' + d[d.find\\('message'\\):d.find\\('message'\\)+200]\\)\")",
+      "Bash(python3 -c \"import sys; d=sys.stdin.read\\(\\); print\\('OK - Site is live!' if 'statusCode\\\\\":500' not in d and 'had an error' not in d and 'DOCTYPE' in d else 'ERROR: ' + d[d.find\\('message'\\):d.find\\('message'\\)+300]\\)\")",
+      "Bash(python3 -c ' *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(echo \"Started PID $!\")",
+      "Read(//tmp/**)",
+      "Bash(python3 scripts/search.py \"luxury catering chef gastronomy premium immersive experience\" --design-system -p \"David Chambaud\" -f markdown)",
+      "Bash(identify /Users/mathieuchambaud/Documents/Perso-Projects/d-chambaud/public/20260212_DSC*.jpg)",
+      "Bash(exiftool -ImageSize /Users/mathieuchambaud/Documents/Perso-Projects/d-chambaud/public/20260212_DSC*.jpg)",
+      "Bash(exiftool *)",
+      "Bash(sips *)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('hooks',{}\\), indent=2\\)\\)\")",
+      "Bash(python3 *)",
+      "Bash(sed -n '2245p' /Users/mathieuchambaud/Documents/Perso-Projects/d-chambaud/app/page.tsx)",
+      "Bash(sed -n '2509p' /Users/mathieuchambaud/Documents/Perso-Projects/d-chambaud/app/page.tsx)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "claude-flow"
+  ],
+  "enabledPlugins": {
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+  }
+}
