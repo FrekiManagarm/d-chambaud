@@ -46,8 +46,8 @@ export default function SmoothCursor() {
         animate={{
           width: onLink ? 52 : 34,
           height: onLink ? 52 : 34,
-          borderColor: onLink ? "rgba(196,166,97,0.9)" : "rgba(196,166,97,0.45)",
-          backgroundColor: onLink ? "rgba(196,166,97,0.06)" : "transparent",
+          borderColor: onLink ? "rgba(196,166,97,1)" : "rgba(196,166,97,0.75)",
+          backgroundColor: onLink ? "rgba(196,166,97,0.10)" : "transparent",
         }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         style={{
@@ -59,7 +59,7 @@ export default function SmoothCursor() {
           translateX: "-50%",
           translateY: "-50%",
           borderRadius: "50%",
-          border: "1px solid rgba(196,166,97,0.45)",
+          border: "1.5px solid rgba(196,166,97,0.75)",
           pointerEvents: "none",
           zIndex: 99998,
         }}
@@ -68,9 +68,9 @@ export default function SmoothCursor() {
       <motion.div
         aria-hidden
         animate={{
-          width: onLink ? 3 : 5,
-          height: onLink ? 3 : 5,
-          opacity: onLink ? 0.5 : 1,
+          width: onLink ? 4 : 6,
+          height: onLink ? 4 : 6,
+          opacity: onLink ? 0.6 : 1,
         }}
         transition={{ duration: 0.2, ease: "easeOut" }}
         style={{

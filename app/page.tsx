@@ -924,7 +924,7 @@ function MarqueeStrip() {
               letterSpacing: item === "·" ? 0 : "0.28em",
               textTransform: "uppercase",
               fontWeight: 400,
-              color: item === "·" ? "var(--gold)" : "rgba(250,250,247,0.3)",
+              color: item === "·" ? "var(--gold)" : "rgba(250,250,247,0.65)",
             }}
           >
             {item}
@@ -1391,8 +1391,8 @@ function AboutSection() {
               <p
                 style={{
                   fontFamily: "var(--font-montserrat), sans-serif",
-                  fontSize: "0.82rem",
-                  fontWeight: 300,
+                  fontSize: "0.9rem",
+                  fontWeight: 500,
                   lineHeight: 1.95,
                   color: "rgba(250,250,247,0.6)",
                   marginBottom: "1.1rem",
@@ -1529,6 +1529,7 @@ function ServicePanel({
   return (
     <div
       className="service-panel"
+      data-active={isActive}
       onMouseEnter={onActivate}
       onClick={onActivate}
       style={{
@@ -1850,17 +1851,32 @@ function ServicesSection() {
           }
           .service-panel {
             flex: none !important;
-            height: 260px !important;
-            min-height: 260px !important;
-            transition: none !important;
+            height: 72px !important;
+            min-height: 72px !important;
+            transition: height 0.55s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          }
+          .service-panel[data-active="true"] {
+            height: 340px !important;
           }
           .service-panel-collapsed {
             display: flex !important;
-            opacity: 1 !important;
           }
-          .service-panel-expanded {
+          .service-panel[data-active="true"] .service-panel-collapsed {
             opacity: 0 !important;
             pointer-events: none !important;
+          }
+          .service-panel[data-active="true"] .service-panel-expanded {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+          }
+          .service-panel .service-panel-collapsed > div {
+            transform: none !important;
+            flex-direction: row !important;
+            gap: 0.75rem !important;
+          }
+          .service-panel .service-panel-collapsed > div > div {
+            width: 24px !important;
+            height: 1px !important;
           }
         }
       `}</style>
@@ -3628,7 +3644,7 @@ function Footer() {
               color: "rgba(250,250,247,0.65)",
             }}
           >
-            David Chambaud
+            DC Restauration
           </p>
           <p
             style={{
@@ -3688,7 +3704,7 @@ function Footer() {
             color: "var(--warm-gray)",
           }}
         >
-          © 2026 David Chambaud &nbsp;·&nbsp;{" "}
+          © 2026 DC Restauration &nbsp;·&nbsp;{" "}
           <a
             href="/mentions-legales"
             style={{ color: "inherit", textDecoration: "none" }}
