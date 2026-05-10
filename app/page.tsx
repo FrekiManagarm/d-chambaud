@@ -383,6 +383,7 @@ function FloatingInput({
   const [focused, setFocused] = useState(false);
   const [hasValue, setHasValue] = useState(false);
   const lifted = focused || hasValue;
+  const inputId = label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const sharedInputStyle: React.CSSProperties = {
     width: "100%",
     background: "transparent",
@@ -401,6 +402,7 @@ function FloatingInput({
   return (
     <div style={{ position: "relative", marginBottom: "2rem" }}>
       <label
+        htmlFor={inputId}
         style={{
           position: "absolute",
           left: 0,
@@ -420,6 +422,7 @@ function FloatingInput({
 
       {multiline ? (
         <textarea
+          id={inputId}
           rows={4}
           onFocus={() => setFocused(true)}
           onBlur={(e) => {
@@ -431,6 +434,7 @@ function FloatingInput({
         />
       ) : (
         <input
+          id={inputId}
           type={type}
           onFocus={() => setFocused(true)}
           onBlur={(e) => {
