@@ -1,21 +1,14 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "fs";
+import path from "path";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  // Load Cormorant Garamond italic 300 from Google Fonts
-  let fontData: ArrayBuffer | null = null;
-  try {
-    const css = await fetch(
-      "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&display=swap",
-      { headers: { "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1)" } }
-    ).then((r) => r.text());
-    const url = css.match(/url\(([^)]+)\) format\('woff2'\)/)?.[1];
-    if (url) fontData = await fetch(url).then((r) => r.arrayBuffer());
-  } catch {
-    // fallback to system serif
-  }
+  const fontData = readFileSync(
+    path.join(process.cwd(), "public/fonts/cormorant-italic-300.ttf")
+  );
 
   return new ImageResponse(
     (
@@ -69,16 +62,16 @@ export default async function Image() {
           {/* Eyebrow */}
           <div
             style={{
-              fontFamily: "sans-serif",
-              fontSize: 12,
-              fontWeight: 400,
+              fontFamily: "Cormorant",
+              fontSize: 14,
+              fontWeight: 300,
               letterSpacing: "0.32em",
               textTransform: "uppercase",
               color: "rgba(196,166,97,0.75)",
               marginBottom: 28,
             }}
           >
-            Traiteur &amp; Chef à Domicile
+            Traiteur & Chef à Domicile
           </div>
 
           {/* Gold rule */}
@@ -94,7 +87,7 @@ export default async function Image() {
           {/* Title */}
           <div
             style={{
-              fontFamily: fontData ? "Cormorant" : "serif",
+              fontFamily: "Cormorant",
               fontStyle: "italic",
               fontWeight: 300,
               fontSize: 94,
@@ -103,20 +96,20 @@ export default async function Image() {
               marginBottom: 36,
             }}
           >
-            DC Restauration
+            David Chambaud
           </div>
 
           {/* Tagline */}
           <div
             style={{
-              fontFamily: "sans-serif",
-              fontSize: 12,
+              fontFamily: "Cormorant",
+              fontSize: 14,
               letterSpacing: "0.24em",
               textTransform: "uppercase",
               color: "rgba(250,250,247,0.38)",
             }}
           >
-            Nouvelle-Aquitaine · Bordeaux · Depuis 1990
+            Nouvelle-Aquitaine · Bordeaux
           </div>
         </div>
 
@@ -126,8 +119,8 @@ export default async function Image() {
             position: "absolute",
             bottom: 44,
             right: 88,
-            fontFamily: "sans-serif",
-            fontSize: 11,
+            fontFamily: "Cormorant",
+            fontSize: 13,
             letterSpacing: "0.2em",
             color: "rgba(196,166,97,0.38)",
           }}
@@ -138,9 +131,9 @@ export default async function Image() {
     ),
     {
       ...size,
-      fonts: fontData
-        ? [{ name: "Cormorant", data: fontData, style: "italic", weight: 300 }]
-        : [],
+      fonts: [
+        { name: "Cormorant", data: fontData, style: "italic", weight: 300 },
+      ],
     }
   );
 }
