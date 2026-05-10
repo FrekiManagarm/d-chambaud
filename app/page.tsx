@@ -321,7 +321,7 @@ function CountUpStat({
       <p
         style={{
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontSize: "0.58rem",
+          fontSize: "0.9rem",
           letterSpacing: "0.32em",
           textTransform: "uppercase",
           fontWeight: 500,
@@ -334,9 +334,9 @@ function CountUpStat({
       <p
         style={{
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontSize: "0.63rem",
-          fontWeight: 300,
-          color: "rgba(250,250,247,0.32)",
+          fontSize: "0.7rem",
+          fontWeight: 400,
+          color: "rgba(250,250,247,0.7)",
           lineHeight: 1.6,
         }}
       >
