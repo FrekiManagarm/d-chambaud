@@ -1366,9 +1366,9 @@ function AboutSection() {
                 marginBottom: "2rem",
               }}
             >
-              Une passion au service
+              Chef traiteur à Bordeaux,
               <br />
-              de vos convives
+              une passion à votre service
             </h2>
           </HeadingReveal>
           <RevealOnScroll variant={lineGrow}>

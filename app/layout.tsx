@@ -52,21 +52,12 @@ export const metadata: Metadata = {
     title: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
     description:
       "Chef traiteur en Nouvelle-Aquitaine depuis 2008. Réceptions, mariages, dîners privés et chef à domicile autour de Bordeaux.",
-    images: [
-      {
-        url: "/20260212_DSC2953.jpg",
-        width: 1200,
-        height: 630,
-        alt: "David Chambaud, chef traiteur en Nouvelle-Aquitaine",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
     description:
       "Chef traiteur en Nouvelle-Aquitaine. Réceptions, mariages et dîners privés. Une gastronomie raffinée depuis 2008.",
-    images: ["/20260212_DSC2953.jpg"],
   },
   robots: {
     index: true,
@@ -85,7 +76,7 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "FoodEstablishment",
+  "@type": "CateringBusiness",
   "@id": "https://chambaud.fr",
   name: "David Chambaud Traiteur",
   description:
@@ -138,12 +129,6 @@ const jsonLd = {
         description: "Anniversaires, baptêmes, séminaires d'entreprise",
       },
     ],
-  },
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    bestRating: "5",
-    ratingCount: "500",
   },
 };
 
