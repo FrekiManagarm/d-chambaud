@@ -2976,28 +2976,192 @@ function PavillonSection() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   TESTIMONIALS — full-width editorial stacks
+   TESTIMONIALS — masonry grid with real reviews
 ════════════════════════════════════════════════════════════ */
 const testimonials = [
   {
     quote:
-      "David a sublimé notre mariage avec un buffet d'une qualité exceptionnelle. Nos invités en parlent encore — une prestation irréprochable du début à la fin.",
-    author: "Sophie & Thomas",
-    occasion: "Mariage · Gironde",
+      "Nous avons eu le plaisir de faire appel à David pour le cocktail, le dîner et le brunch de notre mariage et la surprise fut juste magnifique ! Le raffinement, le goût, le service, le professionnalisme… tout était au rendez-vous.",
+    author: "Fatima-zahra H.",
+    occasion: "Mariage · Cocktail, dîner & brunch",
+    source: "site",
   },
   {
     quote:
-      "Pour notre séminaire d'entreprise, David a su proposer des formules à la fois gastronomiques et conviviales. Un vrai professionnel, attentif aux moindres détails.",
-    author: "Directrice RH",
-    occasion: "Événement professionnel",
+      "David and his team did an incredible job for our wedding at Chateau Soulac. Every piece of food served was out of this world. I cannot recommend him highly enough.",
+    author: "Erika D.",
+    occasion: "Mariage · Château Soulac",
+    source: "site",
   },
   {
     quote:
-      "Le baptême de notre fils était parfait. La cuisine était délicieuse, le service impeccable. Je recommande David les yeux fermés à tous mes proches.",
-    author: "Marie & Julien",
-    occasion: "Baptême · Bordeaux",
+      "A unique experience and exceptional welcoming.",
+    author: "Jeremy Enaud",
+    occasion: "Pavillon des Millésimes · Août 2025",
+    source: "tripadvisor",
+  },
+  {
+    quote:
+      "Tout simplement parfait. Équipe agréable à notre service qui a fait preuve de souplesse sur les menus particuliers (végétarien, intolérance, allergie). Nos invités étaient ravis.",
+    author: "Anne-Laure B.",
+    occasion: "Baptême · Chef à domicile",
+    source: "site",
+  },
+  {
+    quote:
+      "We oscillate between luxury and voluptuousness with this feeling of being at home !",
+    author: "Isa",
+    occasion: "Pavillon des Millésimes · Mai 2025",
+    source: "tripadvisor",
+  },
+  {
+    quote:
+      "Évènement organisé sur l'Aerocampus avec l'équipe de David. Une équipe hyper pro et dévouée ! Une prestation qui a ravi les papilles et qui nous a permis de vivre un moment convivial et gourmand.",
+    author: "Yannick R.",
+    occasion: "Séminaire · Aerocampus",
+    source: "site",
+  },
+  {
+    quote:
+      "Beautiful home with a charming decor in a relaxing setting with very attentive hosts.",
+    author: "Jean-luc S.",
+    occasion: "Pavillon des Millésimes · Avril 2026",
+    source: "tripadvisor",
+  },
+  {
+    quote:
+      "What a wonderful time we had. Thank you to Nathalie and David.",
+    author: "Isabelle I.",
+    occasion: "Pavillon des Millésimes · Août 2025",
+    source: "tripadvisor",
+  },
+  {
+    quote:
+      "I couldn't recommend Pavillon more highly.",
+    author: "James M.",
+    occasion: "Pavillon des Millésimes · Mars 2025",
+    source: "tripadvisor",
   },
 ];
+
+function TestimonialCard({
+  t,
+  delay,
+}: {
+  t: (typeof testimonials)[0];
+  delay: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px 0px" });
+  const reduce = useReducedMotion();
+  const isTripadvisor = t.source === "tripadvisor";
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={reduce ? false : { opacity: 0, y: 28 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.75, delay, ease }}
+      style={{
+        breakInside: "avoid",
+        marginBottom: "1.25rem",
+        backgroundColor: "rgba(250,250,247,0.035)",
+        border: "1px solid rgba(196,166,97,0.1)",
+        padding: "1.75rem",
+        position: "relative",
+      }}
+    >
+      {/* Top row: stars + source */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "1.1rem",
+        }}
+      >
+        <div style={{ display: "flex", gap: 3 }}>
+          {Array.from({ length: 5 }).map((_, j) => (
+            <Star key={j} size={11} fill="var(--gold)" color="var(--gold)" />
+          ))}
+        </div>
+        <span
+          style={{
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.46rem",
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: isTripadvisor
+              ? "rgba(0,171,135,0.65)"
+              : "rgba(196,166,97,0.5)",
+            fontWeight: 500,
+          }}
+        >
+          {isTripadvisor ? "Tripadvisor" : "Avis vérifié"}
+        </span>
+      </div>
+
+      {/* Quote */}
+      <p
+        style={{
+          fontFamily: "var(--font-cormorant), serif",
+          fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
+          fontStyle: "italic",
+          fontWeight: 300,
+          lineHeight: 1.75,
+          color: "rgba(250,250,247,0.82)",
+          marginBottom: "1.25rem",
+        }}
+      >
+        &ldquo;{t.quote}&rdquo;
+      </p>
+
+      {/* Author */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "0.6rem",
+        }}
+      >
+        <div
+          style={{
+            width: 18,
+            height: 1,
+            backgroundColor: "var(--gold)",
+            opacity: 0.4,
+            flexShrink: 0,
+          }}
+        />
+        <div>
+          <p
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.58rem",
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+              color: "var(--cream)",
+            }}
+          >
+            {t.author}
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.52rem",
+              letterSpacing: "0.1em",
+              color: "rgba(250,250,247,0.32)",
+              marginTop: "0.15rem",
+            }}
+          >
+            {t.occasion}
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 function TestimonialsSection() {
   return (
@@ -3005,15 +3169,16 @@ function TestimonialsSection() {
       id="temoignages"
       className="section-pad"
       aria-label="Témoignages clients"
-      style={{ backgroundColor: "var(--cream)", padding: "7rem 0" }}
+      style={{ backgroundColor: "var(--dark)", padding: "7rem 0" }}
     >
-      <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "0 2rem" }}>
+      <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 2rem" }}>
+        {/* Header */}
         <div
           style={{
             display: "flex",
-            alignItems: "center",
+            alignItems: "flex-end",
             justifyContent: "space-between",
-            marginBottom: "5rem",
+            marginBottom: "4rem",
             flexWrap: "wrap",
             gap: "1.5rem",
           }}
@@ -3030,125 +3195,46 @@ function TestimonialsSection() {
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 1.1,
-                  color: "var(--charcoal)",
+                  color: "var(--cream)",
                 }}
               >
-                Témoignages
+                Ce qu&apos;ils disent
               </h2>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeIn}>
-            <div style={{ display: "flex", gap: 4 }}>
-              {Array.from({ length: 5 }).map((_, j) => (
-                <Star
-                  key={j}
-                  size={14}
-                  fill="var(--gold)"
-                  color="var(--gold)"
-                />
-              ))}
-            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.62rem",
+                letterSpacing: "0.22em",
+                textTransform: "uppercase",
+                color: "rgba(250,250,247,0.28)",
+              }}
+            >
+              Avis collectés sur Google, Tripadvisor &amp; site officiel
+            </p>
           </RevealOnScroll>
         </div>
 
-        {/* Full-width editorial testimonials */}
-        <div>
+        {/* Masonry grid */}
+        <div className="testimonials-masonry">
           {testimonials.map((t, i) => (
-            <RevealOnScroll key={t.author} variant={fadeUp} custom={i}>
-              <div
-                style={{
-                  padding: "3.5rem 0",
-                  borderBottom:
-                    i < testimonials.length - 1
-                      ? "1px solid rgba(196,166,97,0.15)"
-                      : "none",
-                  display: "grid",
-                  gridTemplateColumns: "80px 1fr auto",
-                  gap: "2rem",
-                  alignItems: "start",
-                }}
-                className="testimonial-row"
-              >
-                {/* Large quote mark */}
-                <p
-                  style={{
-                    fontFamily: "var(--font-cormorant), serif",
-                    fontSize: "6rem",
-                    lineHeight: 0.8,
-                    color: "var(--gold)",
-                    opacity: 0.25,
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    paddingTop: "0.2rem",
-                  }}
-                >
-                  &ldquo;
-                </p>
-
-                {/* Quote text */}
-                <div>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-cormorant), serif",
-                      fontSize: "clamp(1.2rem, 2.2vw, 1.55rem)",
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                      lineHeight: 1.7,
-                      color: "var(--charcoal)",
-                      marginBottom: "1.5rem",
-                    }}
-                  >
-                    {t.quote}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-montserrat), sans-serif",
-                      fontSize: "0.65rem",
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      fontWeight: 500,
-                      color: "var(--charcoal)",
-                    }}
-                  >
-                    {t.author}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-montserrat), sans-serif",
-                      fontSize: "0.58rem",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                      color: "var(--warm-gray)",
-                      marginTop: "0.3rem",
-                    }}
-                  >
-                    {t.occasion}
-                  </p>
-                </div>
-
-                {/* Index */}
-                <p
-                  style={{
-                    fontFamily: "var(--font-cormorant), serif",
-                    fontSize: "1.2rem",
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    color: "rgba(196,166,97,0.3)",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  0{i + 1}
-                </p>
-              </div>
-            </RevealOnScroll>
+            <TestimonialCard key={i} t={t} delay={i * 0.06} />
           ))}
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 640px) {
-          .testimonial-row { grid-template-columns: 48px 1fr !important; }
-          .testimonial-row > *:last-child { display: none; }
+        .testimonials-masonry {
+          columns: 3;
+          column-gap: 1.25rem;
+        }
+        @media (max-width: 900px) {
+          .testimonials-masonry { columns: 2; }
+        }
+        @media (max-width: 540px) {
+          .testimonials-masonry { columns: 1; }
         }
       `}</style>
     </section>
