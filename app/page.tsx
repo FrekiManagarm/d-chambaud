@@ -3664,6 +3664,11 @@ function ContactSection() {
                 label="Type d'événement (mariage, réception…)"
                 type="text"
               />
+              <FloatingInput label="Lieu de réception" type="text" />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 2rem" }}>
+                <FloatingInput label="Nombre de personnes" type="number" />
+                <FloatingInput label="Budget envisagé (€)" type="text" />
+              </div>
               <FloatingInput label="Votre message" multiline />
 
               <motion.button
