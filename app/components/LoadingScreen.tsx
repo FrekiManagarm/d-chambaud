@@ -30,7 +30,7 @@ export default function LoadingScreen() {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: "2.5rem",
+            gap: "3rem",
           }}
         >
           {/* Decorative ring */}
@@ -40,8 +40,8 @@ export default function LoadingScreen() {
             transition={{ duration: 1.2, delay: 0.1, ease }}
             style={{
               position: "absolute",
-              width: 320,
-              height: 320,
+              width: "clamp(340px, 38vw, 520px)",
+              height: "clamp(340px, 38vw, 520px)",
               borderRadius: "50%",
               border: "1px solid rgba(var(--gold-rgb),0.06)",
             }}
@@ -52,8 +52,8 @@ export default function LoadingScreen() {
             transition={{ duration: 1.2, delay: 0.2, ease }}
             style={{
               position: "absolute",
-              width: 200,
-              height: 200,
+              width: "clamp(210px, 24vw, 320px)",
+              height: "clamp(210px, 24vw, 320px)",
               borderRadius: "50%",
               border: "1px solid rgba(var(--gold-rgb),0.1)",
             }}
@@ -69,12 +69,13 @@ export default function LoadingScreen() {
             <p
               style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(1.8rem, 5vw, 2.75rem)",
+                fontSize: "clamp(2.65rem, 7.5vw, 5.8rem)",
                 fontWeight: 300,
-                letterSpacing: "0.22em",
+                letterSpacing: "0.18em",
                 textTransform: "uppercase",
                 color: "#f5edd8",
-                marginBottom: "0.6rem",
+                marginBottom: "0.9rem",
+                lineHeight: 0.95,
               }}
             >
               David Chambaud
@@ -82,8 +83,8 @@ export default function LoadingScreen() {
             <p
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.52rem",
-                letterSpacing: "0.42em",
+                fontSize: "clamp(0.64rem, 1.1vw, 0.86rem)",
+                letterSpacing: "0.38em",
                 textTransform: "uppercase",
                 color: "#bd9c6e",
               }}
@@ -98,7 +99,7 @@ export default function LoadingScreen() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
             style={{
-              width: 100,
+              width: "clamp(132px, 15vw, 220px)",
               height: 1,
               backgroundColor: "rgba(var(--gold-rgb),0.15)",
               position: "relative",

@@ -1817,9 +1817,9 @@ function ServicePanel({
           <span
             style={{
               fontFamily: "var(--font-cormorant), serif",
-              fontSize: "0.82rem",
+              fontSize: "0.96rem",
               fontStyle: "italic",
-              fontWeight: 300,
+              fontWeight: 400,
               color: "rgba(var(--gold-rgb),0.65)",
               letterSpacing: "0.18em",
             }}
@@ -1836,8 +1836,8 @@ function ServicePanel({
           <span
             style={{
               fontFamily: "var(--font-cormorant), serif",
-              fontSize: "1.1rem",
-              fontWeight: 300,
+              fontSize: "1.32rem",
+              fontWeight: 400,
               color: "var(--cream)",
               letterSpacing: "0.06em",
             }}
@@ -1857,7 +1857,7 @@ function ServicePanel({
           bottom: 0,
           left: 0,
           right: 0,
-          padding: "2.5rem",
+          padding: "3rem",
           zIndex: 3,
           pointerEvents: isActive ? "auto" : "none",
         }}
@@ -1874,12 +1874,12 @@ function ServicePanel({
         <p
           style={{
             fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.5rem",
+            fontSize: "0.58rem",
             letterSpacing: "0.38em",
             textTransform: "uppercase",
-            fontWeight: 500,
+            fontWeight: 600,
             color: "var(--gold)",
-            marginBottom: "0.5rem",
+            marginBottom: "0.65rem",
           }}
         >
           {service.num} · {service.sub}
@@ -1887,12 +1887,12 @@ function ServicePanel({
         <h3
           style={{
             fontFamily: "var(--font-cormorant), serif",
-            fontSize: "clamp(1.75rem, 2.4vw, 2.5rem)",
+            fontSize: "clamp(2.15rem, 3vw, 3.15rem)",
             fontStyle: "italic",
-            fontWeight: 300,
+            fontWeight: 400,
             color: "var(--cream)",
-            lineHeight: 1.1,
-            marginBottom: "0.85rem",
+            lineHeight: 1.04,
+            marginBottom: "1rem",
           }}
         >
           {service.title}
@@ -1900,12 +1900,12 @@ function ServicePanel({
         <p
           style={{
             fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.78rem",
-            fontWeight: 300,
-            lineHeight: 1.85,
-            color: "rgba(var(--cream-rgb),0.62)",
-            marginBottom: "1.4rem",
-            maxWidth: "36ch",
+            fontSize: "0.9rem",
+            fontWeight: 400,
+            lineHeight: 1.8,
+            color: "rgba(var(--cream-rgb),0.78)",
+            marginBottom: "1.55rem",
+            maxWidth: "40ch",
           }}
         >
           {service.desc}
@@ -1918,15 +1918,16 @@ function ServicePanel({
             alignItems: "center",
             gap: "0.6rem",
             fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.52rem",
+            fontSize: "0.58rem",
             letterSpacing: "0.26em",
             textTransform: "uppercase",
+            fontWeight: 600,
             color: "var(--gold)",
             textDecoration: "none",
           }}
         >
           <span>Demander un devis</span>
-          <ArrowRight size={11} />
+          <ArrowRight size={12} />
         </motion.a>
       </motion.div>
 
@@ -2172,7 +2173,7 @@ function ServicesSection() {
             transition: height 0.55s cubic-bezier(0.16, 1, 0.3, 1) !important;
           }
           .service-panel[data-active="true"] {
-            height: 340px !important;
+            height: 390px !important;
           }
           .service-panel-collapsed {
             display: flex !important;
@@ -2189,6 +2190,9 @@ function ServicesSection() {
             transform: none !important;
             flex-direction: row !important;
             gap: 0.75rem !important;
+          }
+          .service-panel-expanded {
+            padding: 2rem 1.35rem !important;
           }
           .service-panel .service-panel-collapsed > div > div {
             width: 24px !important;
@@ -3684,7 +3688,7 @@ function PavillonSection() {
                 }}
               >
                 <Image
-                  src="/Pavillon-49.jpg"
+                  src="/Pavillon-70.jpg"
                   alt="Salon lumineux du Pavillon des Millésimes"
                   fill
                   sizes="(max-width: 768px) 100vw, 760px"
@@ -3745,7 +3749,7 @@ function PavillonSection() {
                 }}
               >
                 <Image
-                  src="/Pavillon-70.jpg"
+                  src="/Pavillon-49.jpg"
                   alt="Table dressée au Pavillon des Millésimes"
                   fill
                   sizes="(max-width: 768px) 48vw, 360px"
