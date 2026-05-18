@@ -17,7 +17,7 @@ export default async function Image() {
           width: "100%",
           height: "100%",
           display: "flex",
-          background: "#0B0B09",
+          background: "#2a2820",
           position: "relative",
           overflow: "hidden",
         }}
@@ -28,7 +28,7 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(ellipse 80% 80% at 70% 50%, rgba(196,166,97,0.04) 0%, transparent 70%)",
+              "radial-gradient(ellipse 80% 80% at 70% 50%, rgba(189,156,110,0.04) 0%, transparent 70%)",
             display: "flex",
           }}
         />
@@ -42,7 +42,7 @@ export default async function Image() {
             left: 72,
             width: 2,
             background:
-              "linear-gradient(to bottom, transparent, rgba(196,166,97,0.5) 30%, rgba(196,166,97,0.5) 70%, transparent)",
+              "linear-gradient(to bottom, transparent, rgba(189,156,110,0.5) 30%, rgba(189,156,110,0.5) 70%, transparent)",
             display: "flex",
           }}
         />
@@ -67,7 +67,7 @@ export default async function Image() {
               fontWeight: 300,
               letterSpacing: "0.32em",
               textTransform: "uppercase",
-              color: "rgba(196,166,97,0.75)",
+              color: "rgba(189,156,110,0.75)",
               marginBottom: 28,
             }}
           >
@@ -79,7 +79,7 @@ export default async function Image() {
             style={{
               width: 48,
               height: 1,
-              background: "rgba(196,166,97,0.55)",
+              background: "rgba(189,156,110,0.55)",
               marginBottom: 36,
             }}
           />
@@ -91,7 +91,7 @@ export default async function Image() {
               fontStyle: "italic",
               fontWeight: 300,
               fontSize: 94,
-              color: "#FAFAF7",
+              color: "#f5edd8",
               lineHeight: 1.0,
               marginBottom: 36,
             }}
@@ -106,7 +106,7 @@ export default async function Image() {
               fontSize: 14,
               letterSpacing: "0.24em",
               textTransform: "uppercase",
-              color: "rgba(250,250,247,0.38)",
+              color: "rgba(245,237,216,0.38)",
             }}
           >
             Nouvelle-Aquitaine · Bordeaux
@@ -122,7 +122,7 @@ export default async function Image() {
             fontFamily: "Cormorant",
             fontSize: 13,
             letterSpacing: "0.2em",
-            color: "rgba(196,166,97,0.38)",
+            color: "rgba(189,156,110,0.38)",
           }}
         >
           chambaud.fr

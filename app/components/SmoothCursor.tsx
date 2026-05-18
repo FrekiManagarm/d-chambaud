@@ -48,8 +48,8 @@ export default function SmoothCursor() {
         animate={{
           width: onLink ? 52 : 34,
           height: onLink ? 52 : 34,
-          borderColor: onLink ? "rgba(196,166,97,1)" : "rgba(196,166,97,0.75)",
-          backgroundColor: onLink ? "rgba(196,166,97,0.10)" : "transparent",
+          borderColor: onLink ? "rgba(var(--gold-rgb),1)" : "rgba(var(--gold-rgb),0.75)",
+          backgroundColor: onLink ? "rgba(var(--gold-rgb),0.10)" : "transparent",
         }}
         transition={{ duration: 0.25, ease: "easeOut" }}
         style={{
@@ -61,7 +61,7 @@ export default function SmoothCursor() {
           translateX: "-50%",
           translateY: "-50%",
           borderRadius: "50%",
-          border: "1.5px solid rgba(196,166,97,0.75)",
+          border: "1.5px solid rgba(var(--gold-rgb),0.75)",
           pointerEvents: "none",
           zIndex: 99998,
         }}

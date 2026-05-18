@@ -35,10 +35,10 @@ export default function Navigation() {
         right: 0,
         zIndex: 100,
         transition: "background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease",
-        backgroundColor: scrolled ? "rgba(247,243,234,0.94)" : "rgba(17,16,13,0.18)",
+        backgroundColor: scrolled ? "rgba(var(--cream-rgb),0.94)" : "rgba(var(--dark-rgb),0.18)",
         backdropFilter: scrolled ? "blur(18px)" : "blur(8px)",
-        borderBottom: scrolled ? "1px solid rgba(184,145,82,0.18)" : "1px solid rgba(247,243,234,0.08)",
-        boxShadow: scrolled ? "0 18px 40px -34px rgba(24,23,19,0.42)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(var(--bronze-rgb),0.18)" : "1px solid rgba(var(--cream-rgb),0.08)",
+        boxShadow: scrolled ? "0 18px 40px -34px rgba(var(--charcoal-rgb),0.42)" : "none",
       }}
     >
       <div
@@ -64,8 +64,8 @@ export default function Navigation() {
               width: "auto",
               objectFit: "contain",
               display: "block",
-              filter: scrolled ? "invert(1)" : "brightness(4)",
-              mixBlendMode: scrolled ? "multiply" : "screen",
+              filter: scrolled ? "none" : "brightness(4)",
+              mixBlendMode: scrolled ? "normal" : "screen",
               transition: "height 0.5s ease, filter 0.5s ease",
             }}
           />
@@ -87,7 +87,7 @@ export default function Navigation() {
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 fontWeight: 500,
-                color: scrolled ? "var(--charcoal)" : "rgba(250,250,247,0.82)",
+                color: scrolled ? "var(--charcoal)" : "rgba(var(--cream-rgb),0.82)",
                 textDecoration: "none",
                 transition: "color 0.3s ease",
               }}
@@ -115,7 +115,7 @@ export default function Navigation() {
               textDecoration: "none",
               transition: "background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease",
               display: "inline-block",
-              backgroundColor: scrolled ? "rgba(184,145,82,0.12)" : "rgba(17,16,13,0.32)",
+              backgroundColor: scrolled ? "rgba(var(--bronze-rgb),0.12)" : "rgba(var(--dark-rgb),0.32)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "var(--gold)";
@@ -123,8 +123,8 @@ export default function Navigation() {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = scrolled
-                ? "rgba(184,145,82,0.12)"
-                : "rgba(17,16,13,0.32)";
+                ? "rgba(var(--bronze-rgb),0.12)"
+                : "rgba(var(--dark-rgb),0.32)";
               e.currentTarget.style.color = scrolled
                 ? "var(--charcoal)"
                 : "var(--gold-light)";
@@ -144,7 +144,7 @@ export default function Navigation() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: scrolled ? "var(--charcoal)" : "#FAFAF7",
+            color: scrolled ? "var(--charcoal)" : "#f5edd8",
             padding: "0.5rem",
           }}
         >
@@ -166,7 +166,7 @@ export default function Navigation() {
               className="mobile-menu-panel"
               style={{
                 padding: "1.5rem 2.5rem 2rem",
-                borderTop: "1px solid rgba(196,166,97,0.2)",
+                borderTop: "1px solid rgba(var(--gold-rgb),0.2)",
               }}
             >
               {navLinks.map((link, i) => (
@@ -187,7 +187,7 @@ export default function Navigation() {
                     fontWeight: 500,
                     color: "var(--charcoal)",
                     textDecoration: "none",
-                    borderBottom: "1px solid rgba(196,166,97,0.12)",
+                    borderBottom: "1px solid rgba(var(--gold-rgb),0.12)",
                   }}
                 >
                   {link.label}

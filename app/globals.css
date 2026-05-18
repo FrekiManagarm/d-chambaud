@@ -1,13 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold: #B89152;
-  --color-gold-light: #D7B676;
-  --color-charcoal: #181713;
-  --color-cream: #F7F3EA;
-  --color-warm-bg: #E9E0D0;
-  --color-site-dark: #11100D;
-  --color-warm-gray: #746F63;
+  --color-cream: #f5edd8;
+  --color-sage: #7a8a72;
+  --color-olive: #4d5944;
+  --color-bronze: #8e6e44;
+  --color-gold: #bd9c6e;
+  --color-gold-light: #f5edd8;
+  --color-charcoal: #2a2820;
+  --color-warm-bg: #7a8a72;
+  --color-site-dark: #2a2820;
+  --color-warm-gray: #4d5944;
 }
 
 @theme inline {
@@ -16,15 +19,27 @@
 }
 
 :root {
-  --gold: #B89152;
-  --gold-light: #D7B676;
-  --charcoal: #181713;
-  --cream: #F7F3EA;
-  --warm: #E9E0D0;
-  --dark: #11100D;
-  --warm-gray: #746F63;
-  --porcelain: #FBFAF6;
-  --ink-soft: #242119;
+  --cream: #f5edd8;
+  --cream-rgb: 245, 237, 216;
+  --sage: #7a8a72;
+  --sage-rgb: 122, 138, 114;
+  --olive: #4d5944;
+  --olive-rgb: 77, 89, 68;
+  --bronze: #8e6e44;
+  --bronze-rgb: 142, 110, 68;
+  --gold: #bd9c6e;
+  --gold-rgb: 189, 156, 110;
+  --gold-light: #f5edd8;
+  --gold-light-rgb: 245, 237, 216;
+  --charcoal: #2a2820;
+  --charcoal-rgb: 42, 40, 32;
+  --warm: #7a8a72;
+  --warm-rgb: 122, 138, 114;
+  --dark: #2a2820;
+  --dark-rgb: 42, 40, 32;
+  --warm-gray: #4d5944;
+  --porcelain: #f5edd8;
+  --ink-soft: #2a2820;
 }
 
 *,
@@ -102,7 +117,7 @@ body {
 
 /* Service row */
 .service-row {
-  border-bottom: 1px solid rgba(196, 166, 97, 0.15);
+  border-bottom: 1px solid rgba(var(--gold-rgb), 0.15);
   cursor: pointer;
   position: relative;
   overflow: hidden;

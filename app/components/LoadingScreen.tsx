@@ -25,7 +25,7 @@ export default function LoadingScreen() {
             position: "fixed",
             inset: 0,
             zIndex: 99990,
-            backgroundColor: "#0B0B09",
+            backgroundColor: "#2a2820",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -43,7 +43,7 @@ export default function LoadingScreen() {
               width: 320,
               height: 320,
               borderRadius: "50%",
-              border: "1px solid rgba(196,166,97,0.06)",
+              border: "1px solid rgba(var(--gold-rgb),0.06)",
             }}
           />
           <motion.div
@@ -55,7 +55,7 @@ export default function LoadingScreen() {
               width: 200,
               height: 200,
               borderRadius: "50%",
-              border: "1px solid rgba(196,166,97,0.1)",
+              border: "1px solid rgba(var(--gold-rgb),0.1)",
             }}
           />
 
@@ -73,7 +73,7 @@ export default function LoadingScreen() {
                 fontWeight: 300,
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
-                color: "#FAFAF7",
+                color: "#f5edd8",
                 marginBottom: "0.6rem",
               }}
             >
@@ -85,7 +85,7 @@ export default function LoadingScreen() {
                 fontSize: "0.52rem",
                 letterSpacing: "0.42em",
                 textTransform: "uppercase",
-                color: "#C4A661",
+                color: "#bd9c6e",
               }}
             >
               Traiteur &amp; Chef à Domicile
@@ -100,7 +100,7 @@ export default function LoadingScreen() {
             style={{
               width: 100,
               height: 1,
-              backgroundColor: "rgba(196,166,97,0.15)",
+              backgroundColor: "rgba(var(--gold-rgb),0.15)",
               position: "relative",
               zIndex: 1,
               overflow: "hidden",
@@ -113,7 +113,7 @@ export default function LoadingScreen() {
               style={{
                 position: "absolute",
                 inset: 0,
-                backgroundColor: "#C4A661",
+                backgroundColor: "#bd9c6e",
                 transformOrigin: "left",
               }}
             />

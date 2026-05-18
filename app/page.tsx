@@ -215,8 +215,8 @@ function MagneticButton({
         fontWeight: 500,
         textDecoration: "none",
         backgroundColor: isGold ? "var(--gold)" : "transparent",
-        color: isGold ? "var(--dark)" : "rgba(250,250,247,0.7)",
-        border: isGold ? "none" : "1px solid rgba(250,250,247,0.22)",
+        color: isGold ? "var(--dark)" : "rgba(var(--cream-rgb),0.7)",
+        border: isGold ? "none" : "1px solid rgba(var(--cream-rgb),0.22)",
       }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
@@ -280,7 +280,7 @@ function CountUpStat({
       style={{
         padding: "4rem 3rem",
         textAlign: "center",
-        borderRight: border ? "1px solid rgba(196,166,97,0.12)" : "none",
+        borderRight: border ? "1px solid rgba(var(--gold-rgb),0.12)" : "none",
       }}
     >
       <p
@@ -315,7 +315,7 @@ function CountUpStat({
           fontFamily: "var(--font-montserrat), sans-serif",
           fontSize: "0.7rem",
           fontWeight: 400,
-          color: "rgba(250,250,247,0.7)",
+          color: "rgba(var(--cream-rgb),0.7)",
           lineHeight: 1.6,
         }}
       >
@@ -371,13 +371,15 @@ function ContactField({
   const inputId = `contact-${name}`;
   const sharedInputStyle: React.CSSProperties = {
     width: "100%",
-    background: "rgba(250,250,247,0.72)",
+    background: focused
+      ? "rgba(var(--cream-rgb),0.96)"
+      : "rgba(var(--cream-rgb),0.84)",
     border: `1px solid ${
       error
         ? "rgba(150,64,52,0.55)"
         : focused
-          ? "rgba(196,166,97,0.65)"
-          : "rgba(26,26,23,0.13)"
+          ? "rgba(var(--gold-rgb),0.82)"
+          : "rgba(var(--cream-rgb),0.18)"
     }`,
     color: "var(--charcoal)",
     fontFamily: "var(--font-montserrat), sans-serif",
@@ -386,7 +388,11 @@ function ContactField({
     padding: "0.78rem 0.9rem",
     outline: "none",
     resize: "none",
-    transition: "border-color 0.25s ease, background-color 0.25s ease",
+    boxShadow: focused
+      ? "inset 0 1px 0 rgba(255,255,255,0.55), 0 18px 42px -34px rgba(var(--dark-rgb),0.72)"
+      : "inset 0 1px 0 rgba(255,255,255,0.32)",
+    transition:
+      "border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease",
   };
 
   return (
@@ -398,7 +404,7 @@ function ContactField({
           fontSize: "0.58rem",
           letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: error ? "rgba(150,64,52,0.85)" : "rgba(26,26,23,0.58)",
+          color: error ? "rgba(245,190,170,0.95)" : "rgba(var(--cream-rgb),0.74)",
           fontWeight: 500,
         }}
       >
@@ -441,7 +447,7 @@ function ContactField({
           fontFamily: "var(--font-montserrat), sans-serif",
           fontSize: "0.68rem",
           lineHeight: 1.45,
-          color: error ? "rgba(150,64,52,0.9)" : "rgba(26,26,23,0.42)",
+          color: error ? "rgba(245,190,170,0.95)" : "rgba(var(--cream-rgb),0.48)",
         }}
       >
         {error || helper || ""}
@@ -500,7 +506,7 @@ function HeroSection() {
             fontWeight: 300,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "rgba(196,166,97,0.025)",
+            color: "rgba(var(--gold-rgb),0.025)",
             whiteSpace: "nowrap",
             userSelect: "none",
           }}
@@ -523,7 +529,7 @@ function HeroSection() {
           maxHeight: 680,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(196,166,97,0.11) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(var(--gold-rgb),0.11) 0%, transparent 70%)",
           filter: "blur(70px)",
         }}
       />
@@ -540,7 +546,7 @@ function HeroSection() {
           maxHeight: 500,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(196,166,97,0.07) 0%, transparent 70%)",
+            "radial-gradient(circle, rgba(var(--gold-rgb),0.07) 0%, transparent 70%)",
           filter: "blur(90px)",
         }}
       />
@@ -572,14 +578,14 @@ function HeroSection() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to right, var(--dark) 0%, rgba(11,11,9,0.18) 42%, transparent 100%)",
+              "linear-gradient(to right, var(--dark) 0%, rgba(var(--dark-rgb),0.18) 42%, transparent 100%)",
           }}
         />
         <div
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(11,11,9,0.44)",
+            backgroundColor: "rgba(var(--dark-rgb),0.44)",
           }}
         />
         <div
@@ -607,7 +613,7 @@ function HeroSection() {
               fontSize: "0.44rem",
               letterSpacing: "0.28em",
               textTransform: "uppercase",
-              color: "rgba(250,250,247,0.28)",
+              color: "rgba(var(--cream-rgb),0.28)",
             }}
           >
             Nouvelle-Aquitaine
@@ -735,7 +741,7 @@ function HeroSection() {
             fontSize: "2rem",
             fontStyle: "italic",
             fontWeight: 300,
-            color: "rgba(250,250,247,0.75)",
+            color: "rgba(var(--cream-rgb),0.75)",
             marginBottom: "1.25rem",
             letterSpacing: "0.02em",
           }}
@@ -753,7 +759,7 @@ function HeroSection() {
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             fontWeight: 400,
-            color: "rgba(250,250,247,0.6)",
+            color: "rgba(var(--cream-rgb),0.6)",
             marginBottom: "3.5rem",
           }}
         >
@@ -801,7 +807,7 @@ function HeroSection() {
             fontSize: "0.48rem",
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "rgba(250,250,247,0.25)",
+            color: "rgba(var(--cream-rgb),0.25)",
           }}
         >
           Défiler
@@ -810,7 +816,7 @@ function HeroSection() {
           animate={{ y: [0, 9, 0] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
         >
-          <ChevronDown size={13} color="rgba(250,250,247,0.25)" />
+          <ChevronDown size={13} color="rgba(var(--cream-rgb),0.25)" />
         </motion.div>
       </motion.div>
 
@@ -862,8 +868,8 @@ function MarqueeStrip() {
     <div
       style={{
         backgroundColor: "var(--dark)",
-        borderTop: "1px solid rgba(196,166,97,0.12)",
-        borderBottom: "1px solid rgba(196,166,97,0.12)",
+        borderTop: "1px solid rgba(var(--gold-rgb),0.12)",
+        borderBottom: "1px solid rgba(var(--gold-rgb),0.12)",
         padding: "0.85rem 0",
         overflow: "hidden",
         position: "relative",
@@ -915,7 +921,7 @@ function MarqueeStrip() {
               letterSpacing: item === "·" ? 0 : "0.28em",
               textTransform: "uppercase",
               fontWeight: 400,
-              color: item === "·" ? "var(--gold)" : "rgba(250,250,247,0.65)",
+              color: item === "·" ? "var(--gold)" : "rgba(var(--cream-rgb),0.65)",
             }}
           >
             {item}
@@ -952,7 +958,7 @@ function ValueBand({
       transition={{ duration: 0.5, delay: index * 0.1 }}
       style={{
         position: "relative",
-        borderBottom: "1px solid rgba(196,166,97,0.12)",
+        borderBottom: "1px solid rgba(var(--gold-rgb),0.12)",
         overflow: "hidden",
       }}
     >
@@ -968,7 +974,7 @@ function ValueBand({
           fontSize: "clamp(7rem, 18vw, 14rem)",
           fontWeight: 300,
           fontStyle: "italic",
-          color: "rgba(196,166,97,0.055)",
+          color: "rgba(var(--gold-rgb),0.055)",
           lineHeight: 1,
           userSelect: "none",
           pointerEvents: "none",
@@ -1108,7 +1114,7 @@ function ValuesSection() {
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.94rem",
                   lineHeight: 1.9,
-                  color: "rgba(24,23,19,0.64)",
+                  color: "rgba(var(--charcoal-rgb),0.64)",
                   maxWidth: 560,
                   marginTop: "1.6rem",
                 }}
@@ -1151,8 +1157,8 @@ function ValuesSection() {
                   width: "46%",
                   aspectRatio: "4 / 5",
                   overflow: "hidden",
-                  border: "1px solid rgba(24,23,19,0.12)",
-                  boxShadow: "0 26px 52px -42px rgba(24,23,19,0.62)",
+                  border: "1px solid rgba(var(--charcoal-rgb),0.12)",
+                  boxShadow: "0 26px 52px -42px rgba(var(--charcoal-rgb),0.62)",
                 }}
               >
                 <Image
@@ -1170,10 +1176,10 @@ function ValuesSection() {
                   bottom: "6%",
                   width: "12rem",
                   padding: "1rem",
-                  backgroundColor: "rgba(247,243,234,0.78)",
-                  border: "1px solid rgba(24,23,19,0.1)",
+                  backgroundColor: "rgba(var(--cream-rgb),0.78)",
+                  border: "1px solid rgba(var(--charcoal-rgb),0.1)",
                   boxShadow:
-                    "inset 0 1px 0 rgba(255,255,255,0.7), 0 24px 52px -42px rgba(24,23,19,0.68)",
+                    "inset 0 1px 0 rgba(255,255,255,0.7), 0 24px 52px -42px rgba(var(--charcoal-rgb),0.68)",
                   backdropFilter: "blur(14px)",
                 }}
               >
@@ -1205,7 +1211,7 @@ function ValuesSection() {
           </RevealOnScroll>
 
         </div>
-        <div style={{ borderTop: "1px solid rgba(184,145,82,0.18)" }}>
+        <div style={{ borderTop: "1px solid rgba(var(--bronze-rgb),0.18)" }}>
           <ValueBand
             num="01"
             title="L'arrivée donne le ton"
@@ -1254,7 +1260,7 @@ function ValuesSection() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(11,11,9,0.28)",
+            backgroundColor: "rgba(var(--dark-rgb),0.28)",
           }}
         />
       </div>
@@ -1300,7 +1306,7 @@ function StatsSection() {
           width: "80%",
           height: "300%",
           background:
-            "radial-gradient(ellipse at center, rgba(196,166,97,0.05) 0%, transparent 60%)",
+            "radial-gradient(ellipse at center, rgba(var(--gold-rgb),0.05) 0%, transparent 60%)",
           pointerEvents: "none",
         }}
       />
@@ -1350,7 +1356,7 @@ function StatsSection() {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.9rem",
                 lineHeight: 1.9,
-                color: "rgba(247,243,234,0.62)",
+                color: "rgba(var(--cream-rgb),0.62)",
                 maxWidth: 430,
               }}
             >
@@ -1365,8 +1371,8 @@ function StatsSection() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-            borderTop: "1px solid rgba(184,145,82,0.16)",
-            borderBottom: "1px solid rgba(184,145,82,0.16)",
+            borderTop: "1px solid rgba(var(--bronze-rgb),0.16)",
+            borderBottom: "1px solid rgba(var(--bronze-rgb),0.16)",
           }}
           className="stats-grid"
         >
@@ -1407,7 +1413,7 @@ function StatsSection() {
           }
         }
         @media (max-width: 640px) {
-          .stats-grid > * { border-right: none !important; border-bottom: 1px solid rgba(196,166,97,0.1); }
+          .stats-grid > * { border-right: none !important; border-bottom: 1px solid rgba(var(--gold-rgb),0.1); }
           .stats-grid > *:last-child { border-bottom: none !important; }
         }
       `}</style>
@@ -1479,7 +1485,7 @@ function AboutSection() {
                   position: "absolute",
                   inset: 0,
                   background:
-                    "linear-gradient(to top, rgba(11,11,9,0.5) 0%, transparent 55%)",
+                    "linear-gradient(to top, rgba(var(--dark-rgb),0.5) 0%, transparent 55%)",
                   zIndex: 1,
                 }}
               />
@@ -1580,7 +1586,7 @@ function AboutSection() {
                   fontSize: "0.9rem",
                   fontWeight: 500,
                   lineHeight: 1.95,
-                  color: "rgba(250,250,247,0.6)",
+                  color: "rgba(var(--cream-rgb),0.6)",
                   marginBottom: "1.1rem",
                 }}
               >
@@ -1744,8 +1750,8 @@ function ServicePanel({
           position: "absolute",
           inset: 0,
           backgroundColor: isActive
-            ? "rgba(11,11,9,0.50)"
-            : "rgba(11,11,9,0.76)",
+            ? "rgba(var(--dark-rgb),0.50)"
+            : "rgba(var(--dark-rgb),0.76)",
           transition: reduce ? "none" : "background-color 0.65s ease",
           zIndex: 1,
         }}
@@ -1761,7 +1767,7 @@ function ServicePanel({
             bottom: 0,
             left: 0,
             width: 1,
-            backgroundColor: "rgba(196,166,97,0.18)",
+            backgroundColor: "rgba(var(--gold-rgb),0.18)",
             zIndex: 2,
           }}
         />
@@ -1798,7 +1804,7 @@ function ServicePanel({
               fontSize: "0.82rem",
               fontStyle: "italic",
               fontWeight: 300,
-              color: "rgba(196,166,97,0.65)",
+              color: "rgba(var(--gold-rgb),0.65)",
               letterSpacing: "0.18em",
             }}
           >
@@ -1808,7 +1814,7 @@ function ServicePanel({
             style={{
               width: 1,
               height: 24,
-              backgroundColor: "rgba(196,166,97,0.3)",
+              backgroundColor: "rgba(var(--gold-rgb),0.3)",
             }}
           />
           <span
@@ -1881,7 +1887,7 @@ function ServicePanel({
             fontSize: "0.78rem",
             fontWeight: 300,
             lineHeight: 1.85,
-            color: "rgba(250,250,247,0.62)",
+            color: "rgba(var(--cream-rgb),0.62)",
             marginBottom: "1.4rem",
             maxWidth: "36ch",
           }}
@@ -2059,7 +2065,7 @@ function ServicesSection() {
             </h3>
           </div>
         </RevealOnScroll>
-        <div style={{ borderTop: "1px solid rgba(24,23,19,0.13)" }}>
+        <div style={{ borderTop: "1px solid rgba(var(--charcoal-rgb),0.13)" }}>
           {[
             ["Repérage", "Lieu, accès, cuisine, météo, contraintes du domaine."],
             ["Calage", "Quantités, timing, allergies, mobilier et équipe de salle."],
@@ -2073,7 +2079,7 @@ function ServicesSection() {
                   gridTemplateColumns: "5rem minmax(0, 0.36fr) minmax(0, 1fr)",
                   gap: "1.4rem",
                   padding: "1.35rem 0",
-                  borderBottom: "1px solid rgba(24,23,19,0.1)",
+                  borderBottom: "1px solid rgba(var(--charcoal-rgb),0.1)",
                   alignItems: "baseline",
                 }}
                 className="service-rhythm-row"
@@ -2104,7 +2110,7 @@ function ServicesSection() {
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.86rem",
                     lineHeight: 1.75,
-                    color: "rgba(24,23,19,0.58)",
+                    color: "rgba(var(--charcoal-rgb),0.58)",
                   }}
                 >
                   {desc}
@@ -2311,7 +2317,7 @@ function FormulaRow({
       exit={{ opacity: 0, y: -8 }}
       whileHover={{
         y: -2,
-        backgroundColor: "rgba(196,166,97,0.055)",
+        backgroundColor: "rgba(var(--gold-rgb),0.055)",
       }}
       transition={{
         type: "spring",
@@ -2325,7 +2331,7 @@ function FormulaRow({
         gridTemplateColumns: "minmax(0, 1fr) auto",
         gap: "2rem",
         padding: "1.8rem 0",
-        borderTop: "1px solid rgba(26,26,23,0.12)",
+        borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
       }}
     >
       <div>
@@ -2353,7 +2359,7 @@ function FormulaRow({
               textTransform: "uppercase",
               color: f.highlight
                 ? "var(--gold)"
-                : "rgba(26,26,23,0.44)",
+                : "rgba(var(--charcoal-rgb),0.44)",
             }}
           >
             {f.highlight ? "Recommandé" : f.sub}
@@ -2380,7 +2386,7 @@ function FormulaRow({
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.86rem",
             fontWeight: 300,
-            color: "rgba(26,26,23,0.62)",
+            color: "rgba(var(--charcoal-rgb),0.62)",
             lineHeight: 1.75,
             maxWidth: 560,
           }}
@@ -2393,7 +2399,7 @@ function FormulaRow({
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.76rem",
             fontWeight: 400,
-            color: "rgba(26,26,23,0.48)",
+            color: "rgba(var(--charcoal-rgb),0.48)",
             lineHeight: 1.65,
             maxWidth: 560,
             marginTop: "0.55rem",
@@ -2417,16 +2423,16 @@ function FormulaRow({
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                border: "1px solid rgba(26,26,23,0.1)",
+                border: "1px solid rgba(var(--charcoal-rgb),0.1)",
                 padding: "0.42rem 0.6rem",
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.56rem",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: "rgba(26,26,23,0.52)",
+                color: "rgba(var(--charcoal-rgb),0.52)",
                 backgroundColor: f.highlight
-                  ? "rgba(184,145,82,0.07)"
-                  : "rgba(250,250,247,0.36)",
+                  ? "rgba(var(--bronze-rgb),0.07)"
+                  : "rgba(var(--cream-rgb),0.36)",
               }}
             >
               {feature}
@@ -2464,7 +2470,7 @@ function FormulaRow({
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.64rem",
                 fontWeight: 300,
-                color: "rgba(26,26,23,0.46)",
+                color: "rgba(var(--charcoal-rgb),0.46)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -2479,7 +2485,7 @@ function FormulaRow({
             fontSize: "0.58rem",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "rgba(26,26,23,0.38)",
+            color: "rgba(var(--charcoal-rgb),0.38)",
           }}
         >
           {f.sub}
@@ -2554,7 +2560,7 @@ function FormulasSection() {
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.9rem",
                   fontWeight: 300,
-                  color: "rgba(26,26,23,0.62)",
+                  color: "rgba(var(--charcoal-rgb),0.62)",
                   marginTop: "1.4rem",
                   lineHeight: 1.85,
                   maxWidth: 520,
@@ -2574,7 +2580,7 @@ function FormulasSection() {
               display: "flex",
               justifyContent: "flex-end",
               gap: "0.35rem",
-              borderBottom: "1px solid rgba(26,26,23,0.12)",
+              borderBottom: "1px solid rgba(var(--charcoal-rgb),0.12)",
             }}
           >
             {TABS.map((tab) => {
@@ -2595,7 +2601,7 @@ function FormulasSection() {
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     fontWeight: 500,
-                    color: isActive ? "var(--charcoal)" : "rgba(26,26,23,0.42)",
+                    color: isActive ? "var(--charcoal)" : "rgba(var(--charcoal-rgb),0.42)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -2652,7 +2658,7 @@ function FormulasSection() {
                 fontSize: "0.62rem",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "rgba(26,26,23,0.42)",
+                color: "rgba(var(--charcoal-rgb),0.42)",
               }}
             >
               Sur mesure
@@ -2675,7 +2681,7 @@ function FormulasSection() {
               gap: "1.5rem",
               alignItems: "center",
               paddingTop: "1.6rem",
-              borderTop: "1px solid rgba(26,26,23,0.12)",
+              borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
             }}
           >
             <p
@@ -2683,7 +2689,7 @@ function FormulasSection() {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.78rem",
                 lineHeight: 1.7,
-                color: "rgba(26,26,23,0.54)",
+                color: "rgba(var(--charcoal-rgb),0.54)",
                 maxWidth: 600,
               }}
             >
@@ -2741,13 +2747,13 @@ function FormulasSection() {
             grid-template-columns: 1fr !important;
             gap: 0 !important;
             justify-content: stretch !important;
-            border-top: 1px solid rgba(26,26,23,0.12);
+            border-top: 1px solid rgba(var(--charcoal-rgb),0.12);
           }
           .formula-tabs button {
             width: 100% !important;
             padding: 0.85rem 0 !important;
             text-align: left !important;
-            border-bottom: 1px solid rgba(26,26,23,0.08) !important;
+            border-bottom: 1px solid rgba(var(--charcoal-rgb),0.08) !important;
           }
           .formula-tabs button span {
             left: 0 !important;
@@ -2945,7 +2951,7 @@ function GallerySection() {
         position: "relative",
         overflow: "hidden",
         background:
-          "radial-gradient(circle at 78% 28%, rgba(196,166,97,0.13), transparent 30%), linear-gradient(135deg, #0B0B09 0%, #14130F 54%, #0B0B09 100%)",
+          "radial-gradient(circle at 78% 28%, rgba(var(--gold-rgb),0.13), transparent 30%), linear-gradient(135deg, #2a2820 0%, #4d5944 54%, #2a2820 100%)",
         padding: "7rem 0 7.5rem",
       }}
     >
@@ -3021,7 +3027,7 @@ function GallerySection() {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.95rem",
                 fontWeight: 400,
-                color: "rgba(250,250,247,0.68)",
+                color: "rgba(var(--cream-rgb),0.68)",
                 maxWidth: 360,
                 lineHeight: 1.85,
               }}
@@ -3085,7 +3091,7 @@ function GallerySection() {
                     fontSize: "0.62rem",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: "rgba(250,250,247,0.28)",
+                    color: "rgba(var(--cream-rgb),0.28)",
                   }}
                 >
                   sur {String(total).padStart(2, "0")}
@@ -3107,7 +3113,7 @@ function GallerySection() {
                       fontSize: "0.62rem",
                       letterSpacing: "0.22em",
                       textTransform: "uppercase",
-                      color: "rgba(196,166,97,0.72)",
+                      color: "rgba(var(--gold-rgb),0.72)",
                       marginBottom: "0.95rem",
                     }}
                   >
@@ -3137,7 +3143,7 @@ function GallerySection() {
                   position: "relative",
                   height: 2,
                   overflow: "hidden",
-                  backgroundColor: "rgba(250,250,247,0.08)",
+                  backgroundColor: "rgba(var(--cream-rgb),0.08)",
                 }}
               >
                 <motion.div
@@ -3171,8 +3177,8 @@ function GallerySection() {
                     width: 52,
                     height: 52,
                     borderRadius: "50%",
-                    border: "1px solid rgba(196,166,97,0.22)",
-                    backgroundColor: "rgba(250,250,247,0.03)",
+                    border: "1px solid rgba(var(--gold-rgb),0.22)",
+                    backgroundColor: "rgba(var(--cream-rgb),0.03)",
                     color: "var(--cream)",
                     display: "flex",
                     alignItems: "center",
@@ -3198,8 +3204,8 @@ function GallerySection() {
                     width: 52,
                     height: 52,
                     borderRadius: "50%",
-                    border: "1px solid rgba(196,166,97,0.22)",
-                    backgroundColor: "rgba(250,250,247,0.03)",
+                    border: "1px solid rgba(var(--gold-rgb),0.22)",
+                    backgroundColor: "rgba(var(--cream-rgb),0.03)",
                     color: "var(--cream)",
                     display: "flex",
                     alignItems: "center",
@@ -3268,8 +3274,8 @@ function GallerySection() {
                     position: "absolute",
                     inset: 0,
                     background:
-                      "linear-gradient(180deg, rgba(11,11,9,0.18), rgba(11,11,9,0.62))",
-                    border: "1px solid rgba(250,250,247,0.11)",
+                      "linear-gradient(180deg, rgba(var(--dark-rgb),0.18), rgba(var(--dark-rgb),0.62))",
+                    border: "1px solid rgba(var(--cream-rgb),0.11)",
                   }}
                 />
               </motion.button>
@@ -3297,7 +3303,7 @@ function GallerySection() {
                   inset: "0 8%",
                   overflow: "hidden",
                   cursor: "grab",
-                  boxShadow: "0 34px 90px -42px rgba(0,0,0,0.76)",
+                  boxShadow: "0 34px 90px -42px rgba(var(--dark-rgb),0.76)",
                 }}
               >
                 <Image
@@ -3318,7 +3324,7 @@ function GallerySection() {
                     position: "absolute",
                     inset: 0,
                     background:
-                      "linear-gradient(to top, rgba(11,11,9,0.58) 0%, rgba(11,11,9,0.04) 46%), linear-gradient(110deg, rgba(11,11,9,0.24), transparent 34%, rgba(196,166,97,0.1))",
+                      "linear-gradient(to top, rgba(var(--dark-rgb),0.58) 0%, rgba(var(--dark-rgb),0.04) 46%), linear-gradient(110deg, rgba(var(--dark-rgb),0.24), transparent 34%, rgba(var(--gold-rgb),0.1))",
                     pointerEvents: "none",
                   }}
                 />
@@ -3334,10 +3340,10 @@ function GallerySection() {
                     alignItems: "end",
                     gap: "1.5rem",
                     padding: "1.05rem 1.15rem",
-                    backgroundColor: "rgba(11,11,9,0.45)",
-                    border: "1px solid rgba(250,250,247,0.12)",
+                    backgroundColor: "rgba(var(--dark-rgb),0.45)",
+                    border: "1px solid rgba(var(--cream-rgb),0.12)",
                     boxShadow:
-                      "inset 0 1px 0 rgba(255,255,255,0.1), 0 22px 44px -30px rgba(0,0,0,0.7)",
+                      "inset 0 1px 0 rgba(255,255,255,0.1), 0 22px 44px -30px rgba(var(--dark-rgb),0.7)",
                     backdropFilter: "blur(16px)",
                   }}
                 >
@@ -3348,7 +3354,7 @@ function GallerySection() {
                         fontSize: "0.6rem",
                         letterSpacing: "0.2em",
                         textTransform: "uppercase",
-                        color: "rgba(196,166,97,0.82)",
+                        color: "rgba(var(--gold-rgb),0.82)",
                         marginBottom: "0.38rem",
                       }}
                     >
@@ -3373,7 +3379,7 @@ function GallerySection() {
                       fontSize: "0.58rem",
                       letterSpacing: "0.16em",
                       textTransform: "uppercase",
-                      color: "rgba(250,250,247,0.48)",
+                      color: "rgba(var(--cream-rgb),0.48)",
                     }}
                   >
                     Glisser
@@ -3421,9 +3427,9 @@ function GallerySection() {
                   overflow: "hidden",
                   border:
                     index === current
-                      ? "1px solid rgba(196,166,97,0.85)"
-                      : "1px solid rgba(250,250,247,0.1)",
-                  background: "rgba(250,250,247,0.04)",
+                      ? "1px solid rgba(var(--gold-rgb),0.85)"
+                      : "1px solid rgba(var(--cream-rgb),0.1)",
+                  background: "rgba(var(--cream-rgb),0.04)",
                   padding: 0,
                   cursor: "pointer",
                   opacity: index === current ? 1 : 0.54,
@@ -3485,7 +3491,7 @@ function GallerySection() {
           position: absolute;
           inset: auto 0 0;
           height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(196,166,97,0.28), transparent);
+          background: linear-gradient(90deg, transparent, rgba(var(--gold-rgb),0.28), transparent);
         }
 
         @media (max-width: 768px) {
@@ -3570,7 +3576,7 @@ function PavillonSection() {
       style={{
         position: "relative",
         background:
-          "linear-gradient(135deg, #11100D 0%, #181713 48%, #272117 100%)",
+          "linear-gradient(135deg, #2a2820 0%, #2a2820 48%, #4d5944 100%)",
         overflow: "hidden",
         padding: "clamp(5rem, 8vw, 8rem) 0",
       }}
@@ -3586,7 +3592,7 @@ function PavillonSection() {
           fontStyle: "italic",
           fontWeight: 300,
           lineHeight: 0.8,
-          color: "rgba(247,243,234,0.035)",
+          color: "rgba(var(--cream-rgb),0.035)",
           whiteSpace: "nowrap",
           pointerEvents: "none",
           userSelect: "none",
@@ -3627,7 +3633,7 @@ function PavillonSection() {
                   inset: "0 14% 12% 0",
                   overflow: "hidden",
                   backgroundColor: "var(--charcoal)",
-                  boxShadow: "0 34px 86px -56px rgba(0,0,0,0.82)",
+                  boxShadow: "0 34px 86px -56px rgba(var(--dark-rgb),0.82)",
                 }}
               >
                 <Image
@@ -3643,7 +3649,7 @@ function PavillonSection() {
                     position: "absolute",
                     inset: 0,
                     background:
-                      "linear-gradient(to top, rgba(17,16,13,0.54), transparent 52%)",
+                      "linear-gradient(to top, rgba(var(--dark-rgb),0.54), transparent 52%)",
                   }}
                 />
               </div>
@@ -3661,8 +3667,8 @@ function PavillonSection() {
                   width: "34%",
                   aspectRatio: "3 / 4",
                   overflow: "hidden",
-                  border: "1px solid rgba(247,243,234,0.14)",
-                  boxShadow: "0 30px 70px -48px rgba(0,0,0,0.9)",
+                  border: "1px solid rgba(var(--cream-rgb),0.14)",
+                  boxShadow: "0 30px 70px -48px rgba(var(--dark-rgb),0.9)",
                 }}
               >
                 <Image
@@ -3687,8 +3693,8 @@ function PavillonSection() {
                   width: "42%",
                   aspectRatio: "4 / 3",
                   overflow: "hidden",
-                  border: "1px solid rgba(247,243,234,0.14)",
-                  boxShadow: "0 28px 64px -48px rgba(0,0,0,0.84)",
+                  border: "1px solid rgba(var(--cream-rgb),0.14)",
+                  boxShadow: "0 28px 64px -48px rgba(var(--dark-rgb),0.84)",
                 }}
               >
                 <Image
@@ -3708,10 +3714,10 @@ function PavillonSection() {
                   bottom: "7%",
                   width: "15rem",
                   padding: "1.05rem 1rem",
-                  backgroundColor: "rgba(17,16,13,0.62)",
-                  border: "1px solid rgba(247,243,234,0.13)",
+                  backgroundColor: "rgba(var(--dark-rgb),0.62)",
+                  border: "1px solid rgba(var(--cream-rgb),0.13)",
                   boxShadow:
-                    "inset 0 1px 0 rgba(255,255,255,0.1), 0 28px 58px -44px rgba(0,0,0,0.86)",
+                    "inset 0 1px 0 rgba(255,255,255,0.1), 0 28px 58px -44px rgba(var(--dark-rgb),0.86)",
                   backdropFilter: "blur(16px)",
                 }}
               >
@@ -3780,7 +3786,7 @@ function PavillonSection() {
                   fontSize: "0.95rem",
                   fontWeight: 400,
                   lineHeight: 1.9,
-                  color: "rgba(247,243,234,0.66)",
+                  color: "rgba(var(--cream-rgb),0.66)",
                   maxWidth: 620,
                 }}
               >
@@ -3796,8 +3802,8 @@ function PavillonSection() {
                 style={{
                   display: "grid",
                   gap: 0,
-                  borderTop: "1px solid rgba(247,243,234,0.14)",
-                  borderBottom: "1px solid rgba(247,243,234,0.14)",
+                  borderTop: "1px solid rgba(var(--cream-rgb),0.14)",
+                  borderBottom: "1px solid rgba(var(--cream-rgb),0.14)",
                 }}
               >
                 {[
@@ -3825,7 +3831,7 @@ function PavillonSection() {
                       borderBottom:
                         label === "Adresse"
                           ? "none"
-                          : "1px solid rgba(247,243,234,0.1)",
+                          : "1px solid rgba(var(--cream-rgb),0.1)",
                       alignItems: "baseline",
                     }}
                   >
@@ -3844,7 +3850,7 @@ function PavillonSection() {
                       style={{
                         fontFamily: "var(--font-montserrat), sans-serif",
                         fontSize: "0.86rem",
-                        color: "rgba(247,243,234,0.62)",
+                        color: "rgba(var(--cream-rgb),0.62)",
                         lineHeight: 1.75,
                       }}
                     >
@@ -3877,14 +3883,14 @@ function PavillonSection() {
                     alignItems: "center",
                     gap: "0.75rem",
                     padding: "1rem 1.25rem",
-                    border: "1px solid rgba(184,145,82,0.72)",
+                    border: "1px solid rgba(var(--bronze-rgb),0.72)",
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.62rem",
                     letterSpacing: "0.2em",
                     textTransform: "uppercase",
                     color: "var(--gold)",
                     textDecoration: "none",
-                    backgroundColor: "rgba(184,145,82,0.08)",
+                    backgroundColor: "rgba(var(--bronze-rgb),0.08)",
                   }}
                 >
                   <span>Découvrir le lieu</span>
@@ -3895,7 +3901,7 @@ function PavillonSection() {
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.74rem",
                     lineHeight: 1.65,
-                    color: "rgba(247,243,234,0.42)",
+                    color: "rgba(var(--cream-rgb),0.42)",
                     maxWidth: 260,
                   }}
                 >
@@ -3916,7 +3922,7 @@ function PavillonSection() {
               gap: "1rem",
               alignItems: "stretch",
               marginTop: "clamp(3rem, 6vw, 5rem)",
-              borderTop: "1px solid rgba(247,243,234,0.12)",
+              borderTop: "1px solid rgba(var(--cream-rgb),0.12)",
               paddingTop: "1rem",
             }}
           >
@@ -3971,7 +3977,7 @@ function PavillonSection() {
                     position: "relative",
                     aspectRatio: "4 / 3",
                     overflow: "hidden",
-                    backgroundColor: "rgba(247,243,234,0.06)",
+                    backgroundColor: "rgba(var(--cream-rgb),0.06)",
                   }}
                 >
                   <Image
@@ -4143,7 +4149,7 @@ function TestimonialCard({
         display: "grid",
         gap: "1.2rem",
         padding: "1.65rem 0 1.9rem",
-        borderTop: "1px solid rgba(196,166,97,0.16)",
+        borderTop: "1px solid rgba(var(--gold-rgb),0.16)",
         position: "relative",
       }}
     >
@@ -4166,7 +4172,7 @@ function TestimonialCard({
             fontSize: "0.46rem",
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: "rgba(250,250,247,0.38)",
+            color: "rgba(var(--cream-rgb),0.38)",
             fontWeight: 500,
             whiteSpace: "nowrap",
           }}
@@ -4183,7 +4189,7 @@ function TestimonialCard({
           fontStyle: "italic",
           fontWeight: 300,
           lineHeight: 1.35,
-          color: "rgba(250,250,247,0.86)",
+          color: "rgba(var(--cream-rgb),0.86)",
         }}
       >
         &ldquo;{t.quote}&rdquo;
@@ -4214,7 +4220,7 @@ function TestimonialCard({
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               fontWeight: 500,
-              color: "rgba(250,250,247,0.86)",
+              color: "rgba(var(--cream-rgb),0.86)",
             }}
           >
             {t.author}
@@ -4224,7 +4230,7 @@ function TestimonialCard({
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.52rem",
               letterSpacing: "0.1em",
-              color: "rgba(250,250,247,0.34)",
+              color: "rgba(var(--cream-rgb),0.34)",
               marginTop: "0.15rem",
             }}
           >
@@ -4247,8 +4253,8 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
           gap: "3rem",
           alignItems: "end",
           padding: "2.2rem 0 3rem",
-          borderTop: "1px solid rgba(184,145,82,0.22)",
-          borderBottom: "1px solid rgba(184,145,82,0.22)",
+          borderTop: "1px solid rgba(var(--bronze-rgb),0.22)",
+          borderBottom: "1px solid rgba(var(--bronze-rgb),0.22)",
           marginBottom: "2.2rem",
         }}
       >
@@ -4278,7 +4284,7 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
           style={{
             display: "grid",
             gap: "1rem",
-            color: "rgba(247,243,234,0.58)",
+            color: "rgba(var(--cream-rgb),0.58)",
           }}
         >
           <p
@@ -4299,7 +4305,7 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
                 fontSize: "0.76rem",
                 letterSpacing: "0.16em",
                 textTransform: "uppercase",
-                color: "rgba(247,243,234,0.86)",
+                color: "rgba(var(--cream-rgb),0.86)",
                 marginBottom: "0.3rem",
               }}
             >
@@ -4388,7 +4394,7 @@ function TestimonialsSection() {
                 fontSize: "0.88rem",
                 fontWeight: 300,
                 lineHeight: 1.85,
-                color: "rgba(250,250,247,0.58)",
+                color: "rgba(var(--cream-rgb),0.58)",
                 maxWidth: 360,
               }}
             >
@@ -4415,7 +4421,7 @@ function TestimonialsSection() {
               gap: "1.5rem",
               alignItems: "center",
               paddingTop: "1.6rem",
-              borderTop: "1px solid rgba(196,166,97,0.16)",
+              borderTop: "1px solid rgba(var(--gold-rgb),0.16)",
               marginTop: "1.6rem",
             }}
           >
@@ -4425,7 +4431,7 @@ function TestimonialsSection() {
                 fontSize: "0.62rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "rgba(250,250,247,0.34)",
+                color: "rgba(var(--cream-rgb),0.34)",
               }}
             >
               Avis collectés sur Google, Tripadvisor &amp; site officiel
@@ -4572,8 +4578,8 @@ function ClientsSection() {
         padding: "clamp(4.5rem, 7vw, 7rem) 0",
         overflow: "hidden",
         position: "relative",
-        borderTop: "1px solid rgba(184,145,82,0.12)",
-        borderBottom: "1px solid rgba(184,145,82,0.12)",
+        borderTop: "1px solid rgba(var(--bronze-rgb),0.12)",
+        borderBottom: "1px solid rgba(var(--bronze-rgb),0.12)",
       }}
     >
       <div
@@ -4616,7 +4622,7 @@ function ClientsSection() {
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.9rem",
               lineHeight: 1.85,
-              color: "rgba(24,23,19,0.62)",
+              color: "rgba(var(--charcoal-rgb),0.62)",
               maxWidth: 460,
             }}
           >
@@ -4758,7 +4764,8 @@ function ContactSection() {
       className="section-pad contact-section"
       aria-label="Contact et demande de devis"
       style={{
-        backgroundColor: "var(--warm)",
+        background:
+          "linear-gradient(135deg, rgba(var(--cream-rgb),0.96) 0%, rgba(var(--cream-rgb),0.82) 28%, rgba(var(--sage-rgb),0.72) 68%, rgba(var(--olive-rgb),0.84) 100%)",
         padding: "7.5rem 0",
         position: "relative",
         overflow: "hidden",
@@ -4810,7 +4817,7 @@ function ContactSection() {
                 fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.92rem",
                 fontWeight: 300,
-                  color: "rgba(26,26,23,0.64)",
+                  color: "rgba(var(--charcoal-rgb),0.64)",
                   lineHeight: 1.9,
                   maxWidth: 540,
                   marginTop: "1.5rem",
@@ -4830,7 +4837,7 @@ function ContactSection() {
                   gap: "1.15rem",
                   marginTop: "3rem",
                   paddingTop: "1.5rem",
-                  borderTop: "1px solid rgba(26,26,23,0.12)",
+                  borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
               }}
             >
               {[
@@ -4887,7 +4894,7 @@ function ContactSection() {
                           fontSize: "0.54rem",
                           letterSpacing: "0.2em",
                           textTransform: "uppercase",
-                          color: "rgba(26,26,23,0.44)",
+                          color: "rgba(var(--charcoal-rgb),0.44)",
                           marginBottom: "0.18rem",
                         }}
                       >
@@ -4897,7 +4904,7 @@ function ContactSection() {
                         style={{
                           fontFamily: "var(--font-montserrat), sans-serif",
                           fontSize: "0.86rem",
-                          color: "rgba(26,26,23,0.78)",
+                          color: "rgba(var(--charcoal-rgb),0.78)",
                         }}
                       >
                         {item.label}
@@ -4917,7 +4924,7 @@ function ContactSection() {
                   gridTemplateColumns: "auto 1fr",
                   gap: "1rem",
                   alignItems: "start",
-                  color: "rgba(26,26,23,0.62)",
+                  color: "rgba(var(--charcoal-rgb),0.62)",
               }}
             >
               <div
@@ -4963,8 +4970,8 @@ function ContactSection() {
                   key={title}
                   style={{
                     padding: "1rem",
-                    border: "1px solid rgba(26,26,23,0.1)",
-                    backgroundColor: "rgba(247,243,234,0.34)",
+                    border: "1px solid rgba(var(--charcoal-rgb),0.1)",
+                    backgroundColor: "rgba(var(--cream-rgb),0.34)",
                   }}
                 >
                   <p
@@ -4984,7 +4991,7 @@ function ContactSection() {
                       fontFamily: "var(--font-montserrat), sans-serif",
                       fontSize: "0.76rem",
                       lineHeight: 1.55,
-                      color: "rgba(26,26,23,0.58)",
+                      color: "rgba(var(--charcoal-rgb),0.58)",
                     }}
                   >
                     {desc}
@@ -4999,9 +5006,12 @@ function ContactSection() {
             <div
               className="contact-form-panel"
               style={{
-                backgroundColor: "rgba(250,250,247,0.58)",
-                border: "1px solid rgba(26,26,23,0.12)",
-                padding: "2rem",
+                background:
+                  "linear-gradient(145deg, rgba(var(--charcoal-rgb),0.98) 0%, rgba(var(--olive-rgb),0.96) 100%)",
+                border: "1px solid rgba(var(--gold-rgb),0.26)",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.08), 0 34px 90px -56px rgba(var(--charcoal-rgb),0.72)",
+                padding: "2.15rem",
               }}
             >
               {submitted ? (
@@ -5028,7 +5038,7 @@ function ContactSection() {
                   fontFamily: "var(--font-cormorant), serif",
                       fontSize: "2.15rem",
                   fontStyle: "italic",
-                      color: "var(--charcoal)",
+                      color: "var(--cream)",
                       lineHeight: 1,
                 }}
               >
@@ -5039,7 +5049,7 @@ function ContactSection() {
                   fontFamily: "var(--font-montserrat), sans-serif",
                       fontSize: "0.82rem",
                   fontWeight: 300,
-                      color: "rgba(26,26,23,0.62)",
+                      color: "rgba(var(--cream-rgb),0.62)",
                       lineHeight: 1.8,
                       maxWidth: 390,
                 }}
@@ -5116,7 +5126,7 @@ function ContactSection() {
 
               <motion.button
                 type="submit"
-                    whileHover={{ backgroundColor: "var(--charcoal)", color: "var(--cream)" }}
+                    whileHover={{ backgroundColor: "var(--cream)", color: "var(--charcoal)" }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 160, damping: 18 }}
                 style={{
@@ -5129,9 +5139,11 @@ function ContactSection() {
                   letterSpacing: "0.25em",
                   textTransform: "uppercase",
                   fontWeight: 500,
-                  border: "none",
+                  border: "1px solid rgba(var(--gold-rgb),0.72)",
                       cursor: "pointer",
                       marginTop: "0.25rem",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.2), 0 16px 34px -28px rgba(var(--dark-rgb),0.76)",
                 }}
               >
                 Envoyer la demande
@@ -5212,7 +5224,7 @@ function Footer() {
       style={{
         backgroundColor: "var(--dark)",
         padding: "2.5rem 2rem",
-        borderTop: "1px solid rgba(196,166,97,0.1)",
+        borderTop: "1px solid rgba(var(--gold-rgb),0.1)",
       }}
     >
       <div
@@ -5233,7 +5245,7 @@ function Footer() {
               fontSize: "1.05rem",
               fontWeight: 400,
               letterSpacing: "0.15em",
-              color: "rgba(250,250,247,0.65)",
+              color: "rgba(var(--cream-rgb),0.65)",
             }}
           >
             DC Restauration
