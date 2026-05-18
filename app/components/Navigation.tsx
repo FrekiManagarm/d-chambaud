@@ -5,10 +5,10 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { href: "#a-propos", label: "À Propos" },
+  { href: "#a-propos", label: "Maison" },
   { href: "#services", label: "Services" },
+  { href: "#galerie", label: "Galerie" },
   { href: "#formules", label: "Formules" },
-  { href: "#pavillon", label: "Pavillon" },
   { href: "#temoignages", label: "Témoignages" },
 ];
 
@@ -35,17 +35,18 @@ export default function Navigation() {
         right: 0,
         zIndex: 100,
         transition: "background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease",
-        backgroundColor: scrolled ? "rgba(250,250,247,0.96)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(196,166,97,0.18)" : "1px solid transparent",
+        backgroundColor: scrolled ? "rgba(247,243,234,0.94)" : "rgba(17,16,13,0.18)",
+        backdropFilter: scrolled ? "blur(18px)" : "blur(8px)",
+        borderBottom: scrolled ? "1px solid rgba(184,145,82,0.18)" : "1px solid rgba(247,243,234,0.08)",
+        boxShadow: scrolled ? "0 18px 40px -34px rgba(24,23,19,0.42)" : "none",
       }}
     >
       <div
         style={{
           maxWidth: "1440px",
           margin: "0 auto",
-          padding: "0 2.5rem",
-          height: scrolled ? "64px" : "84px",
+          padding: "0 clamp(1rem, 3vw, 2.5rem)",
+          height: scrolled ? "66px" : "78px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -59,7 +60,7 @@ export default function Navigation() {
             src="/ICO - DC - N.png"
             alt="David Chambaud"
             style={{
-              height: scrolled ? "52px" : "42px",
+              height: scrolled ? "46px" : "42px",
               width: "auto",
               objectFit: "contain",
               display: "block",
@@ -71,7 +72,7 @@ export default function Navigation() {
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex" style={{ alignItems: "center", gap: "2.25rem" }}>
+        <nav className="hidden lg:flex" style={{ alignItems: "center", gap: "2.25rem" }}>
           {navLinks.map((link, i) => (
             <motion.a
               key={link.href}
@@ -108,20 +109,25 @@ export default function Navigation() {
               letterSpacing: "0.2em",
               textTransform: "uppercase",
               fontWeight: 500,
-              padding: "0.6rem 1.4rem",
+              padding: "0.72rem 1.25rem",
               border: "1px solid var(--gold)",
-              color: "var(--gold)",
+              color: scrolled ? "var(--charcoal)" : "var(--gold-light)",
               textDecoration: "none",
-              transition: "background-color 0.3s ease, color 0.3s ease",
+              transition: "background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease",
               display: "inline-block",
+              backgroundColor: scrolled ? "rgba(184,145,82,0.12)" : "rgba(17,16,13,0.32)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "var(--gold)";
               e.currentTarget.style.color = "var(--dark)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "transparent";
-              e.currentTarget.style.color = "var(--gold)";
+              e.currentTarget.style.backgroundColor = scrolled
+                ? "rgba(184,145,82,0.12)"
+                : "rgba(17,16,13,0.32)";
+              e.currentTarget.style.color = scrolled
+                ? "var(--charcoal)"
+                : "var(--gold-light)";
             }}
           >
             Devis
@@ -130,7 +136,7 @@ export default function Navigation() {
 
         {/* Mobile toggle */}
         <motion.button
-          className="md:hidden"
+          className="lg:hidden"
           whileTap={{ scale: 0.92 }}
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Menu"
@@ -156,7 +162,13 @@ export default function Navigation() {
             transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
             style={{ overflow: "hidden", backgroundColor: "var(--cream)" }}
           >
-            <div style={{ padding: "1.5rem 2.5rem 2rem", borderTop: "1px solid rgba(196,166,97,0.2)" }}>
+            <div
+              className="mobile-menu-panel"
+              style={{
+                padding: "1.5rem 2.5rem 2rem",
+                borderTop: "1px solid rgba(196,166,97,0.2)",
+              }}
+            >
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
@@ -205,6 +217,13 @@ export default function Navigation() {
           </motion.div>
         )}
       </AnimatePresence>
+      <style>{`
+        @media (max-width: 640px) {
+          .mobile-menu-panel {
+            padding: 1.25rem 1rem 1.5rem !important;
+          }
+        }
+      `}</style>
     </motion.header>
   );
 }

@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-gold: #C4A661;
-  --color-gold-light: #DFC48A;
-  --color-charcoal: #1A1A17;
-  --color-cream: #FAFAF7;
-  --color-warm-bg: #F2EDE3;
-  --color-site-dark: #0B0B09;
-  --color-warm-gray: #8A8A7A;
+  --color-gold: #B89152;
+  --color-gold-light: #D7B676;
+  --color-charcoal: #181713;
+  --color-cream: #F7F3EA;
+  --color-warm-bg: #E9E0D0;
+  --color-site-dark: #11100D;
+  --color-warm-gray: #746F63;
 }
 
 @theme inline {
@@ -16,13 +16,15 @@
 }
 
 :root {
-  --gold: #C4A661;
-  --gold-light: #DFC48A;
-  --charcoal: #1A1A17;
-  --cream: #FAFAF7;
-  --warm: #F2EDE3;
-  --dark: #0B0B09;
-  --warm-gray: #8A8A7A;
+  --gold: #B89152;
+  --gold-light: #D7B676;
+  --charcoal: #181713;
+  --cream: #F7F3EA;
+  --warm: #E9E0D0;
+  --dark: #11100D;
+  --warm-gray: #746F63;
+  --porcelain: #FBFAF6;
+  --ink-soft: #242119;
 }
 
 *,
@@ -140,11 +142,6 @@ body {
 
 .nav-link:hover::after {
   width: 100%;
-}
-
-/* Custom cursor — hide system cursor on fine-pointer devices */
-@media (pointer: fine) {
-  * { cursor: none !important; }
 }
 
 /* Heading reveal clip utility */

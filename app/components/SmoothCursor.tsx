@@ -14,7 +14,9 @@ export default function SmoothCursor() {
   const ringY = useSpring(dotY, { stiffness: 100, damping: 22, mass: 0.4 });
 
   useEffect(() => {
-    isFine.current = window.matchMedia("(pointer: fine)").matches;
+    isFine.current = window.matchMedia(
+      "(pointer: fine) and (min-width: 769px)",
+    ).matches;
     if (!isFine.current) return;
 
     const onMove = (e: MouseEvent) => {

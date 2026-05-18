@@ -12,6 +12,7 @@ import {
   useMotionValue,
   useSpring,
 } from "framer-motion";
+import type { Variants } from "framer-motion";
 import {
   Phone,
   Globe,
@@ -23,7 +24,6 @@ import {
   TreePine,
   ArrowLeft,
   ArrowRight,
-  MapPin,
   Mail,
 } from "lucide-react";
 
@@ -78,26 +78,7 @@ const lineGrow = {
   visible: { scaleX: 1, transition: { duration: 1, ease } },
 };
 
-const slideRight = {
-  hidden: { opacity: 0, x: -60 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    x: 0,
-    transition: { duration: 0.75, delay: i * 0.12, ease },
-  }),
-};
-
-const wipeLeft = {
-  hidden: { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-  visible: (i = 0) => ({
-    clipPath: "inset(0 0% 0 0)",
-    opacity: 1,
-    transition: { duration: 1.0, delay: i * 0.12, ease },
-  }),
-};
-
 /* ─── RevealOnScroll ─── */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function RevealOnScroll({
   children,
   variant = fadeUp,
@@ -106,7 +87,7 @@ function RevealOnScroll({
   style = {},
 }: {
   children: React.ReactNode;
-  variant?: Record<string, any>;
+  variant?: Variants;
   custom?: number;
   className?: string;
   style?: React.CSSProperties;
@@ -272,13 +253,10 @@ function CountUpStat({
   const isInView = useInView(ref, { once: true, margin: "-80px 0px" });
   const reduce = useReducedMotion();
   const [count, setCount] = useState(0);
+  const displayCount = reduce ? value : count;
 
   useEffect(() => {
-    if (!isInView) return;
-    if (reduce) {
-      setCount(value);
-      return;
-    }
+    if (!isInView || reduce) return;
     const duration = 2400;
     const startTime = performance.now();
     let raf: number;
@@ -316,7 +294,7 @@ function CountUpStat({
           fontVariantNumeric: "tabular-nums",
         }}
       >
-        {count}
+        {displayCount}
         {suffix}
       </p>
       <p
@@ -371,95 +349,103 @@ const Eyebrow = ({
   </p>
 );
 
-/* ─── FloatingInput ─── */
-function FloatingInput({
+/* ─── ContactField ─── */
+function ContactField({
   label,
+  name,
   type = "text",
-  multiline = false,
+  helper,
+  error,
+  textarea = false,
+  required = false,
 }: {
   label: string;
+  name: string;
   type?: string;
-  multiline?: boolean;
+  helper?: string;
+  error?: string;
+  textarea?: boolean;
+  required?: boolean;
 }) {
   const [focused, setFocused] = useState(false);
-  const [hasValue, setHasValue] = useState(false);
-  const lifted = focused || hasValue;
-  const inputId = label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+  const inputId = `contact-${name}`;
   const sharedInputStyle: React.CSSProperties = {
     width: "100%",
-    background: "transparent",
-    border: "none",
-    borderBottom: `1px solid ${focused ? "rgba(196,166,97,0.6)" : "rgba(250,250,247,0.15)"}`,
-    color: "var(--cream)",
+    background: "rgba(250,250,247,0.72)",
+    border: `1px solid ${
+      error
+        ? "rgba(150,64,52,0.55)"
+        : focused
+          ? "rgba(196,166,97,0.65)"
+          : "rgba(26,26,23,0.13)"
+    }`,
+    color: "var(--charcoal)",
     fontFamily: "var(--font-montserrat), sans-serif",
-    fontSize: "0.88rem",
-    fontWeight: 300,
-    padding: "1.2rem 0 0.5rem",
+    fontSize: "0.86rem",
+    fontWeight: 400,
+    padding: "0.78rem 0.9rem",
     outline: "none",
     resize: "none",
-    transition: "border-color 0.35s ease",
+    transition: "border-color 0.25s ease, background-color 0.25s ease",
   };
 
   return (
-    <div style={{ position: "relative", marginBottom: "2rem" }}>
+    <div className="contact-field" style={{ display: "grid", gap: "0.45rem" }}>
       <label
         htmlFor={inputId}
         style={{
-          position: "absolute",
-          left: 0,
-          top: lifted ? "0.1rem" : "1.2rem",
-          fontSize: lifted ? "0.5rem" : "0.78rem",
-          letterSpacing: lifted ? "0.32em" : "0.05em",
-          textTransform: lifted ? "uppercase" : "none",
-          color: focused ? "var(--gold)" : "rgba(250,250,247,0.35)",
           fontFamily: "var(--font-montserrat), sans-serif",
-          fontWeight: lifted ? 500 : 300,
-          transition: "all 0.3s ease",
-          pointerEvents: "none",
+          fontSize: "0.58rem",
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: error ? "rgba(150,64,52,0.85)" : "rgba(26,26,23,0.58)",
+          fontWeight: 500,
         }}
       >
         {label}
+        {required && (
+          <span aria-hidden style={{ color: "var(--gold)" }}>
+            {" "}
+            *
+          </span>
+        )}
       </label>
 
-      {multiline ? (
+      {textarea ? (
         <textarea
           id={inputId}
-          rows={4}
+          name={name}
+          rows={5}
+          aria-invalid={!!error}
+          aria-describedby={`${inputId}-hint`}
           onFocus={() => setFocused(true)}
-          onBlur={(e) => {
-            setFocused(false);
-            setHasValue(!!e.target.value);
-          }}
-          onChange={(e) => setHasValue(!!e.target.value)}
-          style={{ ...sharedInputStyle, paddingTop: "1.4rem" }}
+          onBlur={() => setFocused(false)}
+          style={{ ...sharedInputStyle, lineHeight: 1.65 }}
         />
       ) : (
         <input
           id={inputId}
+          name={name}
           type={type}
+          aria-invalid={!!error}
+          aria-describedby={`${inputId}-hint`}
           onFocus={() => setFocused(true)}
-          onBlur={(e) => {
-            setFocused(false);
-            setHasValue(!!e.target.value);
-          }}
-          onChange={(e) => setHasValue(!!e.target.value)}
+          onBlur={() => setFocused(false)}
           style={sharedInputStyle}
         />
       )}
 
-      <motion.div
-        animate={{ scaleX: focused ? 1 : 0 }}
-        transition={{ duration: 0.35, ease }}
+      <p
+        id={`${inputId}-hint`}
         style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          backgroundColor: "var(--gold)",
-          transformOrigin: "left",
+          fontFamily: "var(--font-montserrat), sans-serif",
+          fontSize: "0.68rem",
+          lineHeight: 1.45,
+          color: error ? "rgba(150,64,52,0.9)" : "rgba(26,26,23,0.42)",
         }}
-      />
+      >
+        {error || helper || ""}
+      </p>
     </div>
   );
 }
@@ -837,35 +823,35 @@ function HeroSection() {
    MARQUEE STRIP — edge-faded
 ════════════════════════════════════════════════════════════ */
 const MARQUEE_ITEMS = [
-  "Traiteur",
+  "Mariages qui ont du goût",
   "·",
-  "Chef à Domicile",
+  "Cocktails nets",
   "·",
-  "Mariages",
+  "Dîners privés",
   "·",
-  "Réceptions & Événements",
+  "Service précis",
+  "·",
+  "Tables gourmandes",
+  "·",
+  "Produits de saison",
   "·",
   "Pavillon des Millésimes",
-  "·",
-  "Buffets Raffinés",
-  "·",
-  "Dîners Privés",
   "·",
   "Nouvelle‑Aquitaine",
   "·",
-  "Traiteur",
+  "Mariages qui ont du goût",
   "·",
-  "Chef à Domicile",
+  "Cocktails nets",
   "·",
-  "Mariages",
+  "Dîners privés",
   "·",
-  "Réceptions & Événements",
+  "Service précis",
+  "·",
+  "Tables gourmandes",
+  "·",
+  "Produits de saison",
   "·",
   "Pavillon des Millésimes",
-  "·",
-  "Buffets Raffinés",
-  "·",
-  "Dîners Privés",
   "·",
   "Nouvelle‑Aquitaine",
   "·",
@@ -1076,42 +1062,166 @@ function ValueBand({
 function ValuesSection() {
   return (
     <section
-      aria-label="Notre philosophie"
-      style={{ backgroundColor: "var(--cream)", paddingBottom: 0 }}
+      aria-label="Architecture d'un événement"
+      style={{ backgroundColor: "var(--cream)", paddingBottom: 0, overflow: "hidden" }}
     >
       <div
-        style={{ maxWidth: "1400px", margin: "0 auto", padding: "5rem 2rem 0" }}
+        style={{
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: "clamp(5rem, 8vw, 8rem) 2rem 0",
+        }}
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "flex-end",
-            gap: "2rem",
-            marginBottom: "3.5rem",
-            flexWrap: "wrap",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.58fr) minmax(320px, 0.42fr)",
+            alignItems: "stretch",
+            gap: "clamp(2rem, 5vw, 5rem)",
+            marginBottom: "clamp(4rem, 7vw, 6rem)",
           }}
+          className="values-heading"
         >
-          <RevealOnScroll variant={fadeUp}>
-            <Eyebrow>Notre Philosophie</Eyebrow>
+          <div>
+            <RevealOnScroll variant={fadeUp}>
+              <Eyebrow>Scénographie culinaire</Eyebrow>
+            </RevealOnScroll>
+            <HeadingReveal delay={0.06}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(3rem, 6.6vw, 6.4rem)",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  lineHeight: 0.96,
+                  color: "var(--charcoal)",
+                }}
+              >
+                Un repas ne se pose pas
+                <br />
+                sur une table.
+              </h2>
+            </HeadingReveal>
+            <RevealOnScroll variant={fadeUp} custom={2}>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.94rem",
+                  lineHeight: 1.9,
+                  color: "rgba(24,23,19,0.64)",
+                  maxWidth: 560,
+                  marginTop: "1.6rem",
+                }}
+              >
+                Il se construit comme une progression: l&apos;arrivée, la
+                première bouchée, le plat que l&apos;on attend, le dessert qui
+                signe la soirée. C&apos;est cette montée que David dessine.
+              </p>
+            </RevealOnScroll>
+          </div>
+          <RevealOnScroll variant={fadeIn} custom={2}>
+            <div
+              className="values-collage"
+              style={{
+                position: "relative",
+                minHeight: 430,
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "0 12% 16% 0",
+                  overflow: "hidden",
+                  backgroundColor: "var(--charcoal)",
+                }}
+              >
+                <Image
+                  src="/20260212_DSC2967.jpg"
+                  alt="Bouchée gastronomique signée David Chambaud"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 520px"
+                  style={{ objectFit: "cover", objectPosition: "center 28%" }}
+                />
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  bottom: 0,
+                  width: "46%",
+                  aspectRatio: "4 / 5",
+                  overflow: "hidden",
+                  border: "1px solid rgba(24,23,19,0.12)",
+                  boxShadow: "0 26px 52px -42px rgba(24,23,19,0.62)",
+                }}
+              >
+                <Image
+                  src="/20260212_DSC3156.jpg"
+                  alt="Dressage d'assiette pour réception"
+                  fill
+                  sizes="(max-width: 768px) 46vw, 260px"
+                  style={{ objectFit: "cover", objectPosition: "center 20%" }}
+                />
+              </div>
+              <div
+                style={{
+                  position: "absolute",
+                  left: "8%",
+                  bottom: "6%",
+                  width: "12rem",
+                  padding: "1rem",
+                  backgroundColor: "rgba(247,243,234,0.78)",
+                  border: "1px solid rgba(24,23,19,0.1)",
+                  boxShadow:
+                    "inset 0 1px 0 rgba(255,255,255,0.7), 0 24px 52px -42px rgba(24,23,19,0.68)",
+                  backdropFilter: "blur(14px)",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "var(--gold)",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  Signature
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: "1.5rem",
+                    fontStyle: "italic",
+                    lineHeight: 1.05,
+                    color: "var(--charcoal)",
+                  }}
+                >
+                  Gourmand sans lourdeur, précis sans froideur.
+                </p>
+              </div>
+            </div>
           </RevealOnScroll>
+
         </div>
-        <div style={{ borderTop: "1px solid rgba(196,166,97,0.18)" }}>
+        <div style={{ borderTop: "1px solid rgba(184,145,82,0.18)" }}>
           <ValueBand
             num="01"
-            title="Authenticité"
-            desc="Des recettes ancrées dans les terroirs de Nouvelle-Aquitaine, sublimées par un savoir-faire contemporain qui respecte la mémoire des lieux et des saisons."
+            title="L'arrivée donne le ton"
+            desc="Un cocktail qui se lit vite, circule bien et installe l'énergie de la fête sans bloquer les invités autour d'un buffet."
             index={0}
           />
           <ValueBand
             num="02"
-            title="Convivialité"
-            desc="Chaque repas est une invitation à partager un moment unique, chaleureux et inoubliable autour de la table — une parenthèse hors du temps."
+            title="Le dîner tient la salle"
+            desc="Cuissons, envois, dressages et transitions sont pensés pour garder le repas vivant, même avec une grande tablée."
             index={1}
           />
           <ValueBand
             num="03"
-            title="Saisons & Terroir"
-            desc="Un respect profond des produits frais de saison, pour des assiettes qui révèlent le goût dans toute sa vérité et sa générosité."
+            title="La fin reste en bouche"
+            desc="Desserts, fromages, brunch ou retour de soirée: les derniers moments gardent la même attention que la première coupe."
             index={2}
           />
         </div>
@@ -1148,6 +1258,19 @@ function ValuesSection() {
           }}
         />
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .values-heading {
+            grid-template-columns: 1fr !important;
+            gap: 1.25rem !important;
+            margin-bottom: 2.5rem !important;
+          }
+          .values-collage {
+            min-height: 360px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
@@ -1159,11 +1282,12 @@ function StatsSection() {
   return (
     <section
       className="grain-overlay"
-      aria-label="Chiffres clés"
+      aria-label="Preuves et méthode"
       style={{
         backgroundColor: "var(--dark)",
         position: "relative",
         overflow: "hidden",
+        padding: "clamp(5rem, 8vw, 8rem) 0",
       }}
     >
       <div
@@ -1182,7 +1306,7 @@ function StatsSection() {
       />
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "1240px",
           margin: "0 auto",
           padding: "0 2rem",
           position: "relative",
@@ -1190,41 +1314,98 @@ function StatsSection() {
         }}
       >
         <div
+          className="stats-intro"
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            borderTop: "1px solid rgba(196,166,97,0.1)",
-            borderBottom: "1px solid rgba(196,166,97,0.1)",
+            gridTemplateColumns: "minmax(0, 0.55fr) minmax(280px, 0.45fr)",
+            gap: "4rem",
+            alignItems: "end",
+            marginBottom: "3rem",
+          }}
+        >
+          <div>
+            <RevealOnScroll variant={fadeUp}>
+              <Eyebrow light>Ce que vous achetez vraiment</Eyebrow>
+            </RevealOnScroll>
+            <HeadingReveal delay={0.06}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(2.8rem, 5.8vw, 5.6rem)",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  lineHeight: 0.98,
+                  color: "var(--cream)",
+                }}
+              >
+                Du calme
+                <br />
+                pendant l&apos;intense.
+              </h2>
+            </HeadingReveal>
+          </div>
+          <RevealOnScroll variant={fadeUp} custom={2}>
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.9rem",
+                lineHeight: 1.9,
+                color: "rgba(247,243,234,0.62)",
+                maxWidth: 430,
+              }}
+            >
+              Le jour d&apos;un mariage, tout bouge. La valeur d&apos;un
+              traiteur, c&apos;est de rendre la cuisine invisible dans
+              l&apos;effort et évidente dans le plaisir.
+            </p>
+          </RevealOnScroll>
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            borderTop: "1px solid rgba(184,145,82,0.16)",
+            borderBottom: "1px solid rgba(184,145,82,0.16)",
           }}
           className="stats-grid"
         >
           <CountUpStat
-            value={25}
-            suffix="+"
-            label="Années d'expérience"
-            detail="Depuis 1990"
+            value={18}
+            suffix=" ans"
+            label="Maison fondée"
+            detail="Depuis 2008"
             delay={0}
             border
           />
           <CountUpStat
-            value={500}
+            value={420}
             suffix="+"
-            label="Événements orchestrés"
-            detail="Mariages, réceptions, séminaires"
+            label="Réceptions servies"
+            detail="Mariages, domaines, séminaires"
             delay={0.12}
             border
           />
           <CountUpStat
-            value={99}
-            suffix="%"
-            label="Clients satisfaits"
-            detail="Recommandation & fidélité"
+            value={48}
+            suffix="h"
+            label="Premier retour"
+            detail="Pour cadrer votre demande"
             delay={0.24}
             border={false}
           />
         </div>
       </div>
       <style>{`
+        @media (max-width: 768px) {
+          .stats-intro,
+          .stats-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .stats-intro {
+            gap: 1.5rem !important;
+          }
+        }
         @media (max-width: 640px) {
           .stats-grid > * { border-right: none !important; border-bottom: 1px solid rgba(196,166,97,0.1); }
           .stats-grid > *:last-child { border-bottom: none !important; }
@@ -1371,9 +1552,9 @@ function AboutSection() {
                 marginBottom: "2rem",
               }}
             >
-              Chef traiteur à Bordeaux,
+              Le chef que l&apos;on choisit
               <br />
-              une passion à votre service
+              quand le repas compte vraiment.
             </h2>
           </HeadingReveal>
           <RevealOnScroll variant={lineGrow}>
@@ -1389,8 +1570,8 @@ function AboutSection() {
           </RevealOnScroll>
 
           {[
-            "David Chambaud est un chef traiteur établi en Nouvelle-Aquitaine, spécialisé dans la création d'expériences culinaires sur mesure pour des événements privés et professionnels.",
-            "Animé par une philosophie fondée sur l'authenticité, l'écoute et le respect des produits de saison, il compose des menus raffinés qui célèbrent la richesse du terroir aquitain.",
+            "David Chambaud accompagne les mariages, réceptions privées et événements professionnels avec une cuisine lisible, généreuse et tenue jusqu'au dernier service.",
+            "Son approche réunit le goût du produit, l'exigence du dressage et une organisation discrète: les invités voient la fluidité, jamais la mécanique.",
           ].map((para, i) => (
             <RevealOnScroll key={i} variant={fadeUp} custom={2 + i}>
               <p
@@ -1428,8 +1609,8 @@ function AboutSection() {
                   opacity: 0.9,
                 }}
               >
-                « Chaque repas est une déclaration d'amour à la gastronomie
-                française »
+                « Un événement réussi se reconnaît à ce que les invités
+                ressentent: le plaisir, le rythme, l&apos;évidence. »
               </blockquote>
               <p
                 style={{
@@ -1487,8 +1668,8 @@ const services = [
     num: "01",
     Icon: UtensilsCrossed,
     title: "Traiteur",
-    sub: "Événements",
-    desc: "Cocktails dinatoires, buffets raffinés et repas gastronomiques pour vos événements professionnels et privés de toutes tailles.",
+    sub: "Réceptions",
+    desc: "Cocktails dinatoires, buffets dessinés pour circuler, repas assis et formats hybrides pour donner du relief à vos invités.",
     img: "/AdobeStock_418339639.jpeg",
   },
   {
@@ -1496,7 +1677,7 @@ const services = [
     Icon: Heart,
     title: "Mariages",
     sub: "Célébrations",
-    desc: "Des mariages hors du commun — du cocktail de bienvenue au dîner de gala — orchestrés pour que ce jour reste gravé dans les mémoires.",
+    desc: "Du vin d'honneur au dîner puis au brunch, une prestation pensée pour tenir la journée sans perdre la gourmandise.",
     img: "/AdobeStock_522340892.jpeg",
   },
   {
@@ -1504,7 +1685,7 @@ const services = [
     Icon: Home,
     title: "Chef à Domicile",
     sub: "Service Privé",
-    desc: "Offrez-vous une expérience gastronomique dans l\'intimité de votre maison — un luxe discret pour des dîners confidentiels.",
+    desc: "Une expérience à la maison, en petit comité, avec le confort d'un service précis et l'intensité d'une vraie table.",
     img: "/AdobeStock_54050217.jpeg",
   },
   {
@@ -1512,7 +1693,7 @@ const services = [
     Icon: TreePine,
     title: "Réceptions",
     sub: "Tous Événements",
-    desc: "Séminaires, anniversaires, baptêmes, communions : David crée l\'ambiance parfaite et le menu idéal pour chaque occasion.",
+    desc: "Séminaires, baptêmes, anniversaires, lancements: une cuisine qui rassemble sans faire perdre le fil de l'événement.",
     img: "/AdobeStock_555480279.jpeg",
   },
 ];
@@ -1800,9 +1981,9 @@ function ServicesSection() {
                   color: "var(--charcoal)",
                 }}
               >
-                L&apos;Élégance
+                Le bon format
                 <br />
-                dans Chaque Détail
+                pour votre moment.
               </h2>
             </HeadingReveal>
           </div>
@@ -1817,8 +1998,8 @@ function ServicesSection() {
                 lineHeight: 1.8,
               }}
             >
-              Chaque prestation est conçue sur mesure, dans le respect de vos
-              envies et de la saison.
+              Pas de formule plaquée: le service, les quantités et le rythme
+              s&apos;adaptent au lieu, à la météo et au style de vos invités.
             </p>
           </RevealOnScroll>
         </div>
@@ -1848,8 +2029,107 @@ function ServicesSection() {
         ))}
       </motion.div>
 
+      <div
+        className="service-rhythm"
+        style={{
+          maxWidth: 1300,
+          margin: "0 auto",
+          padding: "clamp(4rem, 6vw, 6rem) 2rem clamp(4.5rem, 7vw, 7rem)",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.42fr) minmax(0, 0.58fr)",
+          gap: "4rem",
+          alignItems: "start",
+        }}
+      >
+        <RevealOnScroll variant={fadeUp}>
+          <div>
+            <Eyebrow>Le déroulé</Eyebrow>
+            <h3
+              style={{
+                fontFamily: "var(--font-cormorant), serif",
+                fontSize: "clamp(2.3rem, 4.6vw, 4.2rem)",
+                fontStyle: "italic",
+                fontWeight: 300,
+                lineHeight: 1,
+                color: "var(--charcoal)",
+                marginTop: "1rem",
+              }}
+            >
+              Une équipe qui sait quand apparaître.
+            </h3>
+          </div>
+        </RevealOnScroll>
+        <div style={{ borderTop: "1px solid rgba(24,23,19,0.13)" }}>
+          {[
+            ["Repérage", "Lieu, accès, cuisine, météo, contraintes du domaine."],
+            ["Calage", "Quantités, timing, allergies, mobilier et équipe de salle."],
+            ["Service", "Cocktail, repas, transitions, dernières assiettes."],
+            ["Après", "Brunch, retour de matériel, fin propre et sans tension."],
+          ].map(([title, desc], i) => (
+            <RevealOnScroll key={title} variant={fadeUp} custom={i}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "5rem minmax(0, 0.36fr) minmax(0, 1fr)",
+                  gap: "1.4rem",
+                  padding: "1.35rem 0",
+                  borderBottom: "1px solid rgba(24,23,19,0.1)",
+                  alignItems: "baseline",
+                }}
+                className="service-rhythm-row"
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: "1.45rem",
+                    fontStyle: "italic",
+                    color: "var(--gold)",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p
+                  style={{
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.62rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "var(--charcoal)",
+                  }}
+                >
+                  {title}
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.86rem",
+                    lineHeight: 1.75,
+                    color: "rgba(24,23,19,0.58)",
+                  }}
+                >
+                  {desc}
+                </p>
+              </div>
+            </RevealOnScroll>
+          ))}
+        </div>
+      </div>
+
       <style>{`
         @media (max-width: 768px) {
+          .service-rhythm {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .service-rhythm-row {
+            grid-template-columns: 3rem 1fr !important;
+            gap: 0.75rem 1rem !important;
+          }
+          .service-rhythm-row p:last-child {
+            grid-column: 2 !important;
+          }
           .services-accordion {
             flex-direction: column !important;
             height: auto !important;
@@ -1899,6 +2179,8 @@ const formulasByTab = {
       price: "à partir de 75",
       unit: "€ / pers.",
       sub: "Ouverture des festivités",
+      tone: "Pour une réception détendue, généreuse, facile à faire vivre.",
+      detail: "Buffet froid et chaud pensé pour circuler, discuter, revenir.",
       features: [
         "Devis sur mesure",
         "Tarifs hors boissons, matériel, transport et mobilier",
@@ -1911,6 +2193,8 @@ const formulasByTab = {
       price: "à partir de 99",
       unit: "€ / pers.",
       sub: "Terroir & convivialité",
+      tone: "Le format le plus complet pour marquer le repas sans rigidité.",
+      detail: "Pièces cocktails, service cadencé et table gourmande.",
       features: [
         "Devis sur mesure",
         "Tarifs hors boissons, matériel, transport et mobilier",
@@ -1923,6 +2207,8 @@ const formulasByTab = {
       price: "à partir de 85",
       unit: "€ / pers.",
       sub: "La gourmandise locale",
+      tone: "Une formule vivante, chaleureuse, très adaptée aux grands groupes.",
+      detail: "Produits de saison, présentation soignée, service fluide.",
       features: [
         "Devis sur mesure",
         "Tarifs hors boissons, matériel, transport et mobilier",
@@ -1937,6 +2223,8 @@ const formulasByTab = {
       price: "à partir de 55",
       unit: "€ / pers.",
       sub: "Dîner en 3 services",
+      tone: "Une première expérience à domicile, claire et élégante.",
+      detail: "Entrée, plat, dessert, produits locaux et inspiration du moment.",
       features: [
         "Entrée, plat, dessert",
         "Devis sur mesure",
@@ -1951,6 +2239,8 @@ const formulasByTab = {
       price: "125",
       unit: "€ / pers.",
       sub: "Expérience complète",
+      tone: "Un dîner plus construit, pensé comme une vraie séquence.",
+      detail: "Rythme, dressage, produits choisis et accord mets & vins possible.",
       features: [
         "Devis sur mesure",
         "Produits locaux et saisonniers",
@@ -1965,6 +2255,8 @@ const formulasByTab = {
       price: "Sur devis",
       unit: "",
       sub: "Entièrement personnalisé",
+      tone: "Pour les envies précises, les contraintes, les moments rares.",
+      detail: "Nombre de services libre, menu créé après échange.",
       features: [
         "Consultation préalable",
         "Menu créé sur demande",
@@ -1981,6 +2273,8 @@ const formulasByTab = {
       price: "59",
       unit: "€ / pers.",
       sub: "Repas du soir",
+      tone: "Une table conviviale dans le cadre du Pavillon des Millésimes.",
+      detail: "Cuisine bistronomique en quatre temps, réservation obligatoire.",
       features: [
         "Cuisine bistronomique gourmande",
         "En 4 services (3 pièces apéritifs + 1 entrée + 1 plat + 1 dessert)",
@@ -2001,325 +2295,518 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "pavillon", label: "Pavillon des Millésimes" },
 ];
 
-function FormulaCard({ f }: { f: (typeof formulasByTab)[TabKey][number] }) {
+function FormulaRow({
+  f,
+  index,
+}: {
+  f: (typeof formulasByTab)[TabKey][number];
+  index: number;
+}) {
   return (
-    <motion.div
+    <motion.article
+      className="formula-row"
+      layout
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
       whileHover={{
-        y: f.highlight ? -8 : -5,
-        boxShadow: f.highlight
-          ? "0 32px 80px rgba(0,0,0,0.5)"
-          : "0 20px 50px rgba(0,0,0,0.3)",
+        y: -2,
+        backgroundColor: "rgba(196,166,97,0.055)",
       }}
-      transition={{ duration: 0.4, ease }}
+      transition={{
+        type: "spring",
+        stiffness: 120,
+        damping: 22,
+        delay: index * 0.04,
+      }}
       style={{
         position: "relative",
-        padding: "2.75rem",
-        marginTop: f.offset ? "3rem" : 0,
-        backgroundColor: f.highlight
-          ? "var(--cream)"
-          : "rgba(255,255,255,0.03)",
-        border: f.highlight ? "none" : "1px solid rgba(196,166,97,0.12)",
-        backdropFilter: f.highlight ? "none" : "blur(4px)",
+        display: "grid",
+        gridTemplateColumns: "minmax(0, 1fr) auto",
+        gap: "2rem",
+        padding: "1.8rem 0",
+        borderTop: "1px solid rgba(26,26,23,0.12)",
       }}
     >
-      {f.highlight && (
+      <div>
         <div
           style={{
-            position: "absolute",
-            top: 0,
-            left: "2.75rem",
-            right: "2.75rem",
-            height: 2,
-            backgroundColor: "var(--gold)",
-          }}
-        />
-      )}
-      {f.highlight && (
-        <div
-          style={{
-            position: "absolute",
-            top: "-0.85rem",
-            right: "2rem",
-            backgroundColor: "var(--gold)",
-            color: "var(--dark)",
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.48rem",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            fontWeight: 600,
-            padding: "0.3rem 0.8rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            marginBottom: "0.7rem",
           }}
         >
-          Le Plus Populaire
+          <span
+            style={{
+              width: f.highlight ? 28 : 16,
+              height: 1,
+              backgroundColor: "var(--gold)",
+              opacity: f.highlight ? 1 : 0.45,
+            }}
+          />
+          <p
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.58rem",
+              letterSpacing: "0.24em",
+              textTransform: "uppercase",
+              color: f.highlight
+                ? "var(--gold)"
+                : "rgba(26,26,23,0.44)",
+            }}
+          >
+            {f.highlight ? "Recommandé" : f.sub}
+          </p>
         </div>
-      )}
 
-      <p
-        style={{
-          fontFamily: "var(--font-montserrat), sans-serif",
-          fontSize: "0.58rem",
-          letterSpacing: "0.32em",
-          textTransform: "uppercase",
-          color: f.highlight ? "var(--warm-gray)" : "rgba(250,250,247,0.45)",
-          marginBottom: "0.5rem",
-        }}
-      >
-        {f.sub}
-      </p>
-      <h3
-        style={{
-          fontFamily: "var(--font-cormorant), serif",
-          fontSize: "1.95rem",
-          fontWeight: 400,
-          marginBottom: "1.5rem",
-          color: f.highlight ? "var(--charcoal)" : "var(--cream)",
-        }}
-      >
-        {f.name}
-      </h3>
+        <h3
+          style={{
+            fontFamily: "var(--font-cormorant), serif",
+            fontSize: "clamp(1.9rem, 3vw, 2.75rem)",
+            fontStyle: "italic",
+            fontWeight: 300,
+            lineHeight: 1,
+            marginBottom: "0.75rem",
+            color: "var(--charcoal)",
+            letterSpacing: 0,
+          }}
+        >
+          {f.name}
+        </h3>
+
+        <p
+          style={{
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.86rem",
+            fontWeight: 300,
+            color: "rgba(26,26,23,0.62)",
+            lineHeight: 1.75,
+            maxWidth: 560,
+          }}
+        >
+          {f.tone}
+        </p>
+
+        <p
+          style={{
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.76rem",
+            fontWeight: 400,
+            color: "rgba(26,26,23,0.48)",
+            lineHeight: 1.65,
+            maxWidth: 560,
+            marginTop: "0.55rem",
+          }}
+        >
+          {f.detail}
+        </p>
+
+        <div
+          className="formula-tags"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.45rem",
+            marginTop: "1rem",
+          }}
+        >
+          {f.features.slice(0, 3).map((feature) => (
+            <span
+              key={feature}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                border: "1px solid rgba(26,26,23,0.1)",
+                padding: "0.42rem 0.6rem",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.56rem",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "rgba(26,26,23,0.52)",
+                backgroundColor: f.highlight
+                  ? "rgba(184,145,82,0.07)"
+                  : "rgba(250,250,247,0.36)",
+              }}
+            >
+              {feature}
+            </span>
+          ))}
+        </div>
+      </div>
 
       <div
+        className="formula-row-price"
         style={{
-          display: "flex",
-          alignItems: "baseline",
-          gap: "0.3rem",
-          marginBottom: "2rem",
+          display: "grid",
+          justifyItems: "end",
+          alignContent: "center",
+          minWidth: 172,
         }}
       >
-        {f.unit ? (
-          <>
-            <span
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "3rem",
-                fontWeight: 300,
-                lineHeight: 1,
-                color: f.highlight ? "var(--charcoal)" : "var(--cream)",
-              }}
-            >
-              {f.price}
-            </span>
-            <span
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.68rem",
-                fontWeight: 300,
-                color: f.highlight
-                  ? "var(--warm-gray)"
-                  : "rgba(250,250,247,0.4)",
-              }}
-            >
-              {f.unit}
-            </span>
-          </>
-        ) : (
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.35rem" }}>
           <span
             style={{
               fontFamily: "var(--font-cormorant), serif",
-              fontSize: "1.65rem",
-              fontStyle: "italic",
-              color: "var(--gold)",
+              fontSize: f.unit ? "clamp(2.1rem, 3.5vw, 3.2rem)" : "1.8rem",
+              fontStyle: f.unit ? "normal" : "italic",
+              fontWeight: 300,
+              lineHeight: 0.9,
+              color: f.highlight ? "var(--gold)" : "var(--charcoal)",
+              whiteSpace: "nowrap",
             }}
           >
             {f.price}
           </span>
-        )}
-      </div>
-
-      <ul
-        style={{
-          listStyle: "none",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.6rem",
-          marginBottom: "2rem",
-        }}
-      >
-        {f.features.map((feat) => (
-          <li
-            key={feat}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.7rem",
-              fontFamily: "var(--font-montserrat), sans-serif",
-              fontSize: "0.78rem",
-              fontWeight: 400,
-              color: f.highlight ? "var(--charcoal)" : "rgba(250,250,247,0.75)",
-            }}
-          >
+          {f.unit && (
             <span
               style={{
-                width: 18,
-                height: 1,
-                backgroundColor: "var(--gold)",
-                flexShrink: 0,
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.64rem",
+                fontWeight: 300,
+                color: "rgba(26,26,23,0.46)",
+                whiteSpace: "nowrap",
               }}
-            />
-            {feat}
-          </li>
-        ))}
-      </ul>
-
-      <motion.a
-        href="#contact"
-        whileHover={
-          f.highlight
-            ? { backgroundColor: "var(--charcoal)", color: "var(--cream)" }
-            : { borderColor: "var(--gold)", color: "var(--gold)" }
-        }
-        transition={{ duration: 0.25 }}
-        style={{
-          display: "block",
-          textAlign: "center",
-          padding: "0.85rem",
-          fontFamily: "var(--font-montserrat), sans-serif",
-          fontSize: "0.62rem",
-          letterSpacing: "0.2em",
-          textTransform: "uppercase",
-          fontWeight: 500,
-          textDecoration: "none",
-          backgroundColor: f.highlight ? "var(--charcoal)" : "transparent",
-          color: f.highlight ? "var(--cream)" : "rgba(250,250,247,0.6)",
-          border: f.highlight ? "none" : "1px solid rgba(250,250,247,0.18)",
-        }}
-      >
-        Demander un devis
-      </motion.a>
-    </motion.div>
+            >
+              {f.unit}
+            </span>
+          )}
+        </div>
+        <p
+          style={{
+            marginTop: "0.55rem",
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.58rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: "rgba(26,26,23,0.38)",
+          }}
+        >
+          {f.sub}
+        </p>
+      </div>
+    </motion.article>
   );
 }
 
 function FormulasSection() {
   const [activeTab, setActiveTab] = useState<TabKey>("mariage");
   const currentFormulas = formulasByTab[activeTab];
+  const activeLabel = TABS.find((tab) => tab.key === activeTab)?.label ?? "";
 
   return (
     <section
       id="formules"
-      className="grain-overlay section-pad"
+      className="section-pad formulas-section"
       aria-label="Nos formules et tarifs"
-      style={{ backgroundColor: "var(--dark)", padding: "7rem 0" }}
+      style={{
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: "var(--cream)",
+        padding: "7.5rem 0",
+      }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 2rem" }}>
-        {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
-          <RevealOnScroll variant={fadeUp}>
-            <Eyebrow light>Tarifs 2026–27</Eyebrow>
-          </RevealOnScroll>
-          <HeadingReveal delay={0.08}>
-            <h2
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.4rem, 5vw, 4.2rem)",
-                fontStyle: "italic",
-                fontWeight: 300,
-                lineHeight: 1.1,
-                color: "var(--cream)",
-              }}
-            >
-              Nos Formules
-            </h2>
-          </HeadingReveal>
-          <RevealOnScroll variant={fadeUp} custom={2}>
-            <p
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.8rem",
-                fontWeight: 300,
-                color: "rgba(250,250,247,0.45)",
-                marginTop: "1rem",
-                lineHeight: 1.85,
-                maxWidth: 480,
-                margin: "1rem auto 0",
-              }}
-            >
-              Toutes les formules sont entièrement personnalisables selon vos
-              envies et le nombre de convives.
-            </p>
-          </RevealOnScroll>
-        </div>
-
-        {/* Tabs */}
+      <div
+        className="formulas-shell"
+        style={{
+          maxWidth: 1240,
+          margin: "0 auto",
+          padding: "0 2rem",
+          position: "relative",
+        }}
+      >
         <div
-          className="formula-tabs"
+          className="formulas-layout"
           style={{
-            display: "flex",
-            justifyContent: "center",
-            borderBottom: "1px solid rgba(196,166,97,0.15)",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.82fr) minmax(300px, 0.42fr)",
+            gap: "4rem",
+            alignItems: "end",
             marginBottom: "4rem",
           }}
         >
-          {TABS.map((tab) => (
-            <button
-              key={tab.key}
-              onClick={() => setActiveTab(tab.key)}
-              style={{
-                position: "relative",
-                padding: "1rem 2rem",
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.82rem",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                fontWeight: 500,
-                color:
-                  activeTab === tab.key
-                    ? "var(--gold)"
-                    : "rgba(250,250,247,0.45)",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                transition: "color 0.3s ease",
-              }}
-            >
-              {tab.label}
-              {activeTab === tab.key && (
-                <motion.div
-                  layoutId="tab-indicator"
+          <div>
+            <RevealOnScroll variant={fadeUp}>
+              <Eyebrow>Tarifs 2026-27</Eyebrow>
+            </RevealOnScroll>
+            <HeadingReveal delay={0.08}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(3rem, 6vw, 5.6rem)",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  lineHeight: 0.95,
+                  color: "var(--charcoal)",
+                  letterSpacing: 0,
+                  marginTop: "1rem",
+                }}
+              >
+                Des bases claires
+                <br />
+                pour décider sereinement.
+              </h2>
+            </HeadingReveal>
+
+            <RevealOnScroll variant={fadeUp} custom={2}>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.9rem",
+                  fontWeight: 300,
+                  color: "rgba(26,26,23,0.62)",
+                  marginTop: "1.4rem",
+                  lineHeight: 1.85,
+                  maxWidth: 520,
+                }}
+              >
+                Les prix donnent un point de départ. Le devis affine ensuite le
+                menu, l&apos;équipe, le matériel et le rythme réel de votre journée.
+              </p>
+            </RevealOnScroll>
+          </div>
+
+          <div
+            className="formula-tabs"
+            role="tablist"
+            aria-label="Catégories de formules"
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              gap: "0.35rem",
+              borderBottom: "1px solid rgba(26,26,23,0.12)",
+            }}
+          >
+            {TABS.map((tab) => {
+              const isActive = activeTab === tab.key;
+
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveTab(tab.key)}
                   style={{
-                    position: "absolute",
-                    bottom: -1,
-                    left: 0,
-                    right: 0,
-                    height: 1,
-                    backgroundColor: "var(--gold)",
+                    position: "relative",
+                    padding: "0 0.9rem 1rem",
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.62rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    fontWeight: 500,
+                    color: isActive ? "var(--charcoal)" : "rgba(26,26,23,0.42)",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
                   }}
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                />
-              )}
-            </button>
-          ))}
+                >
+                  {tab.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="formula-tab-line"
+                      aria-hidden
+                      style={{
+                        position: "absolute",
+                        left: "0.9rem",
+                        right: "0.9rem",
+                        bottom: -1,
+                        height: 1,
+                        backgroundColor: "var(--gold)",
+                      }}
+                      transition={{ type: "spring", stiffness: 280, damping: 28 }}
+                    />
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Cards */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.38, ease }}
+        <div className="formulas-board">
+          <div
+            className="formula-list-header"
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "1.5rem",
+              gridTemplateColumns: "1fr auto",
+              gap: "1rem",
               alignItems: "end",
+              marginBottom: "0.5rem",
             }}
-            className="formula-grid"
           >
-            {currentFormulas.map((f) => (
-              <FormulaCard key={f.name} f={f} />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            <h3
+              style={{
+                fontFamily: "var(--font-cormorant), serif",
+                fontSize: "2rem",
+                fontStyle: "italic",
+                fontWeight: 300,
+                color: "var(--charcoal)",
+                lineHeight: 1,
+              }}
+            >
+              {activeLabel}
+            </h3>
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.62rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "rgba(26,26,23,0.42)",
+              }}
+            >
+              Sur mesure
+            </p>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} className="formula-grid" style={{ display: "grid" }}>
+              {currentFormulas.map((formula, index) => (
+                <FormulaRow key={formula.name} f={formula} index={index} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+
+          <div
+            className="formula-footer"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr auto",
+              gap: "1.5rem",
+              alignItems: "center",
+              paddingTop: "1.6rem",
+              borderTop: "1px solid rgba(26,26,23,0.12)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.78rem",
+                lineHeight: 1.7,
+                color: "rgba(26,26,23,0.54)",
+                maxWidth: 600,
+              }}
+            >
+              Les tarifs sont indicatifs et hors boissons, transport, matériel
+              et mobilier sauf mention contraire.
+            </p>
+            <motion.a
+              className="formula-cta"
+              href="#contact"
+              whileHover={{ gap: "1rem" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 160, damping: 18 }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.62rem",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                fontWeight: 500,
+                color: "var(--gold)",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span>Demander un devis</span>
+              <ArrowRight size={13} />
+            </motion.a>
+          </div>
+        </div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
-          .formula-grid { grid-template-columns: 1fr !important; }
-          .formula-grid > * { margin-top: 0 !important; }
-          .formula-tabs { flex-direction: column !important; }
-          .formula-tabs button { border-bottom: 1px solid rgba(196,166,97,0.08) !important; }
+          .formulas-section {
+            padding-top: 4.5rem !important;
+            padding-bottom: 4.5rem !important;
+          }
+          .formulas-shell {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .formulas-layout,
+          .formula-list-header,
+          .formula-footer {
+            grid-template-columns: 1fr !important;
+          }
+          .formulas-layout {
+            gap: 2rem !important;
+            margin-bottom: 2.5rem !important;
+          }
+          .formula-tabs {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            gap: 0 !important;
+            justify-content: stretch !important;
+            border-top: 1px solid rgba(26,26,23,0.12);
+          }
+          .formula-tabs button {
+            width: 100% !important;
+            padding: 0.85rem 0 !important;
+            text-align: left !important;
+            border-bottom: 1px solid rgba(26,26,23,0.08) !important;
+          }
+          .formula-tabs button span {
+            left: 0 !important;
+            right: auto !important;
+            width: 4rem !important;
+          }
+          .formula-row-price {
+            justify-items: start !important;
+            min-width: 0 !important;
+          }
+          .formula-grid article {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
+          }
+          .formula-row {
+            padding: 1.55rem 0 !important;
+          }
+          .formula-row-price {
+            align-content: start !important;
+          }
+          .formula-row-price > div {
+            gap: 0.28rem !important;
+          }
+          .formula-row-price > div > span:first-child {
+            font-size: clamp(2rem, 10vw, 2.45rem) !important;
+          }
+          .formula-footer {
+            gap: 1rem !important;
+            align-items: flex-start !important;
+          }
+          .formula-cta {
+            padding-top: 0.2rem !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .formulas-section h2 {
+            font-size: 2.75rem !important;
+            letter-spacing: 0 !important;
+          }
+          .formula-list-header {
+            gap: 0.45rem !important;
+          }
+          .formula-list-header h3 {
+            font-size: 1.8rem !important;
+          }
+          .formula-tabs button {
+            font-size: 0.56rem !important;
+            letter-spacing: 0.18em !important;
+          }
+        }
+
+        @media (min-width: 769px) and (max-width: 1100px) {
+          .formulas-layout {
+            grid-template-columns: 1fr !important;
+          }
+          .formula-tabs {
+            justify-content: flex-start !important;
+          }
         }
       `}</style>
     </section>
@@ -2333,8 +2820,8 @@ const galleryItems = [
   {
     src: "/20260212_DSC2967.jpg",
     alt: "Réalisation culinaire",
-    title: "Bouchees signature",
-    note: "Precision froide, dressage minute",
+    title: "Bouchées signature",
+    note: "Précision froide, dressage minute",
     w: 3856,
     h: 5784,
     position: "center 30%",
@@ -2342,8 +2829,8 @@ const galleryItems = [
   {
     src: "/AdobeStock_122383063.jpeg",
     alt: "Art de la table",
-    title: "Tables en scene",
-    note: "Mise en place, lumiere, rythme",
+    title: "Tables en scène",
+    note: "Mise en place, lumière, rythme",
     w: 1920,
     h: 1280,
     position: "center center",
@@ -2351,8 +2838,8 @@ const galleryItems = [
   {
     src: "/20260212_DSC3156.jpg",
     alt: "Chef David Chambaud",
-    title: "Assiette composee",
-    note: "Equilibre, relief, saison",
+    title: "Assiette composée",
+    note: "Équilibre, relief, saison",
     w: 3905,
     h: 5858,
     position: "center 20%",
@@ -2369,7 +2856,7 @@ const galleryItems = [
   {
     src: "/20260212_DSC3037.jpg",
     alt: "Création culinaire sur mesure",
-    title: "Piece graphique",
+    title: "Pièce graphique",
     note: "Contraste, texture, longueur en bouche",
     w: 4032,
     h: 6048,
@@ -2388,7 +2875,7 @@ const galleryItems = [
     src: "/AdobeStock_91548526.jpeg",
     alt: "Buffet d'exception",
     title: "Buffet d'exception",
-    note: "Abondance lisible, details soignes",
+    note: "Abondance lisible, détails soignés",
     w: 1920,
     h: 1280,
     position: "center center",
@@ -2397,7 +2884,7 @@ const galleryItems = [
     src: "/20260212_DSC3049.jpg",
     alt: "Buffet gastronomique",
     title: "Table d'accueil",
-    note: "Une arrivee qui donne le ton",
+    note: "Une arrivée qui donne le ton",
     w: 5612,
     h: 3741,
     position: "center center",
@@ -2405,7 +2892,7 @@ const galleryItems = [
   {
     src: "/20260212_DSC3157.jpg",
     alt: "Dîner privé",
-    title: "Diner prive",
+    title: "Dîner privé",
     note: "Intime, net, sans ostentation",
     w: 6048,
     h: 4032,
@@ -2519,7 +3006,7 @@ function GallerySection() {
                   fontWeight: 300,
                   lineHeight: 0.92,
                   color: "var(--cream)",
-                  letterSpacing: "-0.045em",
+                  letterSpacing: 0,
                 }}
               >
                 Des images qui
@@ -2540,7 +3027,7 @@ function GallerySection() {
               }}
             >
               Une galerie vivante, entre gestes de service, dressages nets et
-              tables pretes a recevoir.
+              tables prêtes à recevoir.
             </p>
           </RevealOnScroll>
         </div>
@@ -2586,7 +3073,7 @@ function GallerySection() {
                       fontStyle: "italic",
                       lineHeight: 0.82,
                       color: "var(--gold)",
-                      letterSpacing: "-0.08em",
+                      letterSpacing: 0,
                     }}
                   >
                     {String(current + 1).padStart(2, "0")}
@@ -2634,7 +3121,7 @@ function GallerySection() {
                       fontWeight: 300,
                       color: "var(--cream)",
                       lineHeight: 1.02,
-                      letterSpacing: "-0.03em",
+                      letterSpacing: 0,
                     }}
                   >
                     {active.title}
@@ -3075,221 +3562,491 @@ function GallerySection() {
    PAVILLON — atmospheric full-bleed with background text
 ════════════════════════════════════════════════════════════ */
 function PavillonSection() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const bgY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
-  const textY = useTransform(scrollYProgress, [0, 1], [-15, 15]);
-  const reduce = useReducedMotion();
-
   return (
     <section
-      ref={ref}
       id="pavillon"
-      className="grain-overlay section-pad"
+      className="grain-overlay section-pad pavillon-section"
       aria-label="Le Pavillon des Millésimes"
       style={{
         position: "relative",
-        backgroundColor: "var(--charcoal)",
+        background:
+          "linear-gradient(135deg, #11100D 0%, #181713 48%, #272117 100%)",
         overflow: "hidden",
-        padding: "8rem 0",
+        padding: "clamp(5rem, 8vw, 8rem) 0",
       }}
     >
-      {/* Background photo */}
-      <motion.div
-        aria-hidden
-        style={{ y: reduce ? 0 : bgY, position: "absolute", inset: 0 }}
-      >
-        <Image
-          src="/pavillon-facade.jpg"
-          alt=""
-          fill
-          style={{ objectFit: "cover", objectPosition: "center center" }}
-          sizes="100vw"
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(11,11,9,0.58)",
-          }}
-        />
-      </motion.div>
-
-      {/* Atmospheric background word */}
-      <motion.div
-        aria-hidden
-        style={{
-          y: reduce ? 0 : bgY,
-          position: "absolute",
-          inset: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          pointerEvents: "none",
-          overflow: "hidden",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: "clamp(8rem, 22vw, 20rem)",
-            fontWeight: 300,
-            fontStyle: "italic",
-            color: "rgba(196,166,97,0.06)",
-            whiteSpace: "nowrap",
-            userSelect: "none",
-            lineHeight: 1,
-          }}
-        >
-          Millésimes
-        </p>
-      </motion.div>
-
-      {/* Ambient glow */}
       <div
         aria-hidden
         style={{
           position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "60vw",
-          height: "60vw",
-          maxWidth: 800,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(196,166,97,0.07) 0%, transparent 60%)",
+          top: "4%",
+          left: "-0.04em",
+          fontFamily: "var(--font-cormorant), serif",
+          fontSize: "clamp(7rem, 18vw, 16rem)",
+          fontStyle: "italic",
+          fontWeight: 300,
+          lineHeight: 0.8,
+          color: "rgba(247,243,234,0.035)",
+          whiteSpace: "nowrap",
           pointerEvents: "none",
+          userSelect: "none",
         }}
-      />
-
-      <motion.div style={{ y: reduce ? 0 : textY }}>
+      >
+        Pavillon
+      </div>
+      <div
+        className="pavillon-shell"
+        style={{
+          maxWidth: 1400,
+          margin: "0 auto",
+          padding: "0 2rem",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         <div
+          className="pavillon-layout"
           style={{
-            maxWidth: "820px",
-            margin: "0 auto",
-            padding: "0 2rem",
-            textAlign: "center",
-            position: "relative",
-            zIndex: 1,
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.54fr) minmax(360px, 0.46fr)",
+            gap: "clamp(3rem, 6vw, 6.5rem)",
+            alignItems: "stretch",
           }}
         >
-          <RevealOnScroll variant={fadeUp}>
-            <Eyebrow light>
-              Table d&apos;Hôtes · Chambres d&apos;exception
-            </Eyebrow>
-          </RevealOnScroll>
-
-          <HeadingReveal delay={0.08}>
-            <h2
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.75rem, 7vw, 5.5rem)",
-                fontStyle: "italic",
-                fontWeight: 300,
-                lineHeight: 1.08,
-                color: "var(--cream)",
-                marginBottom: "0.06em",
-              }}
-            >
-              Le Pavillon
-            </h2>
-            <h2
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.75rem, 7vw, 5.5rem)",
-                fontStyle: "italic",
-                fontWeight: 300,
-                lineHeight: 1.1,
-                color: "var(--gold)",
-                marginBottom: "2.5rem",
-              }}
-            >
-              des Millésimes
-            </h2>
-          </HeadingReveal>
-
-          <RevealOnScroll variant={lineGrow}>
+          <RevealOnScroll variant={fadeIn}>
             <div
+              className="pavillon-gallery"
               style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "1rem",
-                marginBottom: "2.5rem",
+                position: "relative",
+                minHeight: "clamp(560px, 68vw, 760px)",
               }}
             >
               <div
                 style={{
-                  height: 1,
-                  width: 48,
-                  backgroundColor: "var(--gold)",
-                  opacity: 0.4,
+                  position: "absolute",
+                  inset: "0 14% 12% 0",
+                  overflow: "hidden",
+                  backgroundColor: "var(--charcoal)",
+                  boxShadow: "0 34px 86px -56px rgba(0,0,0,0.82)",
                 }}
-              />
-              <MapPin
-                size={12}
-                color="var(--gold)"
-                strokeWidth={1.5}
-                style={{ opacity: 0.7 }}
-              />
-              <div
+              >
+                <Image
+                  src="/Pavillon-49.jpg"
+                  alt="Salon lumineux du Pavillon des Millésimes"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 760px"
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                />
+                <div
+                  aria-hidden
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    background:
+                      "linear-gradient(to top, rgba(17,16,13,0.54), transparent 52%)",
+                  }}
+                />
+              </div>
+
+              <motion.div
+                className="pavillon-portrait"
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.85, ease }}
                 style={{
-                  height: 1,
-                  width: 48,
-                  backgroundColor: "var(--gold)",
-                  opacity: 0.4,
+                  position: "absolute",
+                  right: 0,
+                  top: "16%",
+                  width: "34%",
+                  aspectRatio: "3 / 4",
+                  overflow: "hidden",
+                  border: "1px solid rgba(247,243,234,0.14)",
+                  boxShadow: "0 30px 70px -48px rgba(0,0,0,0.9)",
                 }}
-              />
+              >
+                <Image
+                  src="/Pavillon-37.jpg"
+                  alt="Chambre du Pavillon des Millésimes"
+                  fill
+                  sizes="(max-width: 768px) 36vw, 300px"
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                />
+              </motion.div>
+
+              <motion.div
+                className="pavillon-table"
+                initial={{ opacity: 0, x: -22, y: 18 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.8, delay: 0.12, ease }}
+                style={{
+                  position: "absolute",
+                  left: "10%",
+                  bottom: 0,
+                  width: "42%",
+                  aspectRatio: "4 / 3",
+                  overflow: "hidden",
+                  border: "1px solid rgba(247,243,234,0.14)",
+                  boxShadow: "0 28px 64px -48px rgba(0,0,0,0.84)",
+                }}
+              >
+                <Image
+                  src="/Pavillon-70.jpg"
+                  alt="Table dressée au Pavillon des Millésimes"
+                  fill
+                  sizes="(max-width: 768px) 48vw, 360px"
+                  style={{ objectFit: "cover", objectPosition: "center" }}
+                />
+              </motion.div>
+
+              <div
+                className="pavillon-badge"
+                style={{
+                  position: "absolute",
+                  right: "7%",
+                  bottom: "7%",
+                  width: "15rem",
+                  padding: "1.05rem 1rem",
+                  backgroundColor: "rgba(17,16,13,0.62)",
+                  border: "1px solid rgba(247,243,234,0.13)",
+                  boxShadow:
+                    "inset 0 1px 0 rgba(255,255,255,0.1), 0 28px 58px -44px rgba(0,0,0,0.86)",
+                  backdropFilter: "blur(16px)",
+                }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    color: "var(--gold)",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  Maison confidentielle
+                </p>
+                <p
+                  style={{
+                    fontFamily: "var(--font-cormorant), serif",
+                    fontSize: "1.45rem",
+                    fontStyle: "italic",
+                    lineHeight: 1.12,
+                    color: "var(--cream)",
+                  }}
+                >
+                  Dormir sur place, dîner juste, repartir lentement.
+                </p>
+              </div>
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll variant={fadeUp} custom={2}>
-            <p
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.85rem",
-                fontWeight: 300,
-                lineHeight: 2,
-                color: "rgba(250,250,247,0.55)",
-                maxWidth: 600,
-                margin: "0 auto 3rem",
-              }}
-            >
-              Niché au cœur de la Nouvelle-Aquitaine, le Pavillon des Millésimes
-              vous accueille pour des séjours d&apos;exception. Table
-              d&apos;hôtes gastronomique, chambres raffinées et art de vivre à
-              la française — une parenthèse enchanteresse pour les épicuriens
-              exigeants.
-            </p>
-          </RevealOnScroll>
+          <div
+            className="pavillon-copy"
+            style={{
+              display: "grid",
+              alignContent: "center",
+              gap: "2rem",
+              paddingTop: "1rem",
+            }}
+          >
+            <RevealOnScroll variant={fadeUp}>
+              <Eyebrow light>Le lieu de David &amp; Nathalie</Eyebrow>
+            </RevealOnScroll>
 
-          <RevealOnScroll variant={fadeUp} custom={3}>
-            <motion.a
-              href="https://www.pavillon-des-millesimes.com"
-              target="_blank"
-              whileHover={{ gap: "1.3rem" }}
+            <HeadingReveal delay={0.08}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(3.1rem, 6.4vw, 6rem)",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  lineHeight: 0.96,
+                  color: "var(--cream)",
+                  letterSpacing: 0,
+                }}
+              >
+                Une parenthèse
+                <br />
+                où l&apos;on reste.
+              </h2>
+            </HeadingReveal>
+
+            <RevealOnScroll variant={fadeUp} custom={2}>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.95rem",
+                  fontWeight: 400,
+                  lineHeight: 1.9,
+                  color: "rgba(247,243,234,0.66)",
+                  maxWidth: 620,
+                }}
+              >
+                Le Pavillon des Millésimes n&apos;est pas seulement une adresse
+                à visiter. C&apos;est une maison où le repas, la chambre et le
+                lendemain se répondent avec la même attention.
+              </p>
+            </RevealOnScroll>
+
+            <RevealOnScroll variant={fadeUp} custom={3}>
+              <div
+                className="pavillon-points"
+                style={{
+                  display: "grid",
+                  gap: 0,
+                  borderTop: "1px solid rgba(247,243,234,0.14)",
+                  borderBottom: "1px solid rgba(247,243,234,0.14)",
+                }}
+              >
+                {[
+                  [
+                    "Table d'hôtes",
+                    "Une cuisine bistronomique en quatre temps, pensée comme un dîner de maison très soigné.",
+                  ],
+                  [
+                    "Chambres",
+                    "Des espaces calmes pour prolonger un mariage, une escapade ou un week-end gourmand.",
+                  ],
+                  [
+                    "Adresse",
+                    "Une maison de caractère en Nouvelle-Aquitaine, entre intimité, vin et art de recevoir.",
+                  ],
+                ].map(([label, value]) => (
+                  <div
+                    key={label}
+                    className="pavillon-point"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "minmax(140px, 0.32fr) minmax(0, 1fr)",
+                      gap: "1.4rem",
+                      padding: "1.2rem 0",
+                      borderBottom:
+                        label === "Adresse"
+                          ? "none"
+                          : "1px solid rgba(247,243,234,0.1)",
+                      alignItems: "baseline",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontSize: "0.58rem",
+                        letterSpacing: "0.2em",
+                        textTransform: "uppercase",
+                        color: "var(--gold)",
+                      }}
+                    >
+                      {label}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontSize: "0.86rem",
+                        color: "rgba(247,243,234,0.62)",
+                        lineHeight: 1.75,
+                      }}
+                    >
+                      {value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </RevealOnScroll>
+
+            <RevealOnScroll variant={fadeUp} custom={4}>
+              <div
+                className="pavillon-actions"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  gap: "1.2rem",
+                }}
+              >
+                <motion.a
+                  href="https://www.pavillon-des-millesimes.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ gap: "1rem" }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 160, damping: 18 }}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "0.75rem",
+                    padding: "1rem 1.25rem",
+                    border: "1px solid rgba(184,145,82,0.72)",
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.62rem",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "var(--gold)",
+                    textDecoration: "none",
+                    backgroundColor: "rgba(184,145,82,0.08)",
+                  }}
+                >
+                  <span>Découvrir le lieu</span>
+                  <ArrowRight size={13} />
+                </motion.a>
+                <p
+                  style={{
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.74rem",
+                    lineHeight: 1.65,
+                    color: "rgba(247,243,234,0.42)",
+                    maxWidth: 260,
+                  }}
+                >
+                  Table d&apos;hôtes sur réservation, séjour et cuisine de
+                  saison au même endroit.
+                </p>
+              </div>
+            </RevealOnScroll>
+          </div>
+        </div>
+
+        <RevealOnScroll variant={fadeUp} custom={5}>
+          <div
+            className="pavillon-strip"
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 0.38fr) minmax(0, 0.62fr)",
+              gap: "1rem",
+              alignItems: "stretch",
+              marginTop: "clamp(3rem, 6vw, 5rem)",
+              borderTop: "1px solid rgba(247,243,234,0.12)",
+              paddingTop: "1rem",
+            }}
+          >
+            <div
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.62rem",
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                color: "var(--gold)",
-                textDecoration: "none",
+                display: "grid",
+                alignContent: "space-between",
+                gap: "1.5rem",
+                padding: "1rem 0",
               }}
             >
-              <span>En savoir plus</span>
-              <ArrowRight size={13} />
-            </motion.a>
-          </RevealOnScroll>
-        </div>
-      </motion.div>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.58rem",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "var(--gold)",
+                }}
+              >
+                Séjour gourmand
+              </p>
+              <p
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(1.9rem, 3.2vw, 3rem)",
+                  fontStyle: "italic",
+                  lineHeight: 1.1,
+                  color: "var(--cream)",
+                  maxWidth: 420,
+                }}
+              >
+                Quand le dîner devient le centre d&apos;un week-end.
+              </p>
+            </div>
+            <div
+              className="pavillon-strip-images"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+                gap: "1rem",
+              }}
+            >
+              {[
+                ["/Pavillon-71.jpg", "Détail intérieur du Pavillon des Millésimes"],
+                ["/Pavillon-73.jpg", "Salon et atmosphère du Pavillon des Millésimes"],
+                ["/pavillon-facade.jpg", "Façade du Pavillon des Millésimes"],
+              ].map(([src, alt]) => (
+                <div
+                  key={src}
+                  style={{
+                    position: "relative",
+                    aspectRatio: "4 / 3",
+                    overflow: "hidden",
+                    backgroundColor: "rgba(247,243,234,0.06)",
+                  }}
+                >
+                  <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 33vw, 260px"
+                    style={{ objectFit: "cover", objectPosition: "center" }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </RevealOnScroll>
+      </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .pavillon-section {
+            padding-top: 4.5rem !important;
+            padding-bottom: 4.5rem !important;
+          }
+          .pavillon-shell {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .pavillon-layout,
+          .pavillon-point,
+          .pavillon-strip,
+          .pavillon-strip-images {
+            grid-template-columns: 1fr !important;
+          }
+          .pavillon-layout {
+            gap: 2.5rem !important;
+          }
+          .pavillon-gallery {
+            min-height: 480px !important;
+          }
+          .pavillon-portrait {
+            width: 38% !important;
+          }
+          .pavillon-table {
+            width: 50% !important;
+            left: 0 !important;
+          }
+          .pavillon-badge {
+            width: min(15rem, 72vw) !important;
+            right: 0 !important;
+          }
+          .pavillon-actions {
+            align-items: flex-start !important;
+            flex-direction: column !important;
+          }
+          .pavillon-strip-images {
+            gap: 0.75rem !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .pavillon-section h2 {
+            font-size: 2.72rem !important;
+            letter-spacing: 0 !important;
+          }
+          .pavillon-section p {
+            max-width: 100% !important;
+          }
+          .pavillon-point p:first-child {
+            font-size: 0.52rem !important;
+            letter-spacing: 0.18em !important;
+          }
+          .pavillon-gallery {
+            min-height: 420px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
@@ -3365,10 +4122,10 @@ const testimonials = [
 
 function TestimonialCard({
   t,
-  delay,
+  index,
 }: {
   t: (typeof testimonials)[0];
-  delay: number;
+  index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px 0px" });
@@ -3376,30 +4133,29 @@ function TestimonialCard({
   const isTripadvisor = t.source === "tripadvisor";
 
   return (
-    <motion.div
+    <motion.article
+      className="testimonial-item"
       ref={ref}
-      initial={reduce ? false : { opacity: 0, y: 28 }}
+      initial={reduce ? false : { opacity: 0, y: 18 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.75, delay, ease }}
+      transition={{ duration: 0.65, delay: index * 0.04, ease }}
       style={{
-        breakInside: "avoid",
-        marginBottom: "1.25rem",
-        backgroundColor: "rgba(250,250,247,0.035)",
-        border: "1px solid rgba(196,166,97,0.1)",
-        padding: "1.75rem",
+        display: "grid",
+        gap: "1.2rem",
+        padding: "1.65rem 0 1.9rem",
+        borderTop: "1px solid rgba(196,166,97,0.16)",
         position: "relative",
       }}
     >
-      {/* Top row: stars + source */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          marginBottom: "1.1rem",
+          gap: "1rem",
         }}
       >
-        <div style={{ display: "flex", gap: 3 }}>
+        <div aria-label="Note de cinq étoiles" style={{ display: "flex", gap: 3 }}>
           {Array.from({ length: 5 }).map((_, j) => (
             <Star key={j} size={11} fill="var(--gold)" color="var(--gold)" />
           ))}
@@ -3410,33 +4166,31 @@ function TestimonialCard({
             fontSize: "0.46rem",
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: isTripadvisor
-              ? "rgba(0,171,135,0.65)"
-              : "rgba(196,166,97,0.5)",
+            color: "rgba(250,250,247,0.38)",
             fontWeight: 500,
+            whiteSpace: "nowrap",
           }}
         >
           {isTripadvisor ? "Tripadvisor" : "Avis vérifié"}
         </span>
       </div>
 
-      {/* Quote */}
       <p
+        className="testimonial-quote"
         style={{
           fontFamily: "var(--font-cormorant), serif",
-          fontSize: "clamp(1rem, 1.6vw, 1.2rem)",
+          fontSize: "clamp(1.35rem, 2.2vw, 2rem)",
           fontStyle: "italic",
           fontWeight: 300,
-          lineHeight: 1.75,
-          color: "rgba(250,250,247,0.82)",
-          marginBottom: "1.25rem",
+          lineHeight: 1.35,
+          color: "rgba(250,250,247,0.86)",
         }}
       >
         &ldquo;{t.quote}&rdquo;
       </p>
 
-      {/* Author */}
       <div
+        className="testimonial-author"
         style={{
           display: "flex",
           alignItems: "center",
@@ -3460,7 +4214,7 @@ function TestimonialCard({
               letterSpacing: "0.15em",
               textTransform: "uppercase",
               fontWeight: 500,
-              color: "var(--cream)",
+              color: "rgba(250,250,247,0.86)",
             }}
           >
             {t.author}
@@ -3470,7 +4224,7 @@ function TestimonialCard({
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.52rem",
               letterSpacing: "0.1em",
-              color: "rgba(250,250,247,0.32)",
+              color: "rgba(250,250,247,0.34)",
               marginTop: "0.15rem",
             }}
           >
@@ -3478,7 +4232,103 @@ function TestimonialCard({
           </p>
         </div>
       </div>
-    </motion.div>
+    </motion.article>
+  );
+}
+
+function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
+  return (
+    <RevealOnScroll variant={fadeUp}>
+      <article
+        className="testimonial-featured"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.62fr) minmax(240px, 0.38fr)",
+          gap: "3rem",
+          alignItems: "end",
+          padding: "2.2rem 0 3rem",
+          borderTop: "1px solid rgba(184,145,82,0.22)",
+          borderBottom: "1px solid rgba(184,145,82,0.22)",
+          marginBottom: "2.2rem",
+        }}
+      >
+        <div>
+          <div
+            aria-label="Note de cinq étoiles"
+            style={{ display: "flex", gap: 4, marginBottom: "1.4rem" }}
+          >
+            {Array.from({ length: 5 }).map((_, j) => (
+              <Star key={j} size={13} fill="var(--gold)" color="var(--gold)" />
+            ))}
+          </div>
+          <p
+            style={{
+              fontFamily: "var(--font-cormorant), serif",
+              fontSize: "clamp(2rem, 4.2vw, 4rem)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              lineHeight: 1.12,
+              color: "var(--cream)",
+            }}
+          >
+            &ldquo;{t.quote}&rdquo;
+          </p>
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gap: "1rem",
+            color: "rgba(247,243,234,0.58)",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.58rem",
+              letterSpacing: "0.26em",
+              textTransform: "uppercase",
+              color: "var(--gold)",
+            }}
+          >
+            Avis de réception
+          </p>
+          <div>
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.76rem",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "rgba(247,243,234,0.86)",
+                marginBottom: "0.3rem",
+              }}
+            >
+              {t.author}
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.78rem",
+                lineHeight: 1.7,
+              }}
+            >
+              {t.occasion}
+            </p>
+          </div>
+          <p
+            style={{
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.82rem",
+              lineHeight: 1.85,
+              maxWidth: 320,
+            }}
+          >
+            Le type de retour qui compte: pas seulement “bon”, mais fluide,
+            généreux, rassurant et mémorable pour les invités.
+          </p>
+        </div>
+      </article>
+    </RevealOnScroll>
   );
 }
 
@@ -3486,74 +4336,195 @@ function TestimonialsSection() {
   return (
     <section
       id="temoignages"
-      className="section-pad"
+      className="section-pad testimonials-section"
       aria-label="Témoignages clients"
-      style={{ backgroundColor: "var(--dark)", padding: "7rem 0" }}
+      style={{
+        backgroundColor: "var(--dark)",
+        padding: "7.5rem 0",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
-      <div style={{ maxWidth: "1300px", margin: "0 auto", padding: "0 2rem" }}>
-        {/* Header */}
+      <div
+        className="testimonials-shell"
+        style={{ maxWidth: 1240, margin: "0 auto", padding: "0 2rem" }}
+      >
         <div
+          className="testimonials-header"
           style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
+            display: "grid",
+            gridTemplateColumns: "minmax(0, 0.85fr) minmax(260px, 0.36fr)",
+            gap: "4rem",
+            alignItems: "end",
             marginBottom: "4rem",
-            flexWrap: "wrap",
-            gap: "1.5rem",
           }}
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow>Ils nous font confiance</Eyebrow>
+              <Eyebrow light>Ils nous font confiance</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
               <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(2.4rem, 5vw, 4.2rem)",
+                  fontSize: "clamp(3rem, 6vw, 5.6rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
-                  lineHeight: 1.1,
+                  lineHeight: 0.95,
                   color: "var(--cream)",
+                  letterSpacing: 0,
                 }}
               >
-                Ce qu&apos;ils disent
+                Quelques mots
+                <br />
+                après le service.
               </h2>
             </HeadingReveal>
           </div>
-          <RevealOnScroll variant={fadeIn}>
+          <RevealOnScroll variant={fadeUp} custom={2}>
             <p
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.62rem",
-                letterSpacing: "0.22em",
-                textTransform: "uppercase",
-                color: "rgba(250,250,247,0.28)",
+                fontSize: "0.88rem",
+                fontWeight: 300,
+                lineHeight: 1.85,
+                color: "rgba(250,250,247,0.58)",
+                maxWidth: 360,
               }}
             >
-              Avis collectés sur Google, Tripadvisor &amp; site officiel
+              Mariages, séjours, baptêmes ou séminaires : des retours sobres,
+              directs, et souvent très généreux.
             </p>
           </RevealOnScroll>
         </div>
 
-        {/* Masonry grid */}
-        <div className="testimonials-masonry">
-          {testimonials.map((t, i) => (
-            <TestimonialCard key={i} t={t} delay={i * 0.06} />
+        <FeaturedTestimonial t={testimonials[0]} />
+
+        <div className="testimonials-grid">
+          {testimonials.slice(1).map((t, i) => (
+            <TestimonialCard key={i} t={t} index={i} />
           ))}
         </div>
+
+        <RevealOnScroll variant={fadeUp} custom={2}>
+          <div
+            className="testimonials-footer"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "1.5rem",
+              alignItems: "center",
+              paddingTop: "1.6rem",
+              borderTop: "1px solid rgba(196,166,97,0.16)",
+              marginTop: "1.6rem",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.62rem",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "rgba(250,250,247,0.34)",
+              }}
+            >
+              Avis collectés sur Google, Tripadvisor &amp; site officiel
+            </p>
+            <motion.a
+              href="#contact"
+              whileHover={{ gap: "1rem" }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 160, damping: 18 }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.62rem",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span>Échanger avec nous</span>
+              <ArrowRight size={13} />
+            </motion.a>
+          </div>
+        </RevealOnScroll>
       </div>
 
       <style>{`
-        .testimonials-masonry {
-          columns: 3;
-          column-gap: 1.25rem;
+        .testimonials-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          column-gap: 4rem;
         }
-        @media (max-width: 900px) {
-          .testimonials-masonry { columns: 2; }
+        @media (max-width: 768px) {
+          .testimonials-section {
+            padding-top: 4.5rem !important;
+            padding-bottom: 4.5rem !important;
+          }
+          .testimonials-shell {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .testimonials-header,
+          .testimonials-grid,
+          .testimonial-featured {
+            grid-template-columns: 1fr !important;
+          }
+          .testimonials-header {
+            gap: 1.5rem !important;
+            margin-bottom: 2.5rem !important;
+          }
+          .testimonials-footer {
+            align-items: flex-start !important;
+            flex-direction: column !important;
+          }
+          .testimonial-item {
+            gap: 1rem !important;
+            padding: 1.45rem 0 1.65rem !important;
+          }
+          .testimonial-quote {
+            font-size: clamp(1.18rem, 6.2vw, 1.45rem) !important;
+            line-height: 1.42 !important;
+          }
+          .testimonial-author {
+            align-items: flex-start !important;
+          }
         }
-        @media (max-width: 540px) {
-          .testimonials-masonry { columns: 1; }
+        @media (max-width: 430px) {
+          .testimonials-section h2 {
+            font-size: 2.78rem !important;
+            letter-spacing: 0 !important;
+          }
+          .testimonials-section {
+            padding-top: 4rem !important;
+            padding-bottom: 4rem !important;
+          }
+          .testimonials-header {
+            margin-bottom: 2rem !important;
+          }
+          .testimonial-item > div:first-child span {
+            font-size: 0.42rem !important;
+            letter-spacing: 0.2em !important;
+          }
+          .testimonial-author p {
+            word-break: normal !important;
+            overflow-wrap: anywhere !important;
+          }
+          .testimonials-footer p {
+            line-height: 1.7 !important;
+            letter-spacing: 0.16em !important;
+          }
+        }
+        @media (min-width: 769px) and (max-width: 1050px) {
+          .testimonials-header,
+          .testimonials-grid {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </section>
@@ -3598,39 +4569,61 @@ function ClientsSection() {
     <section
       style={{
         backgroundColor: "var(--cream)",
-        padding: "5rem 0",
+        padding: "clamp(4.5rem, 7vw, 7rem) 0",
         overflow: "hidden",
         position: "relative",
-        borderTop: "1px solid rgba(196,166,97,0.12)",
-        borderBottom: "1px solid rgba(196,166,97,0.12)",
+        borderTop: "1px solid rgba(184,145,82,0.12)",
+        borderBottom: "1px solid rgba(184,145,82,0.12)",
       }}
     >
       <div
+        className="clients-heading"
         style={{
           maxWidth: "1300px",
           margin: "0 auto",
           padding: "0 2rem",
-          marginBottom: "3rem",
-          textAlign: "center",
+          marginBottom: "3.25rem",
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 0.52fr) minmax(260px, 0.48fr)",
+          gap: "3rem",
+          alignItems: "end",
         }}
       >
-        <RevealOnScroll variant={fadeUp}>
-          <Eyebrow>Références</Eyebrow>
-        </RevealOnScroll>
-        <HeadingReveal delay={0.06}>
-          <h2
+        <div>
+          <RevealOnScroll variant={fadeUp}>
+            <Eyebrow>Références</Eyebrow>
+          </RevealOnScroll>
+          <HeadingReveal delay={0.06}>
+            <h2
+              style={{
+                fontFamily: "var(--font-cormorant), serif",
+                fontSize: "clamp(2.5rem, 5vw, 4.8rem)",
+                fontStyle: "italic",
+                fontWeight: 300,
+                lineHeight: 1,
+                color: "var(--charcoal)",
+              }}
+            >
+              Des lieux exigeants,
+              <br />
+              des repas remarqués.
+            </h2>
+          </HeadingReveal>
+        </div>
+        <RevealOnScroll variant={fadeUp} custom={2}>
+          <p
             style={{
-              fontFamily: "var(--font-cormorant), serif",
-              fontSize: "clamp(2rem, 4vw, 3.5rem)",
-              fontStyle: "italic",
-              fontWeight: 300,
-              lineHeight: 1.1,
-              color: "var(--charcoal)",
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.9rem",
+              lineHeight: 1.85,
+              color: "rgba(24,23,19,0.62)",
+              maxWidth: 460,
             }}
           >
-            Ils nous font confiance
-          </h2>
-        </HeadingReveal>
+            Châteaux, domaines viticoles, entreprises et institutions: le décor
+            change, l&apos;exigence reste la même.
+          </p>
+        </RevealOnScroll>
       </div>
 
       <div style={{ position: "relative" }}>
@@ -3706,6 +4699,16 @@ function ClientsSection() {
           ))}
         </div>
       </div>
+      <style>{`
+        @media (max-width: 768px) {
+          .clients-heading {
+            grid-template-columns: 1fr !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            gap: 1.25rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }
@@ -3715,90 +4718,89 @@ function ClientsSection() {
 ════════════════════════════════════════════════════════════ */
 function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+    const nextErrors: Record<string, string> = {};
+    const requiredFields = [
+      ["name", "Indiquez votre nom."],
+      ["email", "Indiquez une adresse email."],
+      ["eventType", "Précisez le type d'événement."],
+      ["message", "Ajoutez quelques mots sur votre demande."],
+    ] as const;
+
+    requiredFields.forEach(([field, message]) => {
+      if (!String(formData.get(field) || "").trim()) {
+        nextErrors[field] = message;
+      }
+    });
+
+    const email = String(formData.get("email") || "").trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      nextErrors.email = "L'adresse email semble incomplète.";
+    }
+
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      return;
+    }
+
     setSubmitted(true);
+    form.reset();
   };
 
   return (
     <section
       id="contact"
-      className="grain-overlay section-pad"
+      className="section-pad contact-section"
       aria-label="Contact et demande de devis"
       style={{
-        backgroundColor: "var(--dark)",
-        padding: "8rem 0",
+        backgroundColor: "var(--warm)",
+        padding: "7.5rem 0",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Decorative rings */}
       <div
-        aria-hidden
+        className="contact-shell"
         style={{
-          position: "absolute",
-          top: "50%",
-          right: "-10vw",
-          transform: "translateY(-50%)",
-          width: "50vw",
-          height: "50vw",
-          maxWidth: 700,
-          maxHeight: 700,
-          borderRadius: "50%",
-          border: "1px solid rgba(196,166,97,0.05)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute",
-          top: "50%",
-          right: "-10vw",
-          transform: "translateY(-50%)",
-          width: "35vw",
-          height: "35vw",
-          maxWidth: 480,
-          maxHeight: 480,
-          borderRadius: "50%",
-          border: "1px solid rgba(196,166,97,0.07)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          maxWidth: "1200px",
+          maxWidth: 1240,
           margin: "0 auto",
           padding: "0 2rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "7rem",
-          alignItems: "start",
         }}
-        className="contact-grid"
       >
-        {/* Left: info */}
-        <div>
+        <div
+          className="contact-grid"
+          style={{
+          display: "grid",
+            gridTemplateColumns: "minmax(0, 0.78fr) minmax(360px, 0.72fr)",
+            gap: "5rem",
+          alignItems: "start",
+          }}
+        >
+          <div className="contact-intro">
           <RevealOnScroll variant={fadeUp}>
-            <Eyebrow light>Contact</Eyebrow>
+              <Eyebrow>Contact</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.08}>
             <h2
               style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.5rem, 6vw, 5rem)",
+                  fontSize: "clamp(3rem, 6vw, 5.7rem)",
                 fontStyle: "italic",
                 fontWeight: 300,
-                lineHeight: 1.08,
-                color: "var(--cream)",
-                marginBottom: "1.5rem",
+                  lineHeight: 0.96,
+                  color: "var(--charcoal)",
+                  letterSpacing: 0,
+                  marginTop: "1rem",
               }}
             >
-              Parlons de votre
+                Une date,
               <br />
-              <span style={{ color: "var(--gold)" }}>projet</span>
+                un lieu, une envie.
             </h2>
           </HeadingReveal>
 
@@ -3806,45 +4808,53 @@ function ContactSection() {
             <p
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.82rem",
+                  fontSize: "0.92rem",
                 fontWeight: 300,
-                color: "rgba(250,250,247,0.48)",
-                lineHeight: 1.95,
-                marginBottom: "3rem",
+                  color: "rgba(26,26,23,0.64)",
+                  lineHeight: 1.9,
+                  maxWidth: 540,
+                  marginTop: "1.5rem",
               }}
             >
-              Chaque événement est unique. Contactez David pour établir un devis
-              personnalisé et construire ensemble le menu parfait.
+                Racontez-nous l&apos;ambiance, le nombre d&apos;invités, vos goûts
+                et ce qui compte le plus pour vous. David vous aide ensuite à
+                transformer l&apos;idée en réception concrète.
             </p>
           </RevealOnScroll>
 
           <RevealOnScroll variant={fadeUp} custom={3}>
             <div
+                className="contact-details"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1.2rem",
+                  display: "grid",
+                  gap: "1.15rem",
+                  marginTop: "3rem",
+                  paddingTop: "1.5rem",
+                  borderTop: "1px solid rgba(26,26,23,0.12)",
               }}
             >
               {[
                 {
                   href: "tel:+33650754406",
                   icon: (
-                    <Phone size={14} color="var(--gold)" strokeWidth={1.5} />
+                      <Phone size={15} color="var(--gold)" strokeWidth={1.5} />
                   ),
                   label: "+33 6 50 75 44 06",
+                    meta: "Téléphone",
                 },
                 {
                   href: "mailto:contact@david-chambaud.fr",
                   icon: (
-                    <Mail size={14} color="var(--gold)" strokeWidth={1.5} />
+                      <Mail size={15} color="var(--gold)" strokeWidth={1.5} />
                   ),
                   label: "contact@david-chambaud.fr",
+                    meta: "Email",
                 },
                 {
                   href: "https://www.instagram.com/chambauddavid",
                   icon: <IconInstagram size={14} color="var(--gold)" />,
                   label: "@chambauddavid",
+                    meta: "Instagram",
                 },
               ].map((item) => (
                 <motion.a
@@ -3856,108 +4866,170 @@ function ContactSection() {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  whileHover={{ color: "var(--gold)", x: 4 }}
-                  transition={{ duration: 0.25 }}
+                    whileHover={{ x: 4 }}
+                    whileTap={{ scale: 0.99 }}
+                    transition={{ type: "spring", stiffness: 160, damping: 18 }}
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.9rem",
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "0.82rem",
-                    fontWeight: 300,
-                    color: "rgba(250,250,247,0.6)",
+                      display: "grid",
+                      gridTemplateColumns: "1.8rem 1fr",
+                      gap: "0.8rem",
+                      alignItems: "center",
+                      color: "var(--charcoal)",
                     textDecoration: "none",
                   }}
                 >
-                  {item.icon}
-                  {item.label}
+                    <span aria-hidden>{item.icon}</span>
+                    <span>
+                      <span
+                        style={{
+                          display: "block",
+                          fontFamily: "var(--font-montserrat), sans-serif",
+                          fontSize: "0.54rem",
+                          letterSpacing: "0.2em",
+                          textTransform: "uppercase",
+                          color: "rgba(26,26,23,0.44)",
+                          marginBottom: "0.18rem",
+                        }}
+                      >
+                        {item.meta}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-montserrat), sans-serif",
+                          fontSize: "0.86rem",
+                          color: "rgba(26,26,23,0.78)",
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                    </span>
                 </motion.a>
               ))}
             </div>
           </RevealOnScroll>
 
-          <RevealOnScroll variant={fadeIn} custom={4}>
+            <RevealOnScroll variant={fadeUp} custom={4}>
             <div
+                className="contact-note"
               style={{
-                marginTop: "2.5rem",
-                position: "relative",
-                overflow: "hidden",
-                aspectRatio: "16/10",
+                  marginTop: "3rem",
+                  display: "grid",
+                  gridTemplateColumns: "auto 1fr",
+                  gap: "1rem",
+                  alignItems: "start",
+                  color: "rgba(26,26,23,0.62)",
               }}
             >
-              <Image
-                src="/AdobeStock_132808376.jpeg"
-                alt="Réception gastronomique orchestrée par David Chambaud"
-                fill
-                style={{ objectFit: "cover", objectPosition: "center" }}
-                sizes="(max-width: 768px) 100vw, 38vw"
-              />
               <div
+                  aria-hidden
                 style={{
-                  position: "absolute",
-                  inset: 0,
-                  backgroundColor: "rgba(11,11,9,0.18)",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 14,
-                  left: 14,
                   width: 28,
                   height: 1,
                   backgroundColor: "var(--gold)",
-                  opacity: 0.45,
+                    marginTop: "0.65rem",
                 }}
               />
-              <div
+                <p
                 style={{
-                  position: "absolute",
-                  bottom: 14,
-                  left: 14,
-                  width: 1,
-                  height: 28,
-                  backgroundColor: "var(--gold)",
-                  opacity: 0.45,
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.78rem",
+                    lineHeight: 1.75,
+                    maxWidth: 430,
                 }}
-              />
+              >
+                  Réponse généralement sous 24 à 48 h ouvrées. Pour un mariage
+                  ou une demande proche, le téléphone reste le plus direct.
+                </p>
+            </div>
+          </RevealOnScroll>
+
+          <RevealOnScroll variant={fadeUp} custom={5}>
+            <div
+              className="contact-brief"
+              style={{
+                marginTop: "2.5rem",
+                display: "grid",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: "0.75rem",
+              }}
+            >
+              {[
+                ["Le lieu", "Domaine, maison, salle ou lieu à confirmer."],
+                ["Le rythme", "Cocktail, dîner, brunch, retour de soirée."],
+                ["Les invités", "Nombre approximatif, enfants, régimes."],
+                ["L'envie", "Champêtre, gastronomique, familial, très festif."],
+              ].map(([title, desc]) => (
+                <div
+                  key={title}
+                  style={{
+                    padding: "1rem",
+                    border: "1px solid rgba(26,26,23,0.1)",
+                    backgroundColor: "rgba(247,243,234,0.34)",
+                  }}
+                >
+                  <p
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "0.56rem",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: "var(--gold)",
+                      marginBottom: "0.45rem",
+                    }}
+                  >
+                    {title}
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "0.76rem",
+                      lineHeight: 1.55,
+                      color: "rgba(26,26,23,0.58)",
+                    }}
+                  >
+                    {desc}
+                  </p>
+                </div>
+              ))}
             </div>
           </RevealOnScroll>
         </div>
 
-        {/* Right: form */}
         <RevealOnScroll variant={fadeUp} custom={1}>
-          {submitted ? (
+            <div
+              className="contact-form-panel"
+              style={{
+                backgroundColor: "rgba(250,250,247,0.58)",
+                border: "1px solid rgba(26,26,23,0.12)",
+                padding: "2rem",
+              }}
+            >
+              {submitted ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               style={{
-                padding: "3rem",
-                border: "1px solid rgba(196,166,97,0.2)",
-                textAlign: "center",
+                    minHeight: 420,
+                    display: "grid",
+                    alignContent: "center",
+                    justifyItems: "start",
+                    gap: "1rem",
               }}
             >
               <div
                 style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: "50%",
-                  border: "1px solid var(--gold)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 1.5rem",
+                      width: 42,
+                      height: 1,
+                      backgroundColor: "var(--gold)",
                 }}
-              >
-                <Star size={18} color="var(--gold)" fill="var(--gold)" />
-              </div>
+                  />
               <p
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "1.8rem",
+                      fontSize: "2.15rem",
                   fontStyle: "italic",
-                  color: "var(--cream)",
-                  marginBottom: "0.75rem",
+                      color: "var(--charcoal)",
+                      lineHeight: 1,
                 }}
               >
                 Message envoyé
@@ -3965,10 +5037,11 @@ function ContactSection() {
               <p
                 style={{
                   fontFamily: "var(--font-montserrat), sans-serif",
-                  fontSize: "0.75rem",
+                      fontSize: "0.82rem",
                   fontWeight: 300,
-                  color: "rgba(250,250,247,0.45)",
-                  lineHeight: 1.8,
+                      color: "rgba(26,26,23,0.62)",
+                      lineHeight: 1.8,
+                      maxWidth: 390,
                 }}
               >
                 David vous contactera dans les plus brefs délais pour discuter
@@ -3976,49 +5049,154 @@ function ContactSection() {
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit}>
-              <FloatingInput label="Votre nom" type="text" />
-              <FloatingInput label="Votre email" type="email" />
-              <FloatingInput
-                label="Type d'événement (mariage, réception…)"
-                type="text"
-              />
-              <FloatingInput label="Lieu de réception" type="text" />
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 2rem" }}>
-                <FloatingInput label="Nombre de personnes" type="number" />
-                <FloatingInput label="Budget envisagé (€)" type="text" />
-              </div>
-              <FloatingInput label="Votre message" multiline />
+                <form className="contact-form" onSubmit={handleSubmit} noValidate>
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "1rem",
+                    }}
+                    className="contact-form-two"
+                  >
+                    <ContactField
+                      label="Votre nom"
+                      name="name"
+                      error={errors.name}
+                      required
+                    />
+                    <ContactField
+                      label="Votre email"
+                      name="email"
+                      type="email"
+                      error={errors.email}
+                      required
+                    />
+                  </div>
+                  <ContactField
+                    label="Type d'événement"
+                    name="eventType"
+                    helper="Mariage, réception privée, dîner, séminaire..."
+                    error={errors.eventType}
+                    required
+                  />
+                  <ContactField
+                    label="Lieu de réception"
+                    name="location"
+                    helper="Ville, domaine ou lieu encore à confirmer."
+                  />
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "1rem",
+                    }}
+                    className="contact-form-two contact-form-compact"
+                  >
+                    <ContactField
+                      label="Invités"
+                      name="guests"
+                      type="number"
+                      helper="Une estimation suffit."
+                    />
+                    <ContactField
+                      label="Date"
+                      name="date"
+                      type="text"
+                      helper="Même approximative."
+                    />
+                  </div>
+                  <ContactField
+                    label="Votre message"
+                    name="message"
+                    textarea
+                    helper="Le style du repas, vos contraintes, vos premières envies."
+                    error={errors.message}
+                    required
+                  />
 
               <motion.button
                 type="submit"
-                whileHover={{ backgroundColor: "var(--gold-light)" }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ duration: 0.2 }}
+                    whileHover={{ backgroundColor: "var(--charcoal)", color: "var(--cream)" }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 160, damping: 18 }}
                 style={{
                   width: "100%",
                   padding: "1.1rem",
                   backgroundColor: "var(--gold)",
-                  color: "var(--dark)",
+                      color: "var(--charcoal)",
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.62rem",
                   letterSpacing: "0.25em",
                   textTransform: "uppercase",
                   fontWeight: 500,
                   border: "none",
-                  marginTop: "0.5rem",
+                      cursor: "pointer",
+                      marginTop: "0.25rem",
                 }}
               >
                 Envoyer la demande
               </motion.button>
             </form>
           )}
+            </div>
         </RevealOnScroll>
+        </div>
       </div>
 
       <style>{`
         @media (max-width: 768px) {
-          .contact-grid { grid-template-columns: 1fr !important; gap: 3.5rem !important; }
+          .contact-section {
+            padding-top: 4.5rem !important;
+            padding-bottom: 4.5rem !important;
+          }
+          .contact-shell {
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+          .contact-grid,
+          .contact-form-two {
+            grid-template-columns: 1fr !important;
+          }
+          .contact-form-compact {
+            grid-template-columns: 1fr 1fr !important;
+          }
+          .contact-grid {
+            gap: 2.5rem !important;
+          }
+          .contact-details {
+            margin-top: 2.25rem !important;
+          }
+          .contact-note {
+            margin-top: 2.25rem !important;
+          }
+          .contact-brief {
+            grid-template-columns: 1fr !important;
+            margin-top: 2rem !important;
+          }
+          .contact-form-panel {
+            padding: 1.15rem !important;
+          }
+        }
+
+        @media (max-width: 430px) {
+          .contact-section h2 {
+            font-size: 2.75rem !important;
+            letter-spacing: 0 !important;
+          }
+          .contact-field input,
+          .contact-field textarea {
+            font-size: 0.84rem !important;
+          }
+          .contact-form {
+            display: grid !important;
+            gap: 0.15rem !important;
+          }
+        }
+
+        @media (max-width: 360px) {
+          .contact-form-compact {
+            grid-template-columns: 1fr !important;
+          }
         }
       `}</style>
     </section>
