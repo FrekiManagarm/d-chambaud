@@ -404,7 +404,9 @@ function ContactField({
           fontSize: "0.58rem",
           letterSpacing: "0.18em",
           textTransform: "uppercase",
-          color: error ? "rgba(245,190,170,0.95)" : "rgba(var(--cream-rgb),0.74)",
+          color: error
+            ? "rgba(245,190,170,0.95)"
+            : "rgba(var(--cream-rgb),0.74)",
           fontWeight: 500,
         }}
       >
@@ -447,7 +449,9 @@ function ContactField({
           fontFamily: "var(--font-montserrat), sans-serif",
           fontSize: "0.68rem",
           lineHeight: 1.45,
-          color: error ? "rgba(245,190,170,0.95)" : "rgba(var(--cream-rgb),0.48)",
+          color: error
+            ? "rgba(245,190,170,0.95)"
+            : "rgba(var(--cream-rgb),0.48)",
         }}
       >
         {error || helper || ""}
@@ -921,7 +925,8 @@ function MarqueeStrip() {
               letterSpacing: item === "·" ? 0 : "0.28em",
               textTransform: "uppercase",
               fontWeight: 400,
-              color: item === "·" ? "var(--gold)" : "rgba(var(--cream-rgb),0.65)",
+              color:
+                item === "·" ? "var(--gold)" : "rgba(var(--cream-rgb),0.65)",
             }}
           >
             {item}
@@ -1069,7 +1074,11 @@ function ValuesSection() {
   return (
     <section
       aria-label="Architecture d'un événement"
-      style={{ backgroundColor: "var(--cream)", paddingBottom: 0, overflow: "hidden" }}
+      style={{
+        backgroundColor: "var(--cream)",
+        paddingBottom: 0,
+        overflow: "hidden",
+      }}
     >
       <div
         style={{
@@ -1204,12 +1213,11 @@ function ValuesSection() {
                     color: "var(--charcoal)",
                   }}
                 >
-                  Gourmand sans lourdeur, précis sans froideur.
+                  Gourmandise, élégance, précision ...
                 </p>
               </div>
             </div>
           </RevealOnScroll>
-
         </div>
         <div style={{ borderTop: "1px solid rgba(var(--bronze-rgb),0.18)" }}>
           <ValueBand
@@ -1370,24 +1378,24 @@ function StatsSection() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
             borderTop: "1px solid rgba(var(--bronze-rgb),0.16)",
             borderBottom: "1px solid rgba(var(--bronze-rgb),0.16)",
           }}
           className="stats-grid"
         >
           <CountUpStat
-            value={18}
+            value={25}
             suffix=" ans"
-            label="Maison fondée"
-            detail="Depuis 2008"
+            label="d'expérience"
+            detail="Maison fondée en 2008"
             delay={0}
             border
           />
           <CountUpStat
-            value={420}
+            value={500}
             suffix="+"
-            label="Réceptions servies"
+            label="Prestations servies"
             detail="Mariages, domaines, séminaires"
             delay={0.12}
             border
@@ -1398,6 +1406,14 @@ function StatsSection() {
             label="Premier retour"
             detail="Pour cadrer votre demande"
             delay={0.24}
+            border
+          />
+          <CountUpStat
+            value={99}
+            suffix="%"
+            label="Clients satisfaits"
+            detail="Recommandation & fidélité"
+            delay={0.48}
             border={false}
           />
         </div>
@@ -1989,7 +2005,7 @@ function ServicesSection() {
               >
                 Le bon format
                 <br />
-                pour votre moment.
+                pour votre évènement.
               </h2>
             </HeadingReveal>
           </div>
@@ -2067,10 +2083,19 @@ function ServicesSection() {
         </RevealOnScroll>
         <div style={{ borderTop: "1px solid rgba(var(--charcoal-rgb),0.13)" }}>
           {[
-            ["Repérage", "Lieu, accès, cuisine, météo, contraintes du domaine."],
-            ["Calage", "Quantités, timing, allergies, mobilier et équipe de salle."],
+            [
+              "Repérage",
+              "Lieu, accès, cuisine, météo, contraintes du domaine.",
+            ],
+            [
+              "Calage",
+              "Quantités, timing, allergies, mobilier et équipe de salle.",
+            ],
             ["Service", "Cocktail, repas, transitions, dernières assiettes."],
-            ["Après", "Brunch, retour de matériel, fin propre et sans tension."],
+            [
+              "Après",
+              "Brunch, retour de matériel, fin propre et sans tension.",
+            ],
           ].map(([title, desc], i) => (
             <RevealOnScroll key={title} variant={fadeUp} custom={i}>
               <div
@@ -2230,7 +2255,8 @@ const formulasByTab = {
       unit: "€ / pers.",
       sub: "Dîner en 3 services",
       tone: "Une première expérience à domicile, claire et élégante.",
-      detail: "Entrée, plat, dessert, produits locaux et inspiration du moment.",
+      detail:
+        "Entrée, plat, dessert, produits locaux et inspiration du moment.",
       features: [
         "Entrée, plat, dessert",
         "Devis sur mesure",
@@ -2246,7 +2272,8 @@ const formulasByTab = {
       unit: "€ / pers.",
       sub: "Expérience complète",
       tone: "Un dîner plus construit, pensé comme une vraie séquence.",
-      detail: "Rythme, dressage, produits choisis et accord mets & vins possible.",
+      detail:
+        "Rythme, dressage, produits choisis et accord mets & vins possible.",
       features: [
         "Devis sur mesure",
         "Produits locaux et saisonniers",
@@ -2450,7 +2477,9 @@ function FormulaRow({
           minWidth: 172,
         }}
       >
-        <div style={{ display: "flex", alignItems: "baseline", gap: "0.35rem" }}>
+        <div
+          style={{ display: "flex", alignItems: "baseline", gap: "0.35rem" }}
+        >
           <span
             style={{
               fontFamily: "var(--font-cormorant), serif",
@@ -2567,7 +2596,8 @@ function FormulasSection() {
                 }}
               >
                 Les prix donnent un point de départ. Le devis affine ensuite le
-                menu, l&apos;équipe, le matériel et le rythme réel de votre journée.
+                menu, l&apos;équipe, le matériel et le rythme réel de votre
+                journée.
               </p>
             </RevealOnScroll>
           </div>
@@ -2601,7 +2631,9 @@ function FormulasSection() {
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
                     fontWeight: 500,
-                    color: isActive ? "var(--charcoal)" : "rgba(var(--charcoal-rgb),0.42)",
+                    color: isActive
+                      ? "var(--charcoal)"
+                      : "rgba(var(--charcoal-rgb),0.42)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -2620,7 +2652,11 @@ function FormulasSection() {
                         height: 1,
                         backgroundColor: "var(--gold)",
                       }}
-                      transition={{ type: "spring", stiffness: 280, damping: 28 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 280,
+                        damping: 28,
+                      }}
                     />
                   )}
                 </button>
@@ -2666,7 +2702,11 @@ function FormulasSection() {
           </div>
 
           <AnimatePresence mode="wait">
-            <motion.div key={activeTab} className="formula-grid" style={{ display: "grid" }}>
+            <motion.div
+              key={activeTab}
+              className="formula-grid"
+              style={{ display: "grid" }}
+            >
               {currentFormulas.map((formula, index) => (
                 <FormulaRow key={formula.name} f={formula} index={index} />
               ))}
@@ -3160,7 +3200,11 @@ function GallerySection() {
 
               <div
                 className="gallery-controls"
-                style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}
+                style={{
+                  display: "flex",
+                  gap: "0.75rem",
+                  alignItems: "center",
+                }}
               >
                 <motion.button
                   type="button"
@@ -3219,7 +3263,10 @@ function GallerySection() {
             </div>
           </div>
 
-          <div className="gallery-stage" style={{ position: "relative", minHeight: 650 }}>
+          <div
+            className="gallery-stage"
+            style={{ position: "relative", minHeight: 650 }}
+          >
             {[
               { item: prevItem, side: "left", index: current - 1 },
               { item: nextItem, side: "right", index: current + 1 },
@@ -3825,7 +3872,8 @@ function PavillonSection() {
                     className="pavillon-point"
                     style={{
                       display: "grid",
-                      gridTemplateColumns: "minmax(140px, 0.32fr) minmax(0, 1fr)",
+                      gridTemplateColumns:
+                        "minmax(140px, 0.32fr) minmax(0, 1fr)",
                       gap: "1.4rem",
                       padding: "1.2rem 0",
                       borderBottom:
@@ -3967,8 +4015,14 @@ function PavillonSection() {
               }}
             >
               {[
-                ["/Pavillon-71.jpg", "Détail intérieur du Pavillon des Millésimes"],
-                ["/Pavillon-73.jpg", "Salon et atmosphère du Pavillon des Millésimes"],
+                [
+                  "/Pavillon-71.jpg",
+                  "Détail intérieur du Pavillon des Millésimes",
+                ],
+                [
+                  "/Pavillon-73.jpg",
+                  "Salon et atmosphère du Pavillon des Millésimes",
+                ],
                 ["/pavillon-facade.jpg", "Façade du Pavillon des Millésimes"],
               ].map(([src, alt]) => (
                 <div
@@ -4076,8 +4130,7 @@ const testimonials = [
     source: "site",
   },
   {
-    quote:
-      "A unique experience and exceptional welcoming.",
+    quote: "A unique experience and exceptional welcoming.",
     author: "Jeremy Enaud",
     occasion: "Pavillon des Millésimes · Août 2025",
     source: "tripadvisor",
@@ -4111,15 +4164,13 @@ const testimonials = [
     source: "tripadvisor",
   },
   {
-    quote:
-      "What a wonderful time we had. Thank you to Nathalie and David.",
+    quote: "What a wonderful time we had. Thank you to Nathalie and David.",
     author: "Isabelle I.",
     occasion: "Pavillon des Millésimes · Août 2025",
     source: "tripadvisor",
   },
   {
-    quote:
-      "I couldn't recommend Pavillon more highly.",
+    quote: "I couldn't recommend Pavillon more highly.",
     author: "James M.",
     occasion: "Pavillon des Millésimes · Mars 2025",
     source: "tripadvisor",
@@ -4161,7 +4212,10 @@ function TestimonialCard({
           gap: "1rem",
         }}
       >
-        <div aria-label="Note de cinq étoiles" style={{ display: "flex", gap: 3 }}>
+        <div
+          aria-label="Note de cinq étoiles"
+          style={{ display: "flex", gap: 3 }}
+        >
           {Array.from({ length: 5 }).map((_, j) => (
             <Star key={j} size={11} fill="var(--gold)" color="var(--gold)" />
           ))}
@@ -4782,109 +4836,109 @@ function ContactSection() {
         <div
           className="contact-grid"
           style={{
-          display: "grid",
+            display: "grid",
             gridTemplateColumns: "minmax(0, 0.78fr) minmax(360px, 0.72fr)",
             gap: "5rem",
-          alignItems: "start",
+            alignItems: "start",
           }}
         >
           <div className="contact-intro">
-          <RevealOnScroll variant={fadeUp}>
+            <RevealOnScroll variant={fadeUp}>
               <Eyebrow>Contact</Eyebrow>
-          </RevealOnScroll>
-          <HeadingReveal delay={0.08}>
-            <h2
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
+            </RevealOnScroll>
+            <HeadingReveal delay={0.08}>
+              <h2
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(3rem, 6vw, 5.7rem)",
-                fontStyle: "italic",
-                fontWeight: 300,
+                  fontStyle: "italic",
+                  fontWeight: 300,
                   lineHeight: 0.96,
                   color: "var(--charcoal)",
                   letterSpacing: 0,
                   marginTop: "1rem",
-              }}
-            >
+                }}
+              >
                 Une date,
-              <br />
+                <br />
                 un lieu, une envie.
-            </h2>
-          </HeadingReveal>
+              </h2>
+            </HeadingReveal>
 
-          <RevealOnScroll variant={fadeUp} custom={2}>
-            <p
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
+            <RevealOnScroll variant={fadeUp} custom={2}>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.92rem",
-                fontWeight: 300,
+                  fontWeight: 300,
                   color: "rgba(var(--charcoal-rgb),0.64)",
                   lineHeight: 1.9,
                   maxWidth: 540,
                   marginTop: "1.5rem",
-              }}
-            >
-                Racontez-nous l&apos;ambiance, le nombre d&apos;invités, vos goûts
-                et ce qui compte le plus pour vous. David vous aide ensuite à
-                transformer l&apos;idée en réception concrète.
-            </p>
-          </RevealOnScroll>
+                }}
+              >
+                Racontez-nous l&apos;ambiance, le nombre d&apos;invités, vos
+                goûts et ce qui compte le plus pour vous. David vous aide
+                ensuite à transformer l&apos;idée en réception concrète.
+              </p>
+            </RevealOnScroll>
 
-          <RevealOnScroll variant={fadeUp} custom={3}>
-            <div
+            <RevealOnScroll variant={fadeUp} custom={3}>
+              <div
                 className="contact-details"
-              style={{
+                style={{
                   display: "grid",
                   gap: "1.15rem",
                   marginTop: "3rem",
                   paddingTop: "1.5rem",
                   borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
-              }}
-            >
-              {[
-                {
-                  href: "tel:+33650754406",
-                  icon: (
+                }}
+              >
+                {[
+                  {
+                    href: "tel:+33650754406",
+                    icon: (
                       <Phone size={15} color="var(--gold)" strokeWidth={1.5} />
-                  ),
-                  label: "+33 6 50 75 44 06",
+                    ),
+                    label: "+33 6 50 75 44 06",
                     meta: "Téléphone",
-                },
-                {
-                  href: "mailto:contact@david-chambaud.fr",
-                  icon: (
+                  },
+                  {
+                    href: "mailto:contact@david-chambaud.fr",
+                    icon: (
                       <Mail size={15} color="var(--gold)" strokeWidth={1.5} />
-                  ),
-                  label: "contact@david-chambaud.fr",
+                    ),
+                    label: "contact@david-chambaud.fr",
                     meta: "Email",
-                },
-                {
-                  href: "https://www.instagram.com/chambauddavid",
-                  icon: <IconInstagram size={14} color="var(--gold)" />,
-                  label: "@chambauddavid",
+                  },
+                  {
+                    href: "https://www.instagram.com/chambauddavid",
+                    icon: <IconInstagram size={14} color="var(--gold)" />,
+                    label: "@chambauddavid",
                     meta: "Instagram",
-                },
-              ].map((item) => (
-                <motion.a
-                  key={item.label}
-                  href={item.href}
-                  target={item.href.startsWith("http") ? "_blank" : undefined}
-                  rel={
-                    item.href.startsWith("http")
-                      ? "noopener noreferrer"
-                      : undefined
-                  }
+                  },
+                ].map((item) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={
+                      item.href.startsWith("http")
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
                     whileHover={{ x: 4 }}
                     whileTap={{ scale: 0.99 }}
                     transition={{ type: "spring", stiffness: 160, damping: 18 }}
-                  style={{
+                    style={{
                       display: "grid",
                       gridTemplateColumns: "1.8rem 1fr",
                       gap: "0.8rem",
                       alignItems: "center",
                       color: "var(--charcoal)",
-                    textDecoration: "none",
-                  }}
-                >
+                      textDecoration: "none",
+                    }}
+                  >
                     <span aria-hidden>{item.icon}</span>
                     <span>
                       <span
@@ -4910,99 +4964,102 @@ function ContactSection() {
                         {item.label}
                       </span>
                     </span>
-                </motion.a>
-              ))}
-            </div>
-          </RevealOnScroll>
+                  </motion.a>
+                ))}
+              </div>
+            </RevealOnScroll>
 
             <RevealOnScroll variant={fadeUp} custom={4}>
-            <div
+              <div
                 className="contact-note"
-              style={{
+                style={{
                   marginTop: "3rem",
                   display: "grid",
                   gridTemplateColumns: "auto 1fr",
                   gap: "1rem",
                   alignItems: "start",
                   color: "rgba(var(--charcoal-rgb),0.62)",
-              }}
-            >
-              <div
-                  aria-hidden
-                style={{
-                  width: 28,
-                  height: 1,
-                  backgroundColor: "var(--gold)",
-                    marginTop: "0.65rem",
                 }}
-              />
+              >
+                <div
+                  aria-hidden
+                  style={{
+                    width: 28,
+                    height: 1,
+                    backgroundColor: "var(--gold)",
+                    marginTop: "0.65rem",
+                  }}
+                />
                 <p
-                style={{
+                  style={{
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.78rem",
                     lineHeight: 1.75,
                     maxWidth: 430,
-                }}
-              >
+                  }}
+                >
                   Réponse généralement sous 24 à 48 h ouvrées. Pour un mariage
                   ou une demande proche, le téléphone reste le plus direct.
                 </p>
-            </div>
-          </RevealOnScroll>
+              </div>
+            </RevealOnScroll>
 
-          <RevealOnScroll variant={fadeUp} custom={5}>
-            <div
-              className="contact-brief"
-              style={{
-                marginTop: "2.5rem",
-                display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                gap: "0.75rem",
-              }}
-            >
-              {[
-                ["Le lieu", "Domaine, maison, salle ou lieu à confirmer."],
-                ["Le rythme", "Cocktail, dîner, brunch, retour de soirée."],
-                ["Les invités", "Nombre approximatif, enfants, régimes."],
-                ["L'envie", "Champêtre, gastronomique, familial, très festif."],
-              ].map(([title, desc]) => (
-                <div
-                  key={title}
-                  style={{
-                    padding: "1rem",
-                    border: "1px solid rgba(var(--charcoal-rgb),0.1)",
-                    backgroundColor: "rgba(var(--cream-rgb),0.34)",
-                  }}
-                >
-                  <p
+            <RevealOnScroll variant={fadeUp} custom={5}>
+              <div
+                className="contact-brief"
+                style={{
+                  marginTop: "2.5rem",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                  gap: "0.75rem",
+                }}
+              >
+                {[
+                  ["Le lieu", "Domaine, maison, salle ou lieu à confirmer."],
+                  ["Le rythme", "Cocktail, dîner, brunch, retour de soirée."],
+                  ["Les invités", "Nombre approximatif, enfants, régimes."],
+                  [
+                    "L'envie",
+                    "Champêtre, gastronomique, familial, très festif.",
+                  ],
+                ].map(([title, desc]) => (
+                  <div
+                    key={title}
                     style={{
-                      fontFamily: "var(--font-montserrat), sans-serif",
-                      fontSize: "0.56rem",
-                      letterSpacing: "0.18em",
-                      textTransform: "uppercase",
-                      color: "var(--gold)",
-                      marginBottom: "0.45rem",
+                      padding: "1rem",
+                      border: "1px solid rgba(var(--charcoal-rgb),0.1)",
+                      backgroundColor: "rgba(var(--cream-rgb),0.34)",
                     }}
                   >
-                    {title}
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-montserrat), sans-serif",
-                      fontSize: "0.76rem",
-                      lineHeight: 1.55,
-                      color: "rgba(var(--charcoal-rgb),0.58)",
-                    }}
-                  >
-                    {desc}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </RevealOnScroll>
-        </div>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontSize: "0.56rem",
+                        letterSpacing: "0.18em",
+                        textTransform: "uppercase",
+                        color: "var(--gold)",
+                        marginBottom: "0.45rem",
+                      }}
+                    >
+                      {title}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontSize: "0.76rem",
+                        lineHeight: 1.55,
+                        color: "rgba(var(--charcoal-rgb),0.58)",
+                      }}
+                    >
+                      {desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </RevealOnScroll>
+          </div>
 
-        <RevealOnScroll variant={fadeUp} custom={1}>
+          <RevealOnScroll variant={fadeUp} custom={1}>
             <div
               className="contact-form-panel"
               style={{
@@ -5015,51 +5072,55 @@ function ContactSection() {
               }}
             >
               {submitted ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              style={{
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  style={{
                     minHeight: 420,
                     display: "grid",
                     alignContent: "center",
                     justifyItems: "start",
                     gap: "1rem",
-              }}
-            >
-              <div
-                style={{
+                  }}
+                >
+                  <div
+                    style={{
                       width: 42,
                       height: 1,
                       backgroundColor: "var(--gold)",
-                }}
+                    }}
                   />
-              <p
-                style={{
-                  fontFamily: "var(--font-cormorant), serif",
+                  <p
+                    style={{
+                      fontFamily: "var(--font-cormorant), serif",
                       fontSize: "2.15rem",
-                  fontStyle: "italic",
+                      fontStyle: "italic",
                       color: "var(--cream)",
                       lineHeight: 1,
-                }}
-              >
-                Message envoyé
-              </p>
-              <p
-                style={{
-                  fontFamily: "var(--font-montserrat), sans-serif",
+                    }}
+                  >
+                    Message envoyé
+                  </p>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
                       fontSize: "0.82rem",
-                  fontWeight: 300,
+                      fontWeight: 300,
                       color: "rgba(var(--cream-rgb),0.62)",
                       lineHeight: 1.8,
                       maxWidth: 390,
-                }}
-              >
-                David vous contactera dans les plus brefs délais pour discuter
-                de votre événement.
-              </p>
-            </motion.div>
-          ) : (
-                <form className="contact-form" onSubmit={handleSubmit} noValidate>
+                    }}
+                  >
+                    David vous contactera dans les plus brefs délais pour
+                    discuter de votre événement.
+                  </p>
+                </motion.div>
+              ) : (
+                <form
+                  className="contact-form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                >
                   <div
                     style={{
                       display: "grid",
@@ -5124,34 +5185,37 @@ function ContactSection() {
                     required
                   />
 
-              <motion.button
-                type="submit"
-                    whileHover={{ backgroundColor: "var(--cream)", color: "var(--charcoal)" }}
+                  <motion.button
+                    type="submit"
+                    whileHover={{
+                      backgroundColor: "var(--cream)",
+                      color: "var(--charcoal)",
+                    }}
                     whileTap={{ scale: 0.98 }}
                     transition={{ type: "spring", stiffness: 160, damping: 18 }}
-                style={{
-                  width: "100%",
-                  padding: "1.1rem",
-                  backgroundColor: "var(--gold)",
+                    style={{
+                      width: "100%",
+                      padding: "1.1rem",
+                      backgroundColor: "var(--gold)",
                       color: "var(--charcoal)",
-                  fontFamily: "var(--font-montserrat), sans-serif",
-                  fontSize: "0.62rem",
-                  letterSpacing: "0.25em",
-                  textTransform: "uppercase",
-                  fontWeight: 500,
-                  border: "1px solid rgba(var(--gold-rgb),0.72)",
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "0.62rem",
+                      letterSpacing: "0.25em",
+                      textTransform: "uppercase",
+                      fontWeight: 500,
+                      border: "1px solid rgba(var(--gold-rgb),0.72)",
                       cursor: "pointer",
                       marginTop: "0.25rem",
                       boxShadow:
                         "inset 0 1px 0 rgba(255,255,255,0.2), 0 16px 34px -28px rgba(var(--dark-rgb),0.76)",
-                }}
-              >
-                Envoyer la demande
-              </motion.button>
-            </form>
-          )}
+                    }}
+                  >
+                    Envoyer la demande
+                  </motion.button>
+                </form>
+              )}
             </div>
-        </RevealOnScroll>
+          </RevealOnScroll>
         </div>
       </div>
 
