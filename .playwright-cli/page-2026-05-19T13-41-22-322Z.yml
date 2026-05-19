@@ -1,0 +1,693 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - paragraph [ref=e6]: David Chambaud
+    - paragraph [ref=e7]: Traiteur & Chef à Domicile
+  - banner [ref=e9]:
+    - generic [ref=e10]:
+      - link "David Chambaud" [ref=e11] [cursor=pointer]:
+        - /url: "#"
+        - img "David Chambaud" [ref=e12]
+      - navigation [ref=e13]:
+        - link "Maison" [ref=e14] [cursor=pointer]:
+          - /url: "#a-propos"
+        - link "Services" [ref=e15] [cursor=pointer]:
+          - /url: "#services"
+        - link "Galerie" [ref=e16] [cursor=pointer]:
+          - /url: "#galerie"
+        - link "Formules" [ref=e17] [cursor=pointer]:
+          - /url: "#formules"
+        - link "Témoignages" [ref=e18] [cursor=pointer]:
+          - /url: "#temoignages"
+        - link "Devis" [ref=e19] [cursor=pointer]:
+          - /url: "#contact"
+  - main [ref=e20]:
+    - region "Accueil" [ref=e21]:
+      - generic:
+        - paragraph: Chambaud
+      - generic [ref=e24]:
+        - paragraph [ref=e25]: Nouvelle‑Aquitaine · Bordeaux
+        - heading "L'Art de la Gastronomie — David Chambaud, Traiteur & Chef à Domicile en Nouvelle-Aquitaine" [level=1] [ref=e26]
+        - generic [ref=e27]:
+          - generic [ref=e28]:
+            - generic [ref=e30]: L
+            - generic [ref=e32]: "'"
+            - generic [ref=e34]: A
+            - generic [ref=e36]: r
+            - generic [ref=e38]: t
+          - generic [ref=e39]:
+            - generic [ref=e41]: d
+            - generic [ref=e43]: e
+          - generic [ref=e44]:
+            - generic [ref=e46]: l
+            - generic [ref=e48]: a
+        - generic [ref=e49]:
+          - generic [ref=e51]: G
+          - generic [ref=e53]: a
+          - generic [ref=e55]: s
+          - generic [ref=e57]: t
+          - generic [ref=e59]: r
+          - generic [ref=e61]: o
+          - generic [ref=e63]: "n"
+          - generic [ref=e65]: o
+          - generic [ref=e67]: m
+          - generic [ref=e69]: i
+          - generic [ref=e71]: e
+        - paragraph [ref=e72]: L'histoire d'une cuisine gourmande
+        - paragraph [ref=e73]: Traiteur · Chef à Domicile · Réceptions · Mariages
+        - generic [ref=e74]:
+          - link "Demander un Devis" [ref=e75] [cursor=pointer]:
+            - /url: "#contact"
+          - link "Découvrir" [ref=e76] [cursor=pointer]:
+            - /url: "#services"
+      - generic [ref=e77]:
+        - generic [ref=e78]: Défiler
+        - img [ref=e80]
+    - generic [ref=e83]:
+      - generic [ref=e84]: Mariages qui ont du goût
+      - generic [ref=e85]: ·
+      - generic [ref=e86]: Cocktails nets
+      - generic [ref=e87]: ·
+      - generic [ref=e88]: Dîners privés
+      - generic [ref=e89]: ·
+      - generic [ref=e90]: Service précis
+      - generic [ref=e91]: ·
+      - generic [ref=e92]: Tables gourmandes
+      - generic [ref=e93]: ·
+      - generic [ref=e94]: Produits de saison
+      - generic [ref=e95]: ·
+      - generic [ref=e96]: Pavillon des Millésimes
+      - generic [ref=e97]: ·
+      - generic [ref=e98]: Nouvelle‑Aquitaine
+      - generic [ref=e99]: ·
+      - generic [ref=e100]: Mariages qui ont du goût
+      - generic [ref=e101]: ·
+      - generic [ref=e102]: Cocktails nets
+      - generic [ref=e103]: ·
+      - generic [ref=e104]: Dîners privés
+      - generic [ref=e105]: ·
+      - generic [ref=e106]: Service précis
+      - generic [ref=e107]: ·
+      - generic [ref=e108]: Tables gourmandes
+      - generic [ref=e109]: ·
+      - generic [ref=e110]: Produits de saison
+      - generic [ref=e111]: ·
+      - generic [ref=e112]: Pavillon des Millésimes
+      - generic [ref=e113]: ·
+      - generic [ref=e114]: Nouvelle‑Aquitaine
+      - generic [ref=e115]: ·
+    - region "À propos de David Chambaud" [ref=e116]:
+      - generic [ref=e117]:
+        - img "David Chambaud, chef traiteur en Nouvelle-Aquitaine" [ref=e121]
+        - generic [ref=e127]:
+          - paragraph [ref=e129]: À Propos
+          - heading "Le chef que l'on choisit quand le repas compte vraiment." [level=2] [ref=e132]:
+            - text: Le chef que l'on choisit
+            - text: quand le repas compte vraiment.
+          - paragraph [ref=e134]: David Chambaud accompagne les mariages, réceptions privées et événements professionnels avec une cuisine lisible, généreuse et tenue jusqu'au dernier service.
+          - paragraph [ref=e136]: "Son approche réunit le goût du produit, l'exigence du dressage et une organisation discrète: les invités voient la fluidité, jamais la mécanique."
+          - generic [ref=e138]:
+            - blockquote [ref=e139]: "« Un événement réussi se reconnaît à ce que les invités ressentent: le plaisir, le rythme, l'évidence. »"
+            - paragraph [ref=e140]: — David Chambaud
+          - link "Prendre contact" [ref=e142] [cursor=pointer]:
+            - /url: "#contact"
+            - generic [ref=e143]: Prendre contact
+            - img [ref=e144]
+    - region "Architecture d'un événement" [ref=e146]:
+      - generic [ref=e147]:
+        - generic [ref=e148]:
+          - generic [ref=e149]:
+            - paragraph [ref=e151]: Scénographie culinaire
+            - heading "Un repas ne se pose pas sur une table." [level=2] [ref=e154]:
+              - text: Un repas ne se pose pas
+              - text: sur une table.
+            - paragraph [ref=e156]: "Il se construit comme une progression: l'arrivée, la première bouchée, le plat que l'on attend, le dessert qui signe la soirée. C'est cette montée que David dessine."
+          - generic [ref=e158]:
+            - img "Bouchée gastronomique signée David Chambaud" [ref=e160]
+            - img "Dressage d'assiette pour réception" [ref=e162]
+            - generic [ref=e163]:
+              - paragraph [ref=e164]: Signature
+              - paragraph [ref=e165]: Gourmandise, élégance, précision ...
+        - generic [ref=e166]:
+          - generic [ref=e167]:
+            - generic: "01"
+            - generic [ref=e168]:
+              - generic [ref=e170]:
+                - paragraph [ref=e171]: "01"
+                - heading "L'arrivée donne le ton" [level=3] [ref=e172]
+              - paragraph [ref=e174]: Un cocktail qui se lit vite, circule bien et installe l'énergie de la fête sans bloquer les invités autour d'un buffet.
+          - generic [ref=e175]:
+            - generic: "02"
+            - generic [ref=e176]:
+              - generic [ref=e178]:
+                - paragraph [ref=e179]: "02"
+                - heading "Le dîner tient la salle" [level=3] [ref=e180]
+              - paragraph [ref=e182]: Cuissons, envois, dressages et transitions sont pensés pour garder le repas vivant, même avec une grande tablée.
+          - generic [ref=e183]:
+            - generic: "03"
+            - generic [ref=e184]:
+              - generic [ref=e186]:
+                - paragraph [ref=e187]: "03"
+                - heading "La fin reste en bouche" [level=3] [ref=e188]
+              - paragraph [ref=e190]: "Desserts, fromages, brunch ou retour de soirée: les derniers moments gardent la même attention que la première coupe."
+      - img "Gastronomie — produits du terroir aquitain" [ref=e192]
+    - region "Preuves et méthode" [ref=e195]:
+      - generic [ref=e196]:
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - paragraph [ref=e200]: Ce que vous achetez vraiment
+            - heading "Du calme pendant l'intense." [level=2] [ref=e203]:
+              - text: Du calme
+              - text: pendant l'intense.
+          - paragraph [ref=e205]: Le jour d'un mariage, tout bouge. La valeur d'un traiteur, c'est de rendre la cuisine invisible dans l'effort et évidente dans le plaisir.
+        - generic [ref=e206]:
+          - generic [ref=e207]:
+            - paragraph [ref=e208]: 0 ans
+            - paragraph [ref=e209]: d'expérience
+            - paragraph [ref=e210]: Maison fondée en 2008
+          - generic [ref=e211]:
+            - paragraph [ref=e212]: 0+
+            - paragraph [ref=e213]: Prestations servies
+            - paragraph [ref=e214]: Mariages, domaines, séminaires
+          - generic [ref=e215]:
+            - paragraph [ref=e216]: 0h
+            - paragraph [ref=e217]: Premier retour
+            - paragraph [ref=e218]: Pour cadrer votre demande
+          - generic [ref=e219]:
+            - paragraph [ref=e220]: 0%
+            - paragraph [ref=e221]: Clients satisfaits
+            - paragraph [ref=e222]: Recommandation & fidélité
+    - generic [ref=e223]:
+      - generic [ref=e224]:
+        - generic [ref=e225]:
+          - paragraph [ref=e227]: Références
+          - heading "Des lieux exigeants, des repas remarqués." [level=2] [ref=e230]:
+            - text: Des lieux exigeants,
+            - text: des repas remarqués.
+        - paragraph [ref=e232]: "Châteaux, domaines viticoles, entreprises et institutions: le décor change, l'exigence reste la même."
+      - generic [ref=e234]:
+        - img "Château Le Puy" [ref=e236]
+        - img "Château Les Carmes Haut-Brion" [ref=e238]
+        - img "Château Faugères" [ref=e240]
+        - img "Château Grand Arnaud" [ref=e242]
+        - img "Château de Seguin" [ref=e244]
+        - img "Franc Mayne" [ref=e246]
+        - img "Château Montlabert" [ref=e248]
+        - img "LACES Bordeaux" [ref=e250]
+        - img "Société Générale" [ref=e252]
+        - img "Vinci Energies" [ref=e254]
+        - img "Partenaire" [ref=e256]
+        - img "Partenaire" [ref=e258]
+        - img "Ville de Bordeaux" [ref=e260]
+        - img "Bordeaux 2025" [ref=e262]
+        - img "Château Pape Clément" [ref=e264]
+        - img "Partenaire" [ref=e266]
+        - img "Château Le Puy" [ref=e268]
+        - img "Château Les Carmes Haut-Brion" [ref=e270]
+        - img "Château Faugères" [ref=e272]
+        - img "Château Grand Arnaud" [ref=e274]
+        - img "Château de Seguin" [ref=e276]
+        - img "Franc Mayne" [ref=e278]
+        - img "Château Montlabert" [ref=e280]
+        - img "LACES Bordeaux" [ref=e282]
+        - img "Société Générale" [ref=e284]
+        - img "Vinci Energies" [ref=e286]
+        - img "Partenaire" [ref=e288]
+        - img "Partenaire" [ref=e290]
+        - img "Ville de Bordeaux" [ref=e292]
+        - img "Bordeaux 2025" [ref=e294]
+        - img "Château Pape Clément" [ref=e296]
+        - img "Partenaire" [ref=e298]
+    - region "Nos prestations" [ref=e299]:
+      - generic [ref=e301]:
+        - generic [ref=e302]:
+          - paragraph [ref=e304]: Nos Prestations
+          - heading "Le bon format pour votre évènement." [level=2] [ref=e307]:
+            - text: Le bon format
+            - text: pour votre évènement.
+        - paragraph [ref=e309]: "Pas de formule plaquée: le service, les quantités et le rythme s'adaptent au lieu, à la météo et au style de vos invités."
+      - generic [ref=e310]:
+        - generic [ref=e311] [cursor=pointer]:
+          - generic:
+            - generic:
+              - generic: "01"
+              - generic: Traiteur
+          - generic [ref=e313]:
+            - paragraph [ref=e315]: 01 · Réceptions
+            - heading "Traiteur" [level=3] [ref=e316]
+            - paragraph [ref=e317]: Cocktails dinatoires, buffets dessinés pour circuler, repas assis et formats hybrides pour donner du relief à vos invités.
+            - link "Demander un devis" [ref=e318]:
+              - /url: "#contact"
+              - generic [ref=e319]: Demander un devis
+              - img [ref=e320]
+        - generic [ref=e324] [cursor=pointer]:
+          - generic:
+            - generic:
+              - generic: "02"
+              - generic: Mariages
+          - generic:
+            - paragraph: 02 · Célébrations
+            - heading "Mariages" [level=3]
+            - paragraph: Du vin d'honneur au dîner puis au brunch, une prestation pensée pour tenir la journée sans perdre la gourmandise.
+            - link "Demander un devis":
+              - /url: "#contact"
+              - generic: Demander un devis
+              - img
+        - generic [ref=e329] [cursor=pointer]:
+          - generic:
+            - generic:
+              - generic: "03"
+              - generic: Chef à Domicile
+          - generic:
+            - paragraph: 03 · Service Privé
+            - heading "Chef à Domicile" [level=3]
+            - paragraph: Une expérience à la maison, en petit comité, avec le confort d'un service précis et l'intensité d'une vraie table.
+            - link "Demander un devis":
+              - /url: "#contact"
+              - generic: Demander un devis
+              - img
+        - generic [ref=e334] [cursor=pointer]:
+          - generic:
+            - generic:
+              - generic: "04"
+              - generic: Réceptions
+          - generic:
+            - paragraph: 04 · Tous Événements
+            - heading "Réceptions" [level=3]
+            - paragraph: "Séminaires, baptêmes, anniversaires, lancements: une cuisine qui rassemble sans faire perdre le fil de l'événement."
+            - link "Demander un devis":
+              - /url: "#contact"
+              - generic: Demander un devis
+              - img
+      - generic [ref=e339]:
+        - generic [ref=e341]:
+          - paragraph [ref=e342]: Le déroulé
+          - heading "Une équipe qui sait quand apparaître." [level=3] [ref=e343]
+        - generic [ref=e344]:
+          - generic [ref=e346]:
+            - generic [ref=e347]: "01"
+            - paragraph [ref=e348]: Repérage
+            - paragraph [ref=e349]: Lieu, accès, cuisine, météo, contraintes du domaine.
+          - generic [ref=e351]:
+            - generic [ref=e352]: "02"
+            - paragraph [ref=e353]: Calage
+            - paragraph [ref=e354]: Quantités, timing, allergies, mobilier et équipe de salle.
+          - generic [ref=e356]:
+            - generic [ref=e357]: "03"
+            - paragraph [ref=e358]: Service
+            - paragraph [ref=e359]: Cocktail, repas, transitions, dernières assiettes.
+          - generic [ref=e361]:
+            - generic [ref=e362]: "04"
+            - paragraph [ref=e363]: Après
+            - paragraph [ref=e364]: Brunch, retour de matériel, fin propre et sans tension.
+    - region "Nos réalisations" [ref=e365]:
+      - generic [ref=e366]:
+        - generic [ref=e367]:
+          - generic [ref=e368]:
+            - paragraph [ref=e370]: Nos Réalisations
+            - heading "Des images qui donnent faim." [level=2] [ref=e373]:
+              - text: Des images qui
+              - text: donnent faim.
+          - paragraph [ref=e375]: Une galerie vivante, entre gestes de service, dressages nets et tables prêtes à recevoir.
+        - generic [ref=e376]:
+          - generic [ref=e377]:
+            - generic [ref=e378]:
+              - generic [ref=e379]:
+                - generic [ref=e380]: "01"
+                - generic [ref=e381]: sur 09
+              - generic [ref=e382]:
+                - paragraph [ref=e383]: Précision froide, dressage minute
+                - heading "Bouchées signature" [level=3] [ref=e384]
+            - generic [ref=e388]:
+              - button "Voir la photo precedente" [ref=e389] [cursor=pointer]:
+                - img [ref=e390]
+              - button "Voir la photo suivante" [ref=e392] [cursor=pointer]:
+                - img [ref=e393]
+          - generic [ref=e395]:
+            - button "Voir la photo precedente" [ref=e396] [cursor=pointer]
+            - button "Voir la photo suivante" [ref=e398] [cursor=pointer]
+            - generic [ref=e400]:
+              - img "Réalisation culinaire"
+              - generic [ref=e401]:
+                - generic [ref=e402]:
+                  - paragraph [ref=e403]: Réalisation culinaire
+                  - paragraph [ref=e404]: Bouchées signature
+                - generic [ref=e405]: Glisser
+        - generic [ref=e406]:
+          - list "Choisir une photo" [ref=e407]:
+            - listitem "Voir Bouchées signature" [ref=e408] [cursor=pointer]
+            - listitem "Voir Tables en scène" [ref=e410] [cursor=pointer]
+            - listitem "Voir Assiette composée" [ref=e411] [cursor=pointer]
+            - listitem "Voir Service en mouvement" [ref=e412] [cursor=pointer]
+            - listitem "Voir Pièce graphique" [ref=e413] [cursor=pointer]
+            - listitem "Voir Dressage gastronomique" [ref=e414] [cursor=pointer]
+            - listitem "Voir Buffet d'exception" [ref=e415] [cursor=pointer]
+            - listitem "Voir Table d'accueil" [ref=e416] [cursor=pointer]
+            - listitem "Voir Dîner privé" [ref=e417] [cursor=pointer]
+          - link "Voir plus sur Instagram" [ref=e419] [cursor=pointer]:
+            - /url: https://www.instagram.com/chambauddavid
+            - generic [ref=e420]: Voir plus sur Instagram
+            - img [ref=e421]
+    - region "Nos formules et tarifs" [ref=e423]:
+      - generic [ref=e424]:
+        - generic [ref=e425]:
+          - generic [ref=e426]:
+            - paragraph [ref=e428]: Tarifs 2026-27
+            - heading "Des bases claires pour décider sereinement." [level=2] [ref=e431]:
+              - text: Des bases claires
+              - text: pour décider sereinement.
+            - paragraph [ref=e433]: Les prix donnent un point de départ. Le devis affine ensuite le menu, l'équipe, le matériel et le rythme réel de votre journée.
+          - tablist "Catégories de formules" [ref=e434]:
+            - tab "Mariage" [selected] [ref=e435] [cursor=pointer]: Mariage
+            - tab "Chef à Domicile" [ref=e437] [cursor=pointer]
+            - tab "Pavillon des Millésimes" [ref=e438] [cursor=pointer]
+        - generic [ref=e439]:
+          - generic [ref=e440]:
+            - heading "Mariage" [level=3] [ref=e441]
+            - paragraph [ref=e442]: Sur mesure
+          - generic [ref=e443]:
+            - article [ref=e444]:
+              - generic [ref=e445]:
+                - paragraph [ref=e448]: Ouverture des festivités
+                - heading "Mariage buffet campagne" [level=3] [ref=e449]
+                - paragraph [ref=e450]: Pour une réception détendue, généreuse, facile à faire vivre.
+                - paragraph [ref=e451]: Buffet froid et chaud pensé pour circuler, discuter, revenir.
+                - generic [ref=e452]:
+                  - generic [ref=e453]: Devis sur mesure
+                  - generic [ref=e454]: Tarifs hors boissons, matériel, transport et mobilier
+              - generic [ref=e455]:
+                - generic [ref=e456]:
+                  - generic [ref=e457]: à partir de 75
+                  - generic [ref=e458]: € / pers.
+                - paragraph [ref=e459]: Ouverture des festivités
+            - article [ref=e460]:
+              - generic [ref=e461]:
+                - paragraph [ref=e464]: Recommandé
+                - heading "Mariage gourmand" [level=3] [ref=e465]
+                - paragraph [ref=e466]: Le format le plus complet pour marquer le repas sans rigidité.
+                - paragraph [ref=e467]: Pièces cocktails, service cadencé et table gourmande.
+                - generic [ref=e468]:
+                  - generic [ref=e469]: Devis sur mesure
+                  - generic [ref=e470]: Tarifs hors boissons, matériel, transport et mobilier
+              - generic [ref=e471]:
+                - generic [ref=e472]:
+                  - generic [ref=e473]: à partir de 99
+                  - generic [ref=e474]: € / pers.
+                - paragraph [ref=e475]: Terroir & convivialité
+            - article [ref=e476]:
+              - generic [ref=e477]:
+                - paragraph [ref=e480]: La gourmandise locale
+                - heading "Mariage buffet champêtre" [level=3] [ref=e481]
+                - paragraph [ref=e482]: Une formule vivante, chaleureuse, très adaptée aux grands groupes.
+                - paragraph [ref=e483]: Produits de saison, présentation soignée, service fluide.
+                - generic [ref=e484]:
+                  - generic [ref=e485]: Devis sur mesure
+                  - generic [ref=e486]: Tarifs hors boissons, matériel, transport et mobilier
+              - generic [ref=e487]:
+                - generic [ref=e488]:
+                  - generic [ref=e489]: à partir de 85
+                  - generic [ref=e490]: € / pers.
+                - paragraph [ref=e491]: La gourmandise locale
+          - generic [ref=e492]:
+            - paragraph [ref=e493]: Les tarifs sont indicatifs et hors boissons, transport, matériel et mobilier sauf mention contraire.
+            - link "Demander un devis" [ref=e494] [cursor=pointer]:
+              - /url: "#contact"
+              - generic [ref=e495]: Demander un devis
+              - img [ref=e496]
+    - region "Le Pavillon des Millésimes" [ref=e498]:
+      - generic: Pavillon
+      - generic [ref=e499]:
+        - generic [ref=e500]:
+          - generic [ref=e502]:
+            - img "Salon lumineux du Pavillon des Millésimes" [ref=e504]
+            - img "Chambre du Pavillon des Millésimes" [ref=e507]
+            - img "Table dressée au Pavillon des Millésimes" [ref=e509]
+            - generic [ref=e510]:
+              - paragraph [ref=e511]: Maison confidentielle
+              - paragraph [ref=e512]: Dormir sur place, dîner juste, repartir lentement.
+          - generic [ref=e513]:
+            - paragraph [ref=e515]: Le lieu de David & Nathalie
+            - heading "Une parenthèse où l'on reste." [level=2] [ref=e518]:
+              - text: Une parenthèse
+              - text: où l'on reste.
+            - paragraph [ref=e520]: Le Pavillon des Millésimes n'est pas seulement une adresse à visiter. C'est une maison où le repas, la chambre et le lendemain se répondent avec la même attention.
+            - generic [ref=e522]:
+              - generic [ref=e523]:
+                - paragraph [ref=e524]: Table d'hôtes
+                - paragraph [ref=e525]: Une cuisine bistronomique en quatre temps, pensée comme un dîner de maison très soigné.
+              - generic [ref=e526]:
+                - paragraph [ref=e527]: Chambres
+                - paragraph [ref=e528]: Des espaces calmes pour prolonger un mariage, une escapade ou un week-end gourmand.
+              - generic [ref=e529]:
+                - paragraph [ref=e530]: Adresse
+                - paragraph [ref=e531]: Une maison de caractère en Nouvelle-Aquitaine, entre intimité, vin et art de recevoir.
+            - generic [ref=e533]:
+              - link "Découvrir le lieu" [ref=e534] [cursor=pointer]:
+                - /url: https://www.pavillon-des-millesimes.com
+                - generic [ref=e535]: Découvrir le lieu
+                - img [ref=e536]
+              - paragraph [ref=e538]: Table d'hôtes sur réservation, séjour et cuisine de saison au même endroit.
+        - generic [ref=e540]:
+          - generic [ref=e541]:
+            - paragraph [ref=e542]: Séjour gourmand
+            - paragraph [ref=e543]: Quand le dîner devient le centre d'un week-end.
+          - generic [ref=e544]:
+            - img "Détail intérieur du Pavillon des Millésimes" [ref=e546]
+            - img "Salon et atmosphère du Pavillon des Millésimes" [ref=e548]
+            - img "Façade du Pavillon des Millésimes" [ref=e550]
+    - region "Témoignages clients" [ref=e551]:
+      - generic [ref=e552]:
+        - generic [ref=e553]:
+          - generic [ref=e554]:
+            - paragraph [ref=e556]: Ils nous font confiance
+            - heading "Quelques mots après le service." [level=2] [ref=e559]:
+              - text: Quelques mots
+              - text: après le service.
+          - paragraph [ref=e561]: "Mariages, séjours, baptêmes ou séminaires : des retours sobres, directs, et souvent très généreux."
+        - article [ref=e563]:
+          - generic [ref=e564]:
+            - generic "Note de cinq étoiles" [ref=e565]:
+              - img [ref=e566]
+              - img [ref=e568]
+              - img [ref=e570]
+              - img [ref=e572]
+              - img [ref=e574]
+            - paragraph [ref=e576]: “Nous avons eu le plaisir de faire appel à David pour le cocktail, le dîner et le brunch de notre mariage et la surprise fut juste magnifique ! Le raffinement, le goût, le service, le professionnalisme… tout était au rendez-vous.”
+          - generic [ref=e577]:
+            - paragraph [ref=e578]: Avis de réception
+            - generic [ref=e579]:
+              - paragraph [ref=e580]: Fatima-zahra H.
+              - paragraph [ref=e581]: Mariage · Cocktail, dîner & brunch
+            - paragraph [ref=e582]: "Le type de retour qui compte: pas seulement “bon”, mais fluide, généreux, rassurant et mémorable pour les invités."
+        - generic [ref=e583]:
+          - article [ref=e584]:
+            - generic [ref=e585]:
+              - generic "Note de cinq étoiles" [ref=e586]:
+                - img [ref=e587]
+                - img [ref=e589]
+                - img [ref=e591]
+                - img [ref=e593]
+                - img [ref=e595]
+              - generic [ref=e597]: Avis vérifié
+            - paragraph [ref=e598]: “David and his team did an incredible job for our wedding at Chateau Soulac. Every piece of food served was out of this world. I cannot recommend him highly enough.”
+            - generic [ref=e601]:
+              - paragraph [ref=e602]: Erika D.
+              - paragraph [ref=e603]: Mariage · Château Soulac
+          - article [ref=e604]:
+            - generic [ref=e605]:
+              - generic "Note de cinq étoiles" [ref=e606]:
+                - img [ref=e607]
+                - img [ref=e609]
+                - img [ref=e611]
+                - img [ref=e613]
+                - img [ref=e615]
+              - generic [ref=e617]: Tripadvisor
+            - paragraph [ref=e618]: “A unique experience and exceptional welcoming.”
+            - generic [ref=e621]:
+              - paragraph [ref=e622]: Jeremy Enaud
+              - paragraph [ref=e623]: Pavillon des Millésimes · Août 2025
+          - article [ref=e624]:
+            - generic [ref=e625]:
+              - generic "Note de cinq étoiles" [ref=e626]:
+                - img [ref=e627]
+                - img [ref=e629]
+                - img [ref=e631]
+                - img [ref=e633]
+                - img [ref=e635]
+              - generic [ref=e637]: Avis vérifié
+            - paragraph [ref=e638]: “Tout simplement parfait. Équipe agréable à notre service qui a fait preuve de souplesse sur les menus particuliers (végétarien, intolérance, allergie). Nos invités étaient ravis.”
+            - generic [ref=e641]:
+              - paragraph [ref=e642]: Anne-Laure B.
+              - paragraph [ref=e643]: Baptême · Chef à domicile
+          - article [ref=e644]:
+            - generic [ref=e645]:
+              - generic "Note de cinq étoiles" [ref=e646]:
+                - img [ref=e647]
+                - img [ref=e649]
+                - img [ref=e651]
+                - img [ref=e653]
+                - img [ref=e655]
+              - generic [ref=e657]: Tripadvisor
+            - paragraph [ref=e658]: “We oscillate between luxury and voluptuousness with this feeling of being at home !”
+            - generic [ref=e661]:
+              - paragraph [ref=e662]: Isa
+              - paragraph [ref=e663]: Pavillon des Millésimes · Mai 2025
+          - article [ref=e664]:
+            - generic [ref=e665]:
+              - generic "Note de cinq étoiles" [ref=e666]:
+                - img [ref=e667]
+                - img [ref=e669]
+                - img [ref=e671]
+                - img [ref=e673]
+                - img [ref=e675]
+              - generic [ref=e677]: Avis vérifié
+            - paragraph [ref=e678]: “Évènement organisé sur l'Aerocampus avec l'équipe de David. Une équipe hyper pro et dévouée ! Une prestation qui a ravi les papilles et qui nous a permis de vivre un moment convivial et gourmand.”
+            - generic [ref=e681]:
+              - paragraph [ref=e682]: Yannick R.
+              - paragraph [ref=e683]: Séminaire · Aerocampus
+          - article [ref=e684]:
+            - generic [ref=e685]:
+              - generic "Note de cinq étoiles" [ref=e686]:
+                - img [ref=e687]
+                - img [ref=e689]
+                - img [ref=e691]
+                - img [ref=e693]
+                - img [ref=e695]
+              - generic [ref=e697]: Tripadvisor
+            - paragraph [ref=e698]: “Beautiful home with a charming decor in a relaxing setting with very attentive hosts.”
+            - generic [ref=e701]:
+              - paragraph [ref=e702]: Jean-luc S.
+              - paragraph [ref=e703]: Pavillon des Millésimes · Avril 2026
+          - article [ref=e704]:
+            - generic [ref=e705]:
+              - generic "Note de cinq étoiles" [ref=e706]:
+                - img [ref=e707]
+                - img [ref=e709]
+                - img [ref=e711]
+                - img [ref=e713]
+                - img [ref=e715]
+              - generic [ref=e717]: Tripadvisor
+            - paragraph [ref=e718]: “What a wonderful time we had. Thank you to Nathalie and David.”
+            - generic [ref=e721]:
+              - paragraph [ref=e722]: Isabelle I.
+              - paragraph [ref=e723]: Pavillon des Millésimes · Août 2025
+          - article [ref=e724]:
+            - generic [ref=e725]:
+              - generic "Note de cinq étoiles" [ref=e726]:
+                - img [ref=e727]
+                - img [ref=e729]
+                - img [ref=e731]
+                - img [ref=e733]
+                - img [ref=e735]
+              - generic [ref=e737]: Tripadvisor
+            - paragraph [ref=e738]: “I couldn't recommend Pavillon more highly.”
+            - generic [ref=e741]:
+              - paragraph [ref=e742]: James M.
+              - paragraph [ref=e743]: Pavillon des Millésimes · Mars 2025
+        - generic [ref=e745]:
+          - paragraph [ref=e746]: Avis collectés sur Google, Tripadvisor & site officiel
+          - link "Échanger avec nous" [ref=e747] [cursor=pointer]:
+            - /url: "#contact"
+            - generic [ref=e748]: Échanger avec nous
+            - img [ref=e749]
+    - region "Contact et demande de devis" [ref=e751]:
+      - generic [ref=e753]:
+        - generic [ref=e754]:
+          - paragraph [ref=e756]: Contact
+          - heading "Une date, un lieu, une envie." [level=2] [ref=e759]:
+            - text: Une date,
+            - text: un lieu, une envie.
+          - paragraph [ref=e761]: Racontez-nous l'ambiance, le nombre d'invités, vos goûts et ce qui compte le plus pour vous. David vous aide ensuite à transformer l'idée en réception concrète.
+          - generic [ref=e763]:
+            - link "Téléphone +33 6 50 75 44 06" [ref=e764] [cursor=pointer]:
+              - /url: tel:+33650754406
+              - img [ref=e766]
+              - generic [ref=e768]:
+                - generic [ref=e769]: Téléphone
+                - text: +33 6 50 75 44 06
+            - link "Email contact@david-chambaud.fr" [ref=e770] [cursor=pointer]:
+              - /url: mailto:contact@david-chambaud.fr
+              - img [ref=e772]
+              - generic [ref=e775]:
+                - generic [ref=e776]: Email
+                - text: contact@david-chambaud.fr
+            - link "Instagram @chambauddavid" [ref=e777] [cursor=pointer]:
+              - /url: https://www.instagram.com/chambauddavid
+              - img [ref=e779]
+              - generic [ref=e783]:
+                - generic [ref=e784]: Instagram
+                - text: "@chambauddavid"
+          - paragraph [ref=e788]: Réponse généralement sous 24 à 48 h ouvrées. Pour un mariage ou une demande proche, le téléphone reste le plus direct.
+          - generic [ref=e790]:
+            - generic [ref=e791]:
+              - paragraph [ref=e792]: Le lieu
+              - paragraph [ref=e793]: Domaine, maison, salle ou lieu à confirmer.
+            - generic [ref=e794]:
+              - paragraph [ref=e795]: Le rythme
+              - paragraph [ref=e796]: Cocktail, dîner, brunch, retour de soirée.
+            - generic [ref=e797]:
+              - paragraph [ref=e798]: Les invités
+              - paragraph [ref=e799]: Nombre approximatif, enfants, régimes.
+            - generic [ref=e800]:
+              - paragraph [ref=e801]: L'envie
+              - paragraph [ref=e802]: Champêtre, gastronomique, familial, très festif.
+        - generic [ref=e805]:
+          - generic [ref=e806]:
+            - generic [ref=e807]:
+              - generic [ref=e808]:
+                - text: Votre nom
+                - generic [ref=e809]: "*"
+              - textbox "Votre nom" [ref=e810]
+              - paragraph
+            - generic [ref=e811]:
+              - generic [ref=e812]:
+                - text: Votre email
+                - generic [ref=e813]: "*"
+              - textbox "Votre email" [ref=e814]
+              - paragraph
+          - generic [ref=e815]:
+            - generic [ref=e816]:
+              - text: Type d'événement
+              - generic [ref=e817]: "*"
+            - textbox "Type d'événement" [ref=e818]
+            - paragraph [ref=e819]: Mariage, réception privée, dîner, séminaire...
+          - generic [ref=e820]:
+            - generic [ref=e821]: Lieu de réception
+            - textbox "Lieu de réception" [ref=e822]
+            - paragraph [ref=e823]: Ville, domaine ou lieu encore à confirmer.
+          - generic [ref=e824]:
+            - generic [ref=e825]:
+              - generic [ref=e826]: Invités
+              - spinbutton "Invités" [ref=e827]
+              - paragraph [ref=e828]: Une estimation suffit.
+            - generic [ref=e829]:
+              - generic [ref=e830]: Date
+              - textbox "Date" [ref=e831]
+              - paragraph [ref=e832]: Même approximative.
+          - generic [ref=e833]:
+            - generic [ref=e834]:
+              - text: Votre message
+              - generic [ref=e835]: "*"
+            - textbox "Votre message" [ref=e836]
+            - paragraph [ref=e837]: Le style du repas, vos contraintes, vos premières envies.
+          - button "Envoyer la demande" [ref=e838] [cursor=pointer]
+    - generic [ref=e840]:
+      - generic [ref=e841]:
+        - paragraph [ref=e842]: DC Restauration
+        - paragraph [ref=e843]: Traiteur & Chef à Domicile · Nouvelle-Aquitaine
+      - generic [ref=e844]:
+        - link "Instagram" [ref=e845] [cursor=pointer]:
+          - /url: https://www.instagram.com/chambauddavid
+          - img [ref=e846]
+        - link "Facebook" [ref=e850] [cursor=pointer]:
+          - /url: https://www.facebook.com
+          - img [ref=e851]
+        - link "Téléphone" [ref=e854] [cursor=pointer]:
+          - /url: tel:+33650754406
+          - img [ref=e855]
+      - paragraph [ref=e857]:
+        - text: © 2026 DC Restauration ·
+        - link "Mentions légales" [ref=e858] [cursor=pointer]:
+          - /url: /mentions-legales
+  - button "Open Next.js Dev Tools" [ref=e864] [cursor=pointer]:
+    - img [ref=e865]
+  - alert [ref=e868]

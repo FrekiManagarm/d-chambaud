@@ -5287,12 +5287,17 @@ function ContactSection() {
    FOOTER
 ════════════════════════════════════════════════════════════ */
 function Footer() {
+  const footerMuted = "rgba(var(--cream-rgb),0.76)";
+  const footerText = "rgba(var(--cream-rgb),0.9)";
+  const footerAccent = "rgba(var(--gold-rgb),0.92)";
+
   return (
     <footer
       style={{
-        backgroundColor: "var(--dark)",
+        background:
+          "linear-gradient(180deg, rgba(var(--charcoal-rgb),0.98), var(--dark))",
         padding: "2.5rem 2rem",
-        borderTop: "1px solid rgba(var(--gold-rgb),0.1)",
+        borderTop: "1px solid rgba(var(--gold-rgb),0.2)",
       }}
     >
       <div
@@ -5311,9 +5316,9 @@ function Footer() {
             style={{
               fontFamily: "var(--font-cormorant), serif",
               fontSize: "1.05rem",
-              fontWeight: 400,
+              fontWeight: 500,
               letterSpacing: "0.15em",
-              color: "rgba(var(--cream-rgb),0.65)",
+              color: footerText,
             }}
           >
             DC Restauration
@@ -5324,7 +5329,7 @@ function Footer() {
               fontSize: "0.52rem",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
-              color: "var(--warm-gray)",
+              color: footerMuted,
               marginTop: "0.25rem",
             }}
           >
@@ -5360,7 +5365,7 @@ function Footer() {
               aria-label={item.label}
               whileHover={{ color: "var(--gold)", y: -2 }}
               transition={{ duration: 0.2 }}
-              style={{ color: "var(--warm-gray)", display: "block" }}
+              style={{ color: footerMuted, display: "block" }}
             >
               {item.icon}
             </motion.a>
@@ -5373,13 +5378,13 @@ function Footer() {
             fontSize: "0.52rem",
             letterSpacing: "0.2em",
             textTransform: "uppercase",
-            color: "var(--warm-gray)",
+            color: footerMuted,
           }}
         >
           © 2026 DC Restauration &nbsp;·&nbsp;{" "}
           <a
             href="/mentions-legales"
-            style={{ color: "inherit", textDecoration: "none" }}
+            style={{ color: footerAccent, textDecoration: "none" }}
           >
             Mentions légales
           </a>
