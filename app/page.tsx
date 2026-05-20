@@ -1388,7 +1388,7 @@ function StatsSection() {
             value={25}
             suffix=" ans"
             label="d'expérience"
-            detail="Maison fondée en 2008"
+            detail="Maison fondée en 2016"
             delay={0}
             border
           />
@@ -2052,116 +2052,8 @@ function ServicesSection() {
         ))}
       </motion.div>
 
-      <div
-        className="service-rhythm"
-        style={{
-          maxWidth: 1300,
-          margin: "0 auto",
-          padding: "clamp(4rem, 6vw, 6rem) 2rem clamp(4.5rem, 7vw, 7rem)",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 0.42fr) minmax(0, 0.58fr)",
-          gap: "4rem",
-          alignItems: "start",
-        }}
-      >
-        <RevealOnScroll variant={fadeUp}>
-          <div>
-            <Eyebrow>Le déroulé</Eyebrow>
-            <h3
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.3rem, 4.6vw, 4.2rem)",
-                fontStyle: "italic",
-                fontWeight: 300,
-                lineHeight: 1,
-                color: "var(--charcoal)",
-                marginTop: "1rem",
-              }}
-            >
-              Une équipe qui sait quand apparaître.
-            </h3>
-          </div>
-        </RevealOnScroll>
-        <div style={{ borderTop: "1px solid rgba(var(--charcoal-rgb),0.13)" }}>
-          {[
-            [
-              "Repérage",
-              "Lieu, accès, cuisine, météo, contraintes du domaine.",
-            ],
-            [
-              "Calage",
-              "Quantités, timing, allergies, mobilier et équipe de salle.",
-            ],
-            ["Service", "Cocktail, repas, transitions, dernières assiettes."],
-            [
-              "Après",
-              "Brunch, retour de matériel, fin propre et sans tension.",
-            ],
-          ].map(([title, desc], i) => (
-            <RevealOnScroll key={title} variant={fadeUp} custom={i}>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "5rem minmax(0, 0.36fr) minmax(0, 1fr)",
-                  gap: "1.4rem",
-                  padding: "1.35rem 0",
-                  borderBottom: "1px solid rgba(var(--charcoal-rgb),0.1)",
-                  alignItems: "baseline",
-                }}
-                className="service-rhythm-row"
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-cormorant), serif",
-                    fontSize: "1.45rem",
-                    fontStyle: "italic",
-                    color: "var(--gold)",
-                  }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <p
-                  style={{
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "0.62rem",
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: "var(--charcoal)",
-                  }}
-                >
-                  {title}
-                </p>
-                <p
-                  style={{
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "0.86rem",
-                    lineHeight: 1.75,
-                    color: "rgba(var(--charcoal-rgb),0.58)",
-                  }}
-                >
-                  {desc}
-                </p>
-              </div>
-            </RevealOnScroll>
-          ))}
-        </div>
-      </div>
-
       <style>{`
         @media (max-width: 768px) {
-          .service-rhythm {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-            padding-left: 1rem !important;
-            padding-right: 1rem !important;
-          }
-          .service-rhythm-row {
-            grid-template-columns: 3rem 1fr !important;
-            gap: 0.75rem 1rem !important;
-          }
-          .service-rhythm-row p:last-child {
-            grid-column: 2 !important;
-          }
           .services-accordion {
             flex-direction: column !important;
             height: auto !important;
@@ -2224,6 +2116,20 @@ const formulasByTab = {
       offset: true,
     },
     {
+      name: "Mariage buffet champêtre",
+      price: "à partir de 85",
+      unit: "€ / pers.",
+      sub: "La gourmandise locale",
+      tone: "Une formule vivante, chaleureuse, très adaptée aux grands groupes.",
+      detail: "Produits de saison, présentation soignée, service fluide.",
+      features: [
+        "Devis sur mesure",
+        "Tarifs hors boissons, matériel, transport et mobilier",
+      ],
+      highlight: false,
+      offset: true,
+    },
+    {
       name: "Mariage gourmand",
       price: "à partir de 99",
       unit: "€ / pers.",
@@ -2238,15 +2144,15 @@ const formulasByTab = {
       offset: false,
     },
     {
-      name: "Mariage buffet champêtre",
-      price: "à partir de 85",
+      name: "Mariage excellence gastronomique",
+      price: "à partir de 350",
       unit: "€ / pers.",
-      sub: "La gourmandise locale",
-      tone: "Une formule vivante, chaleureuse, très adaptée aux grands groupes.",
-      detail: "Produits de saison, présentation soignée, service fluide.",
+      sub: "",
+      tone: "",
+      detail: "",
       features: [
         "Devis sur mesure",
-        "Tarifs hors boissons, matériel, transport et mobilier",
+        "Tarifs hors boissons, transport et mobilier",
       ],
       highlight: false,
       offset: true,
@@ -4328,7 +4234,7 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
           <p
             style={{
               fontFamily: "var(--font-cormorant), serif",
-              fontSize: "clamp(2rem, 4.2vw, 4rem)",
+              fontSize: "clamp(1rem, 2.1vw, 2rem)",
               fontStyle: "italic",
               fontWeight: 300,
               lineHeight: 1.12,
@@ -4783,8 +4689,10 @@ function ClientsSection() {
 function ContactSection() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
@@ -4808,12 +4716,44 @@ function ContactSection() {
     }
 
     setErrors(nextErrors);
+    setSubmitError("");
     if (Object.keys(nextErrors).length > 0) {
       return;
     }
 
-    setSubmitted(true);
-    form.reset();
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      });
+      const result = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        errors?: Record<string, string>;
+      };
+
+      if (!response.ok) {
+        if (result.errors) {
+          setErrors(result.errors);
+        }
+        setSubmitError(
+          result.message ||
+            "Impossible d'envoyer le message pour le moment. Merci d'essayer à nouveau.",
+        );
+        return;
+      }
+
+      setSubmitted(true);
+      form.reset();
+    } catch {
+      setSubmitError(
+        "La connexion a échoué. Merci d'essayer à nouveau ou d'écrire directement à contact@david-chambaud.fr.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -5125,6 +5065,14 @@ function ContactSection() {
                   onSubmit={handleSubmit}
                   noValidate
                 >
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ display: "none" }}
+                  />
                   <div
                     style={{
                       display: "grid",
@@ -5191,6 +5139,7 @@ function ContactSection() {
 
                   <motion.button
                     type="submit"
+                    disabled={isSubmitting}
                     whileHover={{
                       backgroundColor: "var(--cream)",
                       color: "var(--charcoal)",
@@ -5208,14 +5157,29 @@ function ContactSection() {
                       textTransform: "uppercase",
                       fontWeight: 500,
                       border: "1px solid rgba(var(--gold-rgb),0.72)",
-                      cursor: "pointer",
+                      cursor: isSubmitting ? "wait" : "pointer",
+                      opacity: isSubmitting ? 0.72 : 1,
                       marginTop: "0.25rem",
                       boxShadow:
                         "inset 0 1px 0 rgba(255,255,255,0.2), 0 16px 34px -28px rgba(var(--dark-rgb),0.76)",
                     }}
                   >
-                    Envoyer la demande
+                    {isSubmitting ? "Envoi en cours..." : "Envoyer la demande"}
                   </motion.button>
+                  {submitError && (
+                    <p
+                      role="alert"
+                      style={{
+                        fontFamily: "var(--font-montserrat), sans-serif",
+                        fontSize: "0.72rem",
+                        lineHeight: 1.55,
+                        color: "rgba(245,190,170,0.95)",
+                        marginTop: "0.75rem",
+                      }}
+                    >
+                      {submitError}
+                    </p>
+                  )}
                 </form>
               )}
             </div>
@@ -5403,11 +5367,11 @@ export default function Page() {
       <HeroSection />
       <MarqueeStrip />
       <AboutSection />
+      <GallerySection />
       <ValuesSection />
       <StatsSection />
       <ClientsSection />
       <ServicesSection />
-      <GallerySection />
       <FormulasSection />
       <PavillonSection />
       <TestimonialsSection />

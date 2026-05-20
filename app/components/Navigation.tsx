@@ -54,21 +54,116 @@ export default function Navigation() {
         }}
       >
         {/* Logo */}
-        <a href="#" style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/ICO - DC - N.png"
-            alt="David Chambaud"
+        <a
+          href="#"
+          aria-label="David Chambaud - retour en haut de page"
+          className="brand-logo"
+          style={{
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.78rem",
+            color: scrolled ? "var(--charcoal)" : "var(--cream)",
+            transition: "color 0.5s ease, transform 0.3s ease",
+          }}
+        >
+          <span
+            aria-hidden="true"
+            className="brand-logo-mark"
             style={{
-              height: scrolled ? "46px" : "42px",
-              width: "auto",
-              objectFit: "contain",
-              display: "block",
-              filter: scrolled ? "none" : "brightness(4)",
-              mixBlendMode: scrolled ? "normal" : "screen",
-              transition: "height 0.5s ease, filter 0.5s ease",
+              width: scrolled ? "42px" : "46px",
+              height: scrolled ? "42px" : "46px",
+              border: scrolled
+                ? "1px solid rgba(var(--bronze-rgb),0.5)"
+                : "1px solid rgba(var(--cream-rgb),0.58)",
+              borderRadius: "50%",
+              display: "grid",
+              placeItems: "center",
+              backgroundColor: scrolled
+                ? "rgba(var(--bronze-rgb),0.08)"
+                : "rgba(var(--dark-rgb),0.18)",
+              boxShadow: scrolled
+                ? "inset 0 0 0 1px rgba(var(--cream-rgb),0.55)"
+                : "inset 0 0 0 1px rgba(var(--gold-rgb),0.18)",
+              transition:
+                "width 0.5s ease, height 0.5s ease, border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease",
             }}
-          />
+          >
+            <svg
+              viewBox="0 0 120 72"
+              focusable="false"
+              style={{
+                width: scrolled ? "30px" : "32px",
+                height: "22px",
+                display: "block",
+                color: scrolled ? "var(--bronze)" : "var(--gold-light)",
+                overflow: "visible",
+                transition: "width 0.5s ease, color 0.5s ease",
+              }}
+            >
+              <path
+                d="M15 49C29 34 48 29 54 35C62 44 39 59 20 58C9 57 8 52 15 49Z"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="8"
+              />
+              <path
+                d="M48 56C41 39 50 18 66 8"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="10"
+              />
+              <path
+                d="M101 24C86 18 68 31 67 44C66 58 84 58 109 48"
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="10"
+              />
+            </svg>
+          </span>
+          <span
+            className="brand-logo-text"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.18rem",
+              lineHeight: 1,
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: scrolled ? "0.72rem" : "0.76rem",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                fontWeight: 500,
+                color: scrolled ? "var(--charcoal)" : "var(--cream)",
+                transition: "font-size 0.5s ease, color 0.5s ease",
+              }}
+            >
+              David Chambaud
+            </span>
+            <span
+              className="brand-logo-subtitle"
+              style={{
+                fontFamily: "var(--font-cormorant), serif",
+                fontSize: scrolled ? "0.72rem" : "0.76rem",
+                fontStyle: "italic",
+                fontWeight: 300,
+                color: scrolled
+                  ? "rgba(var(--bronze-rgb),0.95)"
+                  : "rgba(var(--gold-light-rgb),0.82)",
+                transition: "font-size 0.5s ease, color 0.5s ease",
+              }}
+            >
+              Traiteur & chef à domicile
+            </span>
+          </span>
         </a>
 
         {/* Desktop nav */}
@@ -219,6 +314,24 @@ export default function Navigation() {
       </AnimatePresence>
       <style>{`
         @media (max-width: 640px) {
+          .brand-logo {
+            gap: 0.62rem !important;
+          }
+
+          .brand-logo-mark {
+            width: 38px !important;
+            height: 38px !important;
+          }
+
+          .brand-logo-text > span:first-child {
+            font-size: 0.64rem !important;
+            letter-spacing: 0.2em !important;
+          }
+
+          .brand-logo-subtitle {
+            display: none !important;
+          }
+
           .mobile-menu-panel {
             padding: 1.25rem 1rem 1.5rem !important;
           }
