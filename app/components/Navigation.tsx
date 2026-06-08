@@ -68,63 +68,91 @@ export default function Navigation() {
           }}
         >
           <span
-            aria-hidden="true"
-            className="brand-logo-mark"
+            className="brand-logo-emblem"
             style={{
-              width: scrolled ? "42px" : "46px",
-              height: scrolled ? "42px" : "46px",
-              border: scrolled
-                ? "1px solid rgba(var(--bronze-rgb),0.5)"
-                : "1px solid rgba(var(--cream-rgb),0.58)",
-              borderRadius: "50%",
-              display: "grid",
-              placeItems: "center",
-              backgroundColor: scrolled
-                ? "rgba(var(--bronze-rgb),0.08)"
-                : "rgba(var(--dark-rgb),0.18)",
-              boxShadow: scrolled
-                ? "inset 0 0 0 1px rgba(var(--cream-rgb),0.55)"
-                : "inset 0 0 0 1px rgba(var(--gold-rgb),0.18)",
-              transition:
-                "width 0.5s ease, height 0.5s ease, border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease",
+              display: "inline-flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "0.18rem",
             }}
           >
-            <svg
-              viewBox="0 0 120 72"
-              focusable="false"
+            <span
+              aria-hidden="true"
+              className="brand-logo-mark"
               style={{
-                width: scrolled ? "30px" : "32px",
-                height: "22px",
-                display: "block",
-                color: scrolled ? "var(--bronze)" : "var(--gold-light)",
-                overflow: "visible",
-                transition: "width 0.5s ease, color 0.5s ease",
+                width: scrolled ? "42px" : "46px",
+                height: scrolled ? "42px" : "46px",
+                border: scrolled
+                  ? "1px solid rgba(var(--bronze-rgb),0.5)"
+                  : "1px solid rgba(var(--cream-rgb),0.58)",
+                borderRadius: "50%",
+                display: "grid",
+                placeItems: "center",
+                backgroundColor: scrolled
+                  ? "rgba(var(--bronze-rgb),0.08)"
+                  : "rgba(var(--dark-rgb),0.18)",
+                boxShadow: scrolled
+                  ? "inset 0 0 0 1px rgba(var(--cream-rgb),0.55)"
+                  : "inset 0 0 0 1px rgba(var(--gold-rgb),0.18)",
+                transition:
+                  "width 0.5s ease, height 0.5s ease, border-color 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease",
               }}
             >
-              <path
-                d="M15 49C29 34 48 29 54 35C62 44 39 59 20 58C9 57 8 52 15 49Z"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="8"
-              />
-              <path
-                d="M48 56C41 39 50 18 66 8"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="10"
-              />
-              <path
-                d="M101 24C86 18 68 31 67 44C66 58 84 58 109 48"
-                fill="none"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="10"
-              />
-            </svg>
+              <svg
+                viewBox="0 0 120 72"
+                focusable="false"
+                style={{
+                  width: scrolled ? "30px" : "32px",
+                  height: "22px",
+                  display: "block",
+                  color: scrolled ? "var(--bronze)" : "var(--gold-light)",
+                  overflow: "visible",
+                  transition: "width 0.5s ease, color 0.5s ease",
+                }}
+              >
+                <path
+                  d="M15 49C29 34 48 29 54 35C62 44 39 59 20 58C9 57 8 52 15 49Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="8"
+                />
+                <path
+                  d="M48 56C41 39 50 18 66 8"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="10"
+                />
+                <path
+                  d="M101 24C86 18 68 31 67 44C66 58 84 58 109 48"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="10"
+                />
+              </svg>
+            </span>
+            <span
+              className="brand-logo-mention"
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: scrolled ? "0.36rem" : "0.38rem",
+                letterSpacing: "0.12em",
+                lineHeight: 1,
+                textTransform: "uppercase",
+                fontWeight: 500,
+                whiteSpace: "nowrap",
+                color: scrolled
+                  ? "rgba(var(--charcoal-rgb),0.58)"
+                  : "rgba(var(--cream-rgb),0.62)",
+                transition: "font-size 0.5s ease, color 0.5s ease",
+              }}
+            >
+              DC restauration
+            </span>
           </span>
           <span
             className="brand-logo-text"
@@ -321,6 +349,11 @@ export default function Navigation() {
           .brand-logo-mark {
             width: 38px !important;
             height: 38px !important;
+          }
+
+          .brand-logo-mention {
+            font-size: 0.34rem !important;
+            letter-spacing: 0.08em !important;
           }
 
           .brand-logo-text > span:first-child {

@@ -651,7 +651,7 @@ function HeroSection() {
             marginBottom: "2.5rem",
           }}
         >
-          Nouvelle‑Aquitaine · Bordeaux
+          Nouvelle‑Aquitaine · Bordeaux · Saint‑Émilion
         </motion.p>
 
         <h1 className="sr-only">
@@ -1456,7 +1456,8 @@ function AboutSection() {
       className="grain-overlay"
       aria-label="À propos de David Chambaud"
       style={{
-        backgroundColor: "var(--dark)",
+        background:
+          "linear-gradient(180deg, rgba(var(--cream-rgb),0.98) 0%, rgba(var(--cream-rgb),0.92) 100%)",
         position: "relative",
         overflow: "hidden",
       }}
@@ -1570,7 +1571,7 @@ function AboutSection() {
                 fontStyle: "italic",
                 fontWeight: 300,
                 lineHeight: 1.08,
-                color: "var(--cream)",
+                color: "var(--charcoal)",
                 marginBottom: "2rem",
               }}
             >
@@ -1602,7 +1603,7 @@ function AboutSection() {
                   fontSize: "0.9rem",
                   fontWeight: 500,
                   lineHeight: 1.95,
-                  color: "rgba(var(--cream-rgb),0.6)",
+                  color: "rgba(var(--charcoal-rgb),0.66)",
                   marginBottom: "1.1rem",
                 }}
               >
@@ -1627,7 +1628,7 @@ function AboutSection() {
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 1.5,
-                  color: "var(--cream)",
+                  color: "var(--charcoal)",
                   opacity: 0.9,
                 }}
               >
@@ -2145,7 +2146,7 @@ const formulasByTab = {
     },
     {
       name: "Mariage excellence gastronomique",
-      price: "à partir de 350",
+      price: "à partir de 280",
       unit: "€ / pers.",
       sub: "",
       tone: "",
@@ -2322,7 +2323,7 @@ function FormulaRow({
           style={{
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.86rem",
-            fontWeight: 300,
+            fontWeight: 600,
             color: "rgba(var(--charcoal-rgb),0.62)",
             lineHeight: 1.75,
             maxWidth: 560,
@@ -5297,7 +5298,8 @@ function Footer() {
               marginTop: "0.25rem",
             }}
           >
-            Traiteur &amp; Chef à Domicile · Nouvelle-Aquitaine
+            Traiteur &amp; Chef à Domicile · Nouvelle-Aquitaine · Bordeaux ·
+            Saint-Émilion
           </p>
         </div>
 

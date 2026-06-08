@@ -21,7 +21,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://chambaud.fr"),
+  metadataBase: new URL("https://david-chambaud.fr"),
   title: {
     default: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
     template: "%s | David Chambaud Traiteur",
@@ -30,11 +30,17 @@ export const metadata: Metadata = {
     "Chef traiteur en Nouvelle-Aquitaine depuis 2008. Réceptions, mariages, dîners privés et chef à domicile autour de Bordeaux. Gastronomie raffinée, produits de saison, expériences sur mesure.",
   keywords: [
     "traiteur Bordeaux",
+    "traiteur nouvelle aquitaine",
+    "traiteur Saint-Émilion",
     "chef à domicile Bordeaux",
+    "traiteur Saint-Émilion",
     "traiteur mariage Gironde",
+    "mariage nouvelle aquitaine",
     "chef traiteur Nouvelle-Aquitaine",
     "réception gastronomique Bordeaux",
     "traiteur événementiel Bordeaux",
+    "mariage Bordeaux",
+    "chef à domicile",
     "dîner privé Bordeaux",
     "Pavillon des Millésimes",
     "traiteur séminaire Bordeaux",
@@ -110,7 +116,8 @@ const jsonLd = {
       {
         "@type": "Offer",
         name: "Traiteur événementiel",
-        description: "Cocktails dinatoires, buffets raffinés et repas gastronomiques",
+        description:
+          "Cocktails dinatoires, buffets raffinés et repas gastronomiques",
       },
       {
         "@type": "Offer",
