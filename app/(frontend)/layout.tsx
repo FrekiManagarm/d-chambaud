@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navigation from "./components/Navigation";
-import LoadingScreen from "./components/LoadingScreen";
-import ScrollProgress from "./components/ScrollProgress";
+import Navigation from "@/components/Navigation";
+import LoadingScreen from "@/components/LoadingScreen";
+import ScrollProgress from "@/components/ScrollProgress";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",

@@ -27,6 +27,80 @@ import {
   Mail,
 } from "lucide-react";
 
+type CMSMedia = {
+  alt?: string | null;
+  height?: number | null;
+  url?: string | null;
+  width?: number | null;
+};
+
+type CMSRelationship = CMSMedia | number | string | null | undefined;
+
+type CMSHomePage = {
+  aboutImage?: CMSRelationship;
+  gallery?: {
+    alt?: string | null;
+    image?: CMSRelationship;
+    note?: string | null;
+    position?: string | null;
+    title?: string | null;
+  }[];
+  heroImage?: CMSRelationship;
+  pavillonImages?: {
+    main?: CMSRelationship;
+    portrait?: CMSRelationship;
+    stripOne?: CMSRelationship;
+    stripThree?: CMSRelationship;
+    stripTwo?: CMSRelationship;
+    table?: CMSRelationship;
+  };
+  serviceImages?: {
+    chefADomicile?: CMSRelationship;
+    mariages?: CMSRelationship;
+    receptions?: CMSRelationship;
+    traiteur?: CMSRelationship;
+  };
+  valuesBridgeImage?: CMSRelationship;
+  valuesPrimaryImage?: CMSRelationship;
+  valuesSecondaryImage?: CMSRelationship;
+};
+
+type GalleryItem = {
+  alt: string;
+  h: number;
+  note: string;
+  position: string;
+  src: string;
+  title: string;
+  w: number;
+};
+
+type HomeImages = {
+  about: string;
+  gallery: GalleryItem[];
+  hero: string;
+  pavillon: {
+    main: string;
+    portrait: string;
+    stripOne: string;
+    stripThree: string;
+    stripTwo: string;
+    table: string;
+  };
+  services: string[];
+  valuesBridge: string;
+  valuesPrimary: string;
+  valuesSecondary: string;
+};
+
+const mediaURL = (media: CMSRelationship, fallback: string) => {
+  if (media && typeof media === "object" && typeof media.url === "string") {
+    return media.url;
+  }
+
+  return fallback;
+};
+
 /* ─── Icons ─── */
 const IconInstagram = ({
   size = 15,
@@ -463,7 +537,7 @@ function ContactField({
 /* ════════════════════════════════════════════════════════════
    HERO — Immersive full-screen with char-by-char reveal
 ════════════════════════════════════════════════════════════ */
-function HeroSection() {
+function HeroSection({ images }: { images: HomeImages }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -571,7 +645,7 @@ function HeroSection() {
         }}
       >
         <Image
-          src="/AdobeStock_420273742.jpeg"
+          src={images.hero}
           alt=""
           fill
           priority
@@ -1070,7 +1144,7 @@ function ValueBand({
   );
 }
 
-function ValuesSection() {
+function ValuesSection({ images }: { images: HomeImages }) {
   return (
     <section
       aria-label="Architecture d'un événement"
@@ -1151,7 +1225,7 @@ function ValuesSection() {
                 }}
               >
                 <Image
-                  src="/20260212_DSC2967.jpg"
+                  src={images.valuesPrimary}
                   alt="Bouchée gastronomique signée David Chambaud"
                   fill
                   sizes="(max-width: 768px) 100vw, 520px"
@@ -1171,7 +1245,7 @@ function ValuesSection() {
                 }}
               >
                 <Image
-                  src="/20260212_DSC3156.jpg"
+                  src={images.valuesSecondary}
                   alt="Dressage d'assiette pour réception"
                   fill
                   sizes="(max-width: 768px) 46vw, 260px"
@@ -1250,7 +1324,7 @@ function ValuesSection() {
         }}
       >
         <Image
-          src="/AdobeStock_241622609.jpeg"
+          src={images.valuesBridge}
           alt="Gastronomie — produits du terroir aquitain"
           fill
           style={{ objectFit: "cover", objectPosition: "center 55%" }}
@@ -1440,7 +1514,7 @@ function StatsSection() {
 /* ════════════════════════════════════════════════════════════
    ABOUT — magazine spread with pull quote
 ════════════════════════════════════════════════════════════ */
-function AboutSection() {
+function AboutSection({ images }: { images: HomeImages }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -1490,7 +1564,7 @@ function AboutSection() {
               }}
             >
               <Image
-                src="/20260212_DSC2953.jpg"
+                src={images.about}
                 alt="David Chambaud, chef traiteur en Nouvelle-Aquitaine"
                 fill
                 style={{ objectFit: "cover", objectPosition: "center 20%" }}
@@ -1965,7 +2039,7 @@ function ServicePanel({
   );
 }
 
-function ServicesSection() {
+function ServicesSection({ images }: { images: HomeImages }) {
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px 0px" });
@@ -2045,7 +2119,7 @@ function ServicesSection() {
         {services.map((s, i) => (
           <ServicePanel
             key={s.num}
-            service={s}
+            service={{ ...s, img: images.services[i] || s.img }}
             index={i}
             isActive={active === i}
             onActivate={() => setActive(i)}
@@ -2773,7 +2847,7 @@ function FormulasSection() {
 /* ════════════════════════════════════════════════════════════
    GALLERY — editorial masonry grid
 ════════════════════════════════════════════════════════════ */
-const galleryItems = [
+const galleryItems: GalleryItem[] = [
   {
     src: "/20260212_DSC2967.jpg",
     alt: "Réalisation culinaire",
@@ -2857,14 +2931,15 @@ const galleryItems = [
   },
 ];
 
-function GallerySection() {
+function GallerySection({ images }: { images: HomeImages }) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const reduce = useReducedMotion();
-  const total = galleryItems.length;
-  const active = galleryItems[current];
-  const prevItem = galleryItems[(current - 1 + total) % total];
-  const nextItem = galleryItems[(current + 1) % total];
+  const items = images.gallery.length > 0 ? images.gallery : galleryItems;
+  const total = items.length;
+  const active = items[current] || items[0];
+  const prevItem = items[(current - 1 + total) % total];
+  const nextItem = items[(current + 1) % total];
 
   const goTo = (index: number) => {
     const next = ((index % total) + total) % total;
@@ -3364,11 +3439,11 @@ function GallerySection() {
             aria-label="Choisir une photo"
             style={{
               display: "grid",
-              gridTemplateColumns: `repeat(${total}, minmax(58px, 1fr))`,
+            gridTemplateColumns: `repeat(${total}, minmax(58px, 1fr))`,
               gap: "0.62rem",
             }}
           >
-            {galleryItems.map((item, index) => (
+            {items.map((item, index) => (
               <motion.button
                 key={item.src}
                 type="button"
@@ -3525,7 +3600,7 @@ function GallerySection() {
 /* ════════════════════════════════════════════════════════════
    PAVILLON — atmospheric full-bleed with background text
 ════════════════════════════════════════════════════════════ */
-function PavillonSection() {
+function PavillonSection({ images }: { images: HomeImages }) {
   return (
     <section
       id="pavillon"
@@ -3595,7 +3670,7 @@ function PavillonSection() {
                 }}
               >
                 <Image
-                  src="/Pavillon-70.jpg"
+                  src={images.pavillon.main}
                   alt="Salon lumineux du Pavillon des Millésimes"
                   fill
                   sizes="(max-width: 768px) 100vw, 760px"
@@ -3630,7 +3705,7 @@ function PavillonSection() {
                 }}
               >
                 <Image
-                  src="/Pavillon-37.jpg"
+                  src={images.pavillon.portrait}
                   alt="Chambre du Pavillon des Millésimes"
                   fill
                   sizes="(max-width: 768px) 36vw, 300px"
@@ -3656,7 +3731,7 @@ function PavillonSection() {
                 }}
               >
                 <Image
-                  src="/Pavillon-49.jpg"
+                  src={images.pavillon.table}
                   alt="Table dressée au Pavillon des Millésimes"
                   fill
                   sizes="(max-width: 768px) 48vw, 360px"
@@ -3927,14 +4002,17 @@ function PavillonSection() {
             >
               {[
                 [
-                  "/Pavillon-71.jpg",
+                  images.pavillon.stripOne,
                   "Détail intérieur du Pavillon des Millésimes",
                 ],
                 [
-                  "/Pavillon-73.jpg",
+                  images.pavillon.stripTwo,
                   "Salon et atmosphère du Pavillon des Millésimes",
                 ],
-                ["/pavillon-facade.jpg", "Façade du Pavillon des Millésimes"],
+                [
+                  images.pavillon.stripThree,
+                  "Façade du Pavillon des Millésimes",
+                ],
               ].map(([src, alt]) => (
                 <div
                   key={src}
@@ -5363,19 +5441,101 @@ function Footer() {
 /* ════════════════════════════════════════════════════════════
    PAGE
 ════════════════════════════════════════════════════════════ */
+function useHomePageCMS() {
+  const [cms, setCms] = useState<CMSHomePage | null>(null);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch("/api/globals/home-page?depth=2")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: CMSHomePage | null) => {
+        if (active && data) {
+          setCms(data);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setCms(null);
+        }
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  return cms;
+}
+
+function getHomeImages(cms: CMSHomePage | null): HomeImages {
+  const cmsGallery =
+    cms?.gallery
+      ?.map((item, index) => {
+        const fallback = galleryItems[index] || galleryItems[0];
+        const src = mediaURL(item.image, fallback.src);
+
+        return {
+          alt: item.alt || fallback.alt,
+          h: fallback.h,
+          note: item.note || fallback.note,
+          position: item.position || fallback.position,
+          src,
+          title: item.title || fallback.title,
+          w: fallback.w,
+        };
+      })
+      .filter((item) => item.src) || [];
+
+  return {
+    about: mediaURL(cms?.aboutImage, "/20260212_DSC2953.jpg"),
+    gallery: cmsGallery,
+    hero: mediaURL(cms?.heroImage, "/AdobeStock_420273742.jpeg"),
+    pavillon: {
+      main: mediaURL(cms?.pavillonImages?.main, "/Pavillon-70.jpg"),
+      portrait: mediaURL(cms?.pavillonImages?.portrait, "/Pavillon-37.jpg"),
+      stripOne: mediaURL(cms?.pavillonImages?.stripOne, "/Pavillon-71.jpg"),
+      stripThree: mediaURL(
+        cms?.pavillonImages?.stripThree,
+        "/pavillon-facade.jpg",
+      ),
+      stripTwo: mediaURL(cms?.pavillonImages?.stripTwo, "/Pavillon-73.jpg"),
+      table: mediaURL(cms?.pavillonImages?.table, "/Pavillon-49.jpg"),
+    },
+    services: [
+      mediaURL(cms?.serviceImages?.traiteur, services[0].img),
+      mediaURL(cms?.serviceImages?.mariages, services[1].img),
+      mediaURL(cms?.serviceImages?.chefADomicile, services[2].img),
+      mediaURL(cms?.serviceImages?.receptions, services[3].img),
+    ],
+    valuesBridge: mediaURL(
+      cms?.valuesBridgeImage,
+      "/AdobeStock_241622609.jpeg",
+    ),
+    valuesPrimary: mediaURL(cms?.valuesPrimaryImage, "/20260212_DSC2967.jpg"),
+    valuesSecondary: mediaURL(
+      cms?.valuesSecondaryImage,
+      "/20260212_DSC3156.jpg",
+    ),
+  };
+}
+
 export default function Page() {
+  const cms = useHomePageCMS();
+  const images = getHomeImages(cms);
+
   return (
     <main>
-      <HeroSection />
+      <HeroSection images={images} />
       <MarqueeStrip />
-      <AboutSection />
-      <GallerySection />
-      <ValuesSection />
+      <AboutSection images={images} />
+      <GallerySection images={images} />
+      <ValuesSection images={images} />
       <StatsSection />
       <ClientsSection />
-      <ServicesSection />
+      <ServicesSection images={images} />
       <FormulasSection />
-      <PavillonSection />
+      <PavillonSection images={images} />
       <TestimonialsSection />
       <ContactSection />
       <Footer />

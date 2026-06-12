@@ -12,6 +12,12 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    ".claude/**",
+    ".claude-flow/**",
+    ".codex/**",
+    ".openclaude/**",
+    ".ruflo/**",
+    ".swarm/**",
   ]),
 ]);
 
