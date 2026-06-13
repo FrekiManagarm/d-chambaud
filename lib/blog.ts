@@ -1,0 +1,56 @@
+import configPromise from "@payload-config";
+import { getPayload } from "payload";
+
+import type { Post } from "@/payload-types";
+
+const locale = "fr" as const;
+
+export async function getBlogPosts() {
+  const payload = await getPayload({ config: configPromise });
+
+  const result = await payload.find({
+    collection: "posts",
+    depth: 1,
+    draft: false,
+    limit: 24,
+    locale,
+    overrideAccess: false,
+    sort: "-publishedAt",
+    where: {
+      _status: {
+        equals: "published",
+      },
+    },
+  });
+
+  return result.docs;
+}
+
+export async function getBlogPostBySlug(slug: string): Promise<Post | null> {
+  const payload = await getPayload({ config: configPromise });
+
+  const result = await payload.find({
+    collection: "posts",
+    depth: 1,
+    draft: false,
+    limit: 1,
+    locale,
+    overrideAccess: false,
+    where: {
+      and: [
+        {
+          slug: {
+            equals: slug,
+          },
+        },
+        {
+          _status: {
+            equals: "published",
+          },
+        },
+      ],
+    },
+  });
+
+  return result.docs[0] || null;
+}

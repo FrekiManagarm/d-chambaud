@@ -8,6 +8,7 @@ import sharp from "sharp";
 import { fileURLToPath } from "url";
 
 import { Media } from "./collections/Media.ts";
+import { Posts } from "./collections/Posts.ts";
 import { Users } from "./collections/Users.ts";
 import { HomePage } from "./globals/HomePage.ts";
 
@@ -18,7 +19,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Posts],
   editor: lexicalEditor({}),
   globals: [HomePage],
   i18n: {

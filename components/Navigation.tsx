@@ -3,19 +3,26 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { href: "#a-propos", label: "Maison" },
-  { href: "#services", label: "Services" },
-  { href: "#galerie", label: "Galerie" },
-  { href: "#formules", label: "Formules" },
-  { href: "#temoignages", label: "Témoignages" },
+  { href: "/#a-propos", label: "Maison" },
+  { href: "/#services", label: "Services" },
+  { href: "/#galerie", label: "Galerie" },
+  { href: "/#formules", label: "Formules" },
+  { href: "/blog", label: "Journal" },
+  { href: "/#temoignages", label: "Témoignages" },
 ];
 
+const MotionLink = motion.create(Link);
+
 export default function Navigation() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const solidHeader = scrolled || pathname !== "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -35,10 +42,10 @@ export default function Navigation() {
         right: 0,
         zIndex: 100,
         transition: "background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease",
-        backgroundColor: scrolled ? "rgba(var(--cream-rgb),0.94)" : "rgba(var(--dark-rgb),0.18)",
-        backdropFilter: scrolled ? "blur(18px)" : "blur(8px)",
-        borderBottom: scrolled ? "1px solid rgba(var(--bronze-rgb),0.18)" : "1px solid rgba(var(--cream-rgb),0.08)",
-        boxShadow: scrolled ? "0 18px 40px -34px rgba(var(--charcoal-rgb),0.42)" : "none",
+        backgroundColor: solidHeader ? "rgba(var(--cream-rgb),0.94)" : "rgba(var(--dark-rgb),0.18)",
+        backdropFilter: solidHeader ? "blur(18px)" : "blur(8px)",
+        borderBottom: solidHeader ? "1px solid rgba(var(--bronze-rgb),0.18)" : "1px solid rgba(var(--cream-rgb),0.08)",
+        boxShadow: solidHeader ? "0 18px 40px -34px rgba(var(--charcoal-rgb),0.42)" : "none",
       }}
     >
       <div
@@ -54,8 +61,8 @@ export default function Navigation() {
         }}
       >
         {/* Logo */}
-        <a
-          href="#"
+        <Link
+          href="/"
           aria-label="David Chambaud - retour en haut de page"
           className="brand-logo"
           style={{
@@ -63,7 +70,7 @@ export default function Navigation() {
             display: "inline-flex",
             alignItems: "center",
             gap: "0.78rem",
-            color: scrolled ? "var(--charcoal)" : "var(--cream)",
+            color: solidHeader ? "var(--charcoal)" : "var(--cream)",
             transition: "color 0.5s ease, transform 0.3s ease",
           }}
         >
@@ -82,16 +89,16 @@ export default function Navigation() {
               style={{
                 width: scrolled ? "42px" : "46px",
                 height: scrolled ? "42px" : "46px",
-                border: scrolled
+                border: solidHeader
                   ? "1px solid rgba(var(--bronze-rgb),0.5)"
                   : "1px solid rgba(var(--cream-rgb),0.58)",
                 borderRadius: "50%",
                 display: "grid",
                 placeItems: "center",
-                backgroundColor: scrolled
+                backgroundColor: solidHeader
                   ? "rgba(var(--bronze-rgb),0.08)"
                   : "rgba(var(--dark-rgb),0.18)",
-                boxShadow: scrolled
+                boxShadow: solidHeader
                   ? "inset 0 0 0 1px rgba(var(--cream-rgb),0.55)"
                   : "inset 0 0 0 1px rgba(var(--gold-rgb),0.18)",
                 transition:
@@ -105,7 +112,7 @@ export default function Navigation() {
                   width: scrolled ? "30px" : "32px",
                   height: "22px",
                   display: "block",
-                  color: scrolled ? "var(--bronze)" : "var(--gold-light)",
+                  color: solidHeader ? "var(--bronze)" : "var(--gold-light)",
                   overflow: "visible",
                   transition: "width 0.5s ease, color 0.5s ease",
                 }}
@@ -145,7 +152,7 @@ export default function Navigation() {
                 textTransform: "uppercase",
                 fontWeight: 500,
                 whiteSpace: "nowrap",
-                color: scrolled
+                color: solidHeader
                   ? "rgba(var(--charcoal-rgb),0.58)"
                   : "rgba(var(--cream-rgb),0.62)",
                 transition: "font-size 0.5s ease, color 0.5s ease",
@@ -170,7 +177,7 @@ export default function Navigation() {
                 letterSpacing: "0.28em",
                 textTransform: "uppercase",
                 fontWeight: 500,
-                color: scrolled ? "var(--charcoal)" : "var(--cream)",
+                color: solidHeader ? "var(--charcoal)" : "var(--cream)",
                 transition: "font-size 0.5s ease, color 0.5s ease",
               }}
             >
@@ -183,7 +190,7 @@ export default function Navigation() {
                 fontSize: scrolled ? "0.72rem" : "0.76rem",
                 fontStyle: "italic",
                 fontWeight: 300,
-                color: scrolled
+                color: solidHeader
                   ? "rgba(var(--bronze-rgb),0.95)"
                   : "rgba(var(--gold-light-rgb),0.82)",
                 transition: "font-size 0.5s ease, color 0.5s ease",
@@ -192,12 +199,12 @@ export default function Navigation() {
               Traiteur & chef à domicile
             </span>
           </span>
-        </a>
+        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden lg:flex" style={{ alignItems: "center", gap: "2.25rem" }}>
           {navLinks.map((link, i) => (
-            <motion.a
+            <MotionLink
               key={link.href}
               href={link.href}
               className="nav-link"
@@ -210,17 +217,17 @@ export default function Navigation() {
                 letterSpacing: "0.22em",
                 textTransform: "uppercase",
                 fontWeight: 500,
-                color: scrolled ? "var(--charcoal)" : "rgba(var(--cream-rgb),0.82)",
+                color: solidHeader ? "var(--charcoal)" : "rgba(var(--cream-rgb),0.82)",
                 textDecoration: "none",
                 transition: "color 0.3s ease",
               }}
             >
               {link.label}
-            </motion.a>
+            </MotionLink>
           ))}
 
-          <motion.a
-            href="#contact"
+          <MotionLink
+            href="/#contact"
             initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.55 }}
@@ -234,27 +241,27 @@ export default function Navigation() {
               fontWeight: 500,
               padding: "0.72rem 1.25rem",
               border: "1px solid var(--gold)",
-              color: scrolled ? "var(--charcoal)" : "var(--gold-light)",
+              color: solidHeader ? "var(--charcoal)" : "var(--gold-light)",
               textDecoration: "none",
               transition: "background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease",
               display: "inline-block",
-              backgroundColor: scrolled ? "rgba(var(--bronze-rgb),0.12)" : "rgba(var(--dark-rgb),0.32)",
+              backgroundColor: solidHeader ? "rgba(var(--bronze-rgb),0.12)" : "rgba(var(--dark-rgb),0.32)",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "var(--gold)";
               e.currentTarget.style.color = "var(--dark)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = scrolled
+              e.currentTarget.style.backgroundColor = solidHeader
                 ? "rgba(var(--bronze-rgb),0.12)"
                 : "rgba(var(--dark-rgb),0.32)";
-              e.currentTarget.style.color = scrolled
+              e.currentTarget.style.color = solidHeader
                 ? "var(--charcoal)"
                 : "var(--gold-light)";
             }}
           >
             Devis
-          </motion.a>
+          </MotionLink>
         </nav>
 
         {/* Mobile toggle */}
@@ -267,7 +274,7 @@ export default function Navigation() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            color: scrolled ? "var(--charcoal)" : "#f5edd8",
+            color: solidHeader ? "var(--charcoal)" : "#f5edd8",
             padding: "0.5rem",
           }}
         >
@@ -293,7 +300,7 @@ export default function Navigation() {
               }}
             >
               {navLinks.map((link, i) => (
-                <motion.a
+                <MotionLink
                   key={link.href}
                   href={link.href}
                   initial={{ opacity: 0, x: -16 }}
@@ -314,10 +321,10 @@ export default function Navigation() {
                   }}
                 >
                   {link.label}
-                </motion.a>
+                </MotionLink>
               ))}
-              <a
-                href="#contact"
+              <Link
+                href="/#contact"
                 onClick={() => setMobileOpen(false)}
                 style={{
                   display: "block",
@@ -335,7 +342,7 @@ export default function Navigation() {
                 }}
               >
                 Demander un devis
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
