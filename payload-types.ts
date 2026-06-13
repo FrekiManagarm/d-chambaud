@@ -414,6 +414,49 @@ export interface HomePage {
     stripTwo?: (number | null) | Media;
     stripThree?: (number | null) | Media;
   };
+  pricing?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    footerNote?: string | null;
+    ctaLabel?: string | null;
+    /**
+     * Créez une ligne par saison tarifaire. Si une année est marquée comme affichée, le site utilisera celle-ci.
+     */
+    years?:
+      | {
+          label: string;
+          isActive?: boolean | null;
+          categories?:
+            | {
+                label: string;
+                summaryLabel?: string | null;
+                offers?:
+                  | {
+                      name: string;
+                      price: string;
+                      unit?: string | null;
+                      sub?: string | null;
+                      tone?: string | null;
+                      detail?: string | null;
+                      features?:
+                        | {
+                            text: string;
+                            id?: string | null;
+                          }[]
+                        | null;
+                      highlight?: boolean | null;
+                      id?: string | null;
+                    }[]
+                  | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -454,6 +497,48 @@ export interface HomePageSelect<T extends boolean = true> {
         stripOne?: T;
         stripTwo?: T;
         stripThree?: T;
+      };
+  pricing?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        footerNote?: T;
+        ctaLabel?: T;
+        years?:
+          | T
+          | {
+              label?: T;
+              isActive?: T;
+              categories?:
+                | T
+                | {
+                    label?: T;
+                    summaryLabel?: T;
+                    offers?:
+                      | T
+                      | {
+                          name?: T;
+                          price?: T;
+                          unit?: T;
+                          sub?: T;
+                          tone?: T;
+                          detail?: T;
+                          features?:
+                            | T
+                            | {
+                                text?: T;
+                                id?: T;
+                              };
+                          highlight?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

@@ -60,9 +60,43 @@ type CMSHomePage = {
     receptions?: CMSRelationship;
     traiteur?: CMSRelationship;
   };
+  pricing?: CMSPricing;
   valuesBridgeImage?: CMSRelationship;
   valuesPrimaryImage?: CMSRelationship;
   valuesSecondaryImage?: CMSRelationship;
+};
+
+type CMSPricing = {
+  ctaLabel?: string | null;
+  eyebrow?: string | null;
+  footerNote?: string | null;
+  intro?: string | null;
+  titleLineOne?: string | null;
+  titleLineTwo?: string | null;
+  years?: CMSPricingYear[] | null;
+};
+
+type CMSPricingYear = {
+  categories?: CMSPricingCategory[] | null;
+  isActive?: boolean | null;
+  label?: string | null;
+};
+
+type CMSPricingCategory = {
+  label?: string | null;
+  offers?: CMSPricingOffer[] | null;
+  summaryLabel?: string | null;
+};
+
+type CMSPricingOffer = {
+  detail?: string | null;
+  features?: { text?: string | null }[] | null;
+  highlight?: boolean | null;
+  name?: string | null;
+  price?: string | null;
+  sub?: string | null;
+  tone?: string | null;
+  unit?: string | null;
 };
 
 type GalleryItem = {
@@ -2174,7 +2208,37 @@ function ServicesSection({ images }: { images: HomeImages }) {
 /* ════════════════════════════════════════════════════════════
    FORMULAS — waterfall asymmetric layout
 ════════════════════════════════════════════════════════════ */
-const formulasByTab = {
+type Formula = {
+  detail: string;
+  features: string[];
+  highlight: boolean;
+  name: string;
+  offset: boolean;
+  price: string;
+  sub: string;
+  tone: string;
+  unit: string;
+};
+
+type PricingTab = {
+  formulas: Formula[];
+  key: string;
+  label: string;
+  summaryLabel: string;
+};
+
+type PricingContent = {
+  ctaLabel: string;
+  eyebrow: string;
+  footerNote: string;
+  intro: string;
+  tabs: PricingTab[];
+  titleLineOne: string;
+  titleLineTwo: string;
+  yearLabel: string;
+};
+
+const fallbackFormulasByTab: Record<string, Formula[]> = {
   mariage: [
     {
       name: "Mariage buffet campagne",
@@ -2304,20 +2368,36 @@ const formulasByTab = {
       offset: true,
     },
   ],
-} as const;
+};
 
-type TabKey = keyof typeof formulasByTab;
-const TABS: { key: TabKey; label: string }[] = [
+const fallbackPricingTabs: PricingTab[] = [
   { key: "mariage", label: "Mariage" },
   { key: "chef", label: "Chef à Domicile" },
   { key: "pavillon", label: "Pavillon des Millésimes" },
-];
+].map((tab) => ({
+  ...tab,
+  formulas: fallbackFormulasByTab[tab.key] || [],
+  summaryLabel: "Sur mesure",
+}));
+
+const fallbackPricing: PricingContent = {
+  ctaLabel: "Demander un devis",
+  eyebrow: "Tarifs 2026-27",
+  footerNote:
+    "Les tarifs sont indicatifs et hors boissons, transport, matériel et mobilier sauf mention contraire.",
+  intro:
+    "Les prix donnent un point de départ. Le devis affine ensuite le menu, l'équipe, le matériel et le rythme réel de votre journée.",
+  tabs: fallbackPricingTabs,
+  titleLineOne: "Des bases claires",
+  titleLineTwo: "pour décider sereinement.",
+  yearLabel: "2026-27",
+};
 
 function FormulaRow({
   f,
   index,
 }: {
-  f: (typeof formulasByTab)[TabKey][number];
+  f: Formula;
   index: number;
 }) {
   return (
@@ -2509,10 +2589,16 @@ function FormulaRow({
   );
 }
 
-function FormulasSection() {
-  const [activeTab, setActiveTab] = useState<TabKey>("mariage");
-  const currentFormulas = formulasByTab[activeTab];
-  const activeLabel = TABS.find((tab) => tab.key === activeTab)?.label ?? "";
+function FormulasSection({ pricing }: { pricing: PricingContent }) {
+  const firstTabKey = pricing.tabs[0]?.key ?? "mariage";
+  const [requestedTab, setRequestedTab] = useState(firstTabKey);
+  const activeTab = pricing.tabs.some((tab) => tab.key === requestedTab)
+    ? requestedTab
+    : firstTabKey;
+  const activePricingTab = pricing.tabs.find((tab) => tab.key === activeTab);
+  const currentFormulas = activePricingTab?.formulas ?? [];
+  const activeLabel = activePricingTab?.label ?? "";
+  const activeSummaryLabel = activePricingTab?.summaryLabel || "Sur mesure";
 
   return (
     <section
@@ -2547,7 +2633,7 @@ function FormulasSection() {
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow>Tarifs 2026-27</Eyebrow>
+              <Eyebrow>{pricing.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
               <h2
@@ -2562,9 +2648,9 @@ function FormulasSection() {
                   marginTop: "1rem",
                 }}
               >
-                Des bases claires
+                {pricing.titleLineOne}
                 <br />
-                pour décider sereinement.
+                {pricing.titleLineTwo}
               </h2>
             </HeadingReveal>
 
@@ -2580,9 +2666,7 @@ function FormulasSection() {
                   maxWidth: 520,
                 }}
               >
-                Les prix donnent un point de départ. Le devis affine ensuite le
-                menu, l&apos;équipe, le matériel et le rythme réel de votre
-                journée.
+                {pricing.intro}
               </p>
             </RevealOnScroll>
           </div>
@@ -2598,7 +2682,7 @@ function FormulasSection() {
               borderBottom: "1px solid rgba(var(--charcoal-rgb),0.12)",
             }}
           >
-            {TABS.map((tab) => {
+            {pricing.tabs.map((tab) => {
               const isActive = activeTab === tab.key;
 
               return (
@@ -2607,7 +2691,7 @@ function FormulasSection() {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  onClick={() => setActiveTab(tab.key)}
+                  onClick={() => setRequestedTab(tab.key)}
                   style={{
                     position: "relative",
                     padding: "0 0.9rem 1rem",
@@ -2682,7 +2766,7 @@ function FormulasSection() {
                 color: "rgba(var(--charcoal-rgb),0.42)",
               }}
             >
-              Sur mesure
+              {activeSummaryLabel}
             </p>
           </div>
 
@@ -2718,8 +2802,7 @@ function FormulasSection() {
                 maxWidth: 600,
               }}
             >
-              Les tarifs sont indicatifs et hors boissons, transport, matériel
-              et mobilier sauf mention contraire.
+              {pricing.footerNote}
             </p>
             <motion.a
               className="formula-cta"
@@ -2741,7 +2824,7 @@ function FormulasSection() {
                 whiteSpace: "nowrap",
               }}
             >
-              <span>Demander un devis</span>
+              <span>{pricing.ctaLabel}</span>
               <ArrowRight size={13} />
             </motion.a>
           </div>
@@ -5520,9 +5603,98 @@ function getHomeImages(cms: CMSHomePage | null): HomeImages {
   };
 }
 
+const toPricingKey = (label: string, index: number) => {
+  const key = label
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return key || `offre-${index + 1}`;
+};
+
+function getHomePricing(cms: CMSHomePage | null): PricingContent {
+  const cmsPricing = cms?.pricing;
+  const activeYear =
+    cmsPricing?.years?.find((year) => year.isActive) ??
+    cmsPricing?.years?.[0] ??
+    null;
+
+  const cmsTabs =
+    activeYear?.categories
+      ?.map((category, categoryIndex) => {
+        const label = category.label?.trim();
+        if (!label) {
+          return null;
+        }
+
+        const formulas =
+          category.offers
+            ?.map((offer, offerIndex) => {
+              const name = offer.name?.trim();
+              const price = offer.price?.trim();
+
+              if (!name || !price) {
+                return null;
+              }
+
+              return {
+                detail: offer.detail?.trim() || "",
+                features:
+                  offer.features
+                    ?.map((feature) => feature.text?.trim())
+                    .filter((feature): feature is string => Boolean(feature)) ||
+                  [],
+                highlight: Boolean(offer.highlight),
+                name,
+                offset: !offer.highlight && offerIndex % 2 === 0,
+                price,
+                sub: offer.sub?.trim() || "",
+                tone: offer.tone?.trim() || "",
+                unit: offer.unit?.trim() || "",
+              };
+            })
+            .filter((offer): offer is Formula => Boolean(offer)) || [];
+
+        if (formulas.length === 0) {
+          return null;
+        }
+
+        return {
+          formulas,
+          key: toPricingKey(label, categoryIndex),
+          label,
+          summaryLabel: category.summaryLabel?.trim() || "Sur mesure",
+        };
+      })
+      .filter((tab): tab is PricingTab => Boolean(tab)) || [];
+
+  if (cmsTabs.length === 0) {
+    return fallbackPricing;
+  }
+
+  const yearLabel = activeYear?.label?.trim() || fallbackPricing.yearLabel;
+
+  return {
+    ctaLabel: cmsPricing?.ctaLabel?.trim() || fallbackPricing.ctaLabel,
+    eyebrow:
+      cmsPricing?.eyebrow?.trim() || fallbackPricing.eyebrow || `Tarifs ${yearLabel}`,
+    footerNote: cmsPricing?.footerNote?.trim() || fallbackPricing.footerNote,
+    intro: cmsPricing?.intro?.trim() || fallbackPricing.intro,
+    tabs: cmsTabs,
+    titleLineOne:
+      cmsPricing?.titleLineOne?.trim() || fallbackPricing.titleLineOne,
+    titleLineTwo:
+      cmsPricing?.titleLineTwo?.trim() || fallbackPricing.titleLineTwo,
+    yearLabel,
+  };
+}
+
 export default function Page() {
   const cms = useHomePageCMS();
   const images = getHomeImages(cms);
+  const pricing = getHomePricing(cms);
 
   return (
     <main>
@@ -5534,7 +5706,7 @@ export default function Page() {
       <StatsSection />
       <ClientsSection />
       <ServicesSection images={images} />
-      <FormulasSection />
+      <FormulasSection pricing={pricing} />
       <PavillonSection images={images} />
       <TestimonialsSection />
       <ContactSection />

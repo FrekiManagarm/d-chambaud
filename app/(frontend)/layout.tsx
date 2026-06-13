@@ -4,6 +4,7 @@ import "./globals.css";
 import Navigation from "@/components/Navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import ScrollProgress from "@/components/ScrollProgress";
+import SmoothCursor from "@/components/SmoothCursor";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -150,6 +151,7 @@ export default function RootLayout({
         />
         <LoadingScreen />
         <ScrollProgress />
+        <SmoothCursor />
         <Navigation />
         {children}
       </body>

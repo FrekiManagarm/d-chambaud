@@ -107,6 +107,189 @@ export const HomePage: GlobalConfig = {
             },
           ],
         },
+        {
+          label: "Tarifs",
+          fields: [
+            {
+              name: "pricing",
+              type: "group",
+              label: "Section tarifs",
+              fields: [
+                {
+                  name: "eyebrow",
+                  type: "text",
+                  label: "Petit titre",
+                  localized: true,
+                  defaultValue: "Tarifs 2026-27",
+                },
+                {
+                  name: "titleLineOne",
+                  type: "text",
+                  label: "Titre - ligne 1",
+                  localized: true,
+                  defaultValue: "Des bases claires",
+                },
+                {
+                  name: "titleLineTwo",
+                  type: "text",
+                  label: "Titre - ligne 2",
+                  localized: true,
+                  defaultValue: "pour décider sereinement.",
+                },
+                {
+                  name: "intro",
+                  type: "textarea",
+                  label: "Texte d'introduction",
+                  localized: true,
+                  defaultValue:
+                    "Les prix donnent un point de départ. Le devis affine ensuite le menu, l'équipe, le matériel et le rythme réel de votre journée.",
+                },
+                {
+                  name: "footerNote",
+                  type: "textarea",
+                  label: "Mention sous les tarifs",
+                  localized: true,
+                  defaultValue:
+                    "Les tarifs sont indicatifs et hors boissons, transport, matériel et mobilier sauf mention contraire.",
+                },
+                {
+                  name: "ctaLabel",
+                  type: "text",
+                  label: "Libellé du bouton",
+                  localized: true,
+                  defaultValue: "Demander un devis",
+                },
+                {
+                  name: "years",
+                  type: "array",
+                  label: "Années tarifaires",
+                  labels: {
+                    singular: "Année tarifaire",
+                    plural: "Années tarifaires",
+                  },
+                  admin: {
+                    description:
+                      "Créez une ligne par saison tarifaire. Si une année est marquée comme affichée, le site utilisera celle-ci.",
+                  },
+                  fields: [
+                    {
+                      name: "label",
+                      type: "text",
+                      label: "Année / saison",
+                      required: true,
+                      defaultValue: "2026-27",
+                    },
+                    {
+                      name: "isActive",
+                      type: "checkbox",
+                      label: "Afficher cette année sur le site",
+                      defaultValue: false,
+                    },
+                    {
+                      name: "categories",
+                      type: "array",
+                      label: "Catégories d'offres",
+                      labels: {
+                        singular: "Catégorie",
+                        plural: "Catégories",
+                      },
+                      fields: [
+                        {
+                          name: "label",
+                          type: "text",
+                          label: "Nom de l'onglet",
+                          localized: true,
+                          required: true,
+                        },
+                        {
+                          name: "summaryLabel",
+                          type: "text",
+                          label: "Libellé à droite du titre",
+                          localized: true,
+                          defaultValue: "Sur mesure",
+                        },
+                        {
+                          name: "offers",
+                          type: "array",
+                          label: "Offres",
+                          labels: {
+                            singular: "Offre",
+                            plural: "Offres",
+                          },
+                          fields: [
+                            {
+                              name: "name",
+                              type: "text",
+                              label: "Nom de l'offre",
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: "price",
+                              type: "text",
+                              label: "Prix",
+                              localized: true,
+                              required: true,
+                            },
+                            {
+                              name: "unit",
+                              type: "text",
+                              label: "Unité",
+                              localized: true,
+                              defaultValue: "€ / pers.",
+                            },
+                            {
+                              name: "sub",
+                              type: "text",
+                              label: "Sous-titre",
+                              localized: true,
+                            },
+                            {
+                              name: "tone",
+                              type: "textarea",
+                              label: "Phrase d'ambiance",
+                              localized: true,
+                            },
+                            {
+                              name: "detail",
+                              type: "textarea",
+                              label: "Détail",
+                              localized: true,
+                            },
+                            {
+                              name: "features",
+                              type: "array",
+                              label: "Points clés",
+                              labels: {
+                                singular: "Point clé",
+                                plural: "Points clés",
+                              },
+                              fields: [
+                                {
+                                  name: "text",
+                                  type: "text",
+                                  label: "Texte",
+                                  localized: true,
+                                  required: true,
+                                },
+                              ],
+                            },
+                            {
+                              name: "highlight",
+                              type: "checkbox",
+                              label: "Mettre cette offre en avant",
+                              defaultValue: false,
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],
