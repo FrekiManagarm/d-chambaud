@@ -5,6 +5,7 @@ import { getBlogPosts } from "@/lib/blog";
 import { resolveMediaURL } from "@/lib/media-url";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Media } from "@/payload-types";
+import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,7 @@ const formatDate = (date?: string | null) => {
   }).format(new Date(date));
 };
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Journal",
   description:
     "Articles, inspirations culinaires et notes de saison de David Chambaud.",
@@ -72,7 +73,10 @@ export default async function BlogPage() {
 
                 return (
                   <article className="blog-card" key={post.id}>
-                    <Link href={`/blog/${post.slug}`} className="blog-card-link">
+                    <Link
+                      href={`/blog/${post.slug}`}
+                      className="blog-card-link"
+                    >
                       <div className="blog-card-image">
                         {imageURL ? (
                           <Image

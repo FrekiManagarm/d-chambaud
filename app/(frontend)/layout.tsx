@@ -26,8 +26,8 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
-    default: "Traiteur Bordeaux & chef à domicile | David Chambaud",
-    template: "%s | David Chambaud Traiteur",
+    default: "David Chambaud | Traiteur Bordeaux & chef à domicile",
+    template: "David Chambaud Traiteur | %s",
   },
   description:
     "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: "Traiteur Bordeaux & chef à domicile | David Chambaud",
+    title: "David Chambaud | Traiteur Bordeaux & chef à domicile",
     description:
       "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
     images: [
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Traiteur Bordeaux & chef à domicile | David Chambaud",
+    title: "David Chambaud | Traiteur Bordeaux & chef à domicile",
     description:
       "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
   },

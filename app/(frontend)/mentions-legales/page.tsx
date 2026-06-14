@@ -4,7 +4,7 @@ import Link from "next/link";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: { absolute: "Mentions légales | David Chambaud" },
+  title: { absolute: "David Chambaud | Mentions légales" },
   description:
     "Mentions légales du site David Chambaud Traiteur, chef traiteur à Bordeaux et en Nouvelle-Aquitaine.",
   alternates: {
@@ -82,7 +82,8 @@ export default function LegalPage() {
               Email:{" "}
               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
               <br />
-              Téléphone: <a href={`tel:${siteConfig.phone}`}>{siteConfig.phone}</a>
+              Téléphone:{" "}
+              <a href={`tel:${siteConfig.phone}`}>{siteConfig.phone}</a>
             </p>
           </section>
 
@@ -94,8 +95,8 @@ export default function LegalPage() {
           <section>
             <h2>Hébergement</h2>
             <p>
-              Site hébergé par PlanetHoster Inc., 4416 rue Louis B Mayer,
-              Laval, QC H7P 0G1, Canada.
+              Site hébergé par PlanetHoster Inc., 4416 rue Louis B Mayer, Laval,
+              QC H7P 0G1, Canada.
             </p>
           </section>
 
