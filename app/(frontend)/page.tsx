@@ -10,7 +10,6 @@ import {
   HeroSection,
   MarqueeStrip,
   PavillonSection,
-  ServiceAreasSection,
   ServicesSection,
   StatsSection,
   TestimonialsSection,
@@ -37,7 +36,6 @@ export default function Page() {
       <StatsSection />
       <ClientsSection />
       <ServicesSection images={images} />
-      <ServiceAreasSection />
       <FormulasSection pricing={pricing} />
       <PavillonSection images={images} />
       <TestimonialsSection />

@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
+import { resolveMediaURL } from "@/lib/media-url";
 
 import {
   deleteMediaAction,
@@ -58,7 +59,7 @@ export default async function ImagesPage({ searchParams }: ImagesPageProps) {
             {media.docs.map((image) => {
               const updateAction = updateMediaAltAction.bind(null, image.id);
               const deleteAction = deleteMediaAction.bind(null, image.id);
-              const previewUrl = image.sizes?.thumb?.url ?? image.url;
+              const previewUrl = resolveMediaURL(image);
 
               return (
                 <article className="bo-media-card" key={image.id}>

@@ -8,7 +8,7 @@ import { Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
 const clientLogos = [
   { src: "/Chateau-le-Puy-Logo.webp", alt: "Château Le Puy" },
   {
-    src: "/Logo_Cha%CC%82teauLesCarmesHautBrion.jpg",
+    src: "/logo-carmes-haut-brion.jpg",
     alt: "Château Les Carmes Haut-Brion",
   },
   { src: "/chateau-faugeres-1998.jpg", alt: "Château Faugères" },

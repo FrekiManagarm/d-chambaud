@@ -94,8 +94,8 @@ export default function LegalPage() {
           <section>
             <h2>Hébergement</h2>
             <p>
-              Site hébergé par Vercel Inc., 440 N Barranca Ave #4133, Covina,
-              CA 91723, États-Unis.
+              Site hébergé par PlanetHoster Inc., 4416 rue Louis B Mayer,
+              Laval, QC H7P 0G1, Canada.
             </p>
           </section>
 

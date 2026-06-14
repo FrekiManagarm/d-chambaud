@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getBlogPostBySlug } from "@/lib/blog";
+import { resolveMediaURL } from "@/lib/media-url";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Media } from "@/payload-types";
 
@@ -49,6 +50,7 @@ export async function generateMetadata({
   }
 
   const heroImage = getMedia(post.heroImage);
+  const heroImageURL = resolveMediaURL(heroImage);
   const title = post.seo?.title || post.title;
   const description = post.seo?.description || post.excerpt;
 
@@ -60,7 +62,7 @@ export async function generateMetadata({
     },
     openGraph: {
       description,
-      images: heroImage?.url ? [heroImage.url] : undefined,
+      images: heroImageURL ? [heroImageURL] : undefined,
       locale: siteConfig.locale,
       siteName: siteConfig.name,
       title,
@@ -79,7 +81,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   }
 
   const heroImage = getMedia(post.heroImage);
-  const imageURL = heroImage?.sizes?.hero?.url || heroImage?.url;
+  const imageURL = resolveMediaURL(heroImage);
 
   return (
     <main className="blog-page">

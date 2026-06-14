@@ -2,17 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getBlogPosts } from "@/lib/blog";
+import { resolveMediaURL } from "@/lib/media-url";
 import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Media } from "@/payload-types";
 
 export const dynamic = "force-dynamic";
 
 const getMediaURL = (media: number | Media | null | undefined) => {
-  if (media && typeof media === "object" && media.url) {
-    return media.sizes?.card?.url || media.url;
-  }
-
-  return null;
+  return resolveMediaURL(media);
 };
 
 const formatDate = (date?: string | null) => {

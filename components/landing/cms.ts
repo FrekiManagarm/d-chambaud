@@ -2,6 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 
+import { resolveMediaURL } from "@/lib/media-url";
+
 import { galleryItems } from "./GallerySection";
 import { fallbackPricing } from "./FormulasSection";
 import { services } from "./ServicesSection";
@@ -9,7 +11,6 @@ import type { Formula, PricingContent, PricingTab } from "./FormulasSection";
 import type {
   AboutContent,
   CMSHomePage,
-  CMSRelationship,
   HomeImages,
 } from "./types";
 
@@ -28,14 +29,6 @@ async function fetchHomePageCMS({
 
   return response.json();
 }
-
-const mediaURL = (media: CMSRelationship, fallback: string) => {
-  if (media && typeof media === "object" && typeof media.url === "string") {
-    return media.url;
-  }
-
-  return fallback;
-};
 
 export const fallbackAbout: AboutContent = {
   ctaLabel: "Prendre contact",
@@ -82,7 +75,7 @@ export function getHomeImages(cms: CMSHomePage | null): HomeImages {
     cms?.gallery
       ?.map((item, index) => {
         const fallback = galleryItems[index] || galleryItems[0];
-        const src = mediaURL(item.image, fallback.src);
+        const src = resolveMediaURL(item.image, fallback.src);
 
         return {
           alt: item.alt || fallback.alt,
@@ -97,32 +90,44 @@ export function getHomeImages(cms: CMSHomePage | null): HomeImages {
       .filter((item) => item.src) || [];
 
   return {
-    about: mediaURL(cms?.aboutImage, "/20260212_DSC2953.jpg"),
+    about: resolveMediaURL(cms?.aboutImage, "/20260212_DSC2953.jpg"),
     gallery: cmsGallery,
-    hero: mediaURL(cms?.heroImage, "/AdobeStock_420273742.jpeg"),
+    hero: resolveMediaURL(cms?.heroImage, "/AdobeStock_420273742.jpeg"),
     pavillon: {
-      main: mediaURL(cms?.pavillonImages?.main, "/Pavillon-70.jpg"),
-      portrait: mediaURL(cms?.pavillonImages?.portrait, "/Pavillon-37.jpg"),
-      stripOne: mediaURL(cms?.pavillonImages?.stripOne, "/Pavillon-71.jpg"),
-      stripThree: mediaURL(
+      main: resolveMediaURL(cms?.pavillonImages?.main, "/Pavillon-70.jpg"),
+      portrait: resolveMediaURL(
+        cms?.pavillonImages?.portrait,
+        "/Pavillon-37.jpg",
+      ),
+      stripOne: resolveMediaURL(
+        cms?.pavillonImages?.stripOne,
+        "/Pavillon-71.jpg",
+      ),
+      stripThree: resolveMediaURL(
         cms?.pavillonImages?.stripThree,
         "/pavillon-facade.jpg",
       ),
-      stripTwo: mediaURL(cms?.pavillonImages?.stripTwo, "/Pavillon-73.jpg"),
-      table: mediaURL(cms?.pavillonImages?.table, "/Pavillon-49.jpg"),
+      stripTwo: resolveMediaURL(
+        cms?.pavillonImages?.stripTwo,
+        "/Pavillon-73.jpg",
+      ),
+      table: resolveMediaURL(cms?.pavillonImages?.table, "/Pavillon-49.jpg"),
     },
     services: [
-      mediaURL(cms?.serviceImages?.traiteur, services[0].img),
-      mediaURL(cms?.serviceImages?.mariages, services[1].img),
-      mediaURL(cms?.serviceImages?.chefADomicile, services[2].img),
-      mediaURL(cms?.serviceImages?.receptions, services[3].img),
+      resolveMediaURL(cms?.serviceImages?.traiteur, services[0].img),
+      resolveMediaURL(cms?.serviceImages?.mariages, services[1].img),
+      resolveMediaURL(cms?.serviceImages?.chefADomicile, services[2].img),
+      resolveMediaURL(cms?.serviceImages?.receptions, services[3].img),
     ],
-    valuesBridge: mediaURL(
+    valuesBridge: resolveMediaURL(
       cms?.valuesBridgeImage,
       "/AdobeStock_241622609.jpeg",
     ),
-    valuesPrimary: mediaURL(cms?.valuesPrimaryImage, "/20260212_DSC2967.jpg"),
-    valuesSecondary: mediaURL(
+    valuesPrimary: resolveMediaURL(
+      cms?.valuesPrimaryImage,
+      "/20260212_DSC2967.jpg",
+    ),
+    valuesSecondary: resolveMediaURL(
       cms?.valuesSecondaryImage,
       "/20260212_DSC3156.jpg",
     ),
