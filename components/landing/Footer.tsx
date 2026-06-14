@@ -2,6 +2,9 @@
 
 import { motion } from "framer-motion";
 import { Globe, Phone } from "lucide-react";
+import Link from "next/link";
+
+import { localSeoPages } from "@/lib/seo";
 
 import { IconInstagram } from "./shared";
 
@@ -11,7 +14,6 @@ import { IconInstagram } from "./shared";
 export function Footer() {
   const footerMuted = "rgba(var(--cream-rgb),0.76)";
   const footerText = "rgba(var(--cream-rgb),0.9)";
-  const footerAccent = "rgba(var(--gold-rgb),0.92)";
 
   return (
     <footer
@@ -26,12 +28,12 @@ export function Footer() {
         style={{
           maxWidth: "1440px",
           margin: "0 auto",
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: "grid",
+          gridTemplateColumns: "minmax(220px, 0.9fr) minmax(280px, 1.1fr) auto",
           gap: "1.5rem",
+          alignItems: "start",
         }}
+        className="footer-grid"
       >
         <div>
           <p
@@ -59,6 +61,30 @@ export function Footer() {
             Saint-Émilion
           </p>
         </div>
+
+        <nav
+          aria-label="Zones d'intervention"
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.6rem 1rem",
+            justifyContent: "center",
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.5rem",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+          }}
+        >
+          {localSeoPages.slice(0, 5).map((page) => (
+            <Link
+              href={`/${page.slug}`}
+              key={page.slug}
+              style={{ color: footerMuted, textDecoration: "none" }}
+            >
+              {page.title}
+            </Link>
+          ))}
+        </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: "1.25rem" }}>
           {[
@@ -95,8 +121,14 @@ export function Footer() {
           ))}
         </div>
 
-        <p
+        <div
           style={{
+            gridColumn: "1 / -1",
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            gap: "0.75rem 1rem",
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.52rem",
             letterSpacing: "0.2em",
@@ -104,15 +136,35 @@ export function Footer() {
             color: footerMuted,
           }}
         >
-          © 2026 DC Restauration &nbsp;·&nbsp;{" "}
-          <a
+          <p>© 2026 DC Restauration</p>
+          <Link
             href="/mentions-legales"
-            style={{ color: footerAccent, textDecoration: "none" }}
+            style={{
+              color: footerMuted,
+              textDecoration: "none",
+              transition: "color 0.2s ease",
+            }}
+            onMouseEnter={(event) => {
+              event.currentTarget.style.color = "var(--gold)";
+            }}
+            onMouseLeave={(event) => {
+              event.currentTarget.style.color = footerMuted;
+            }}
           >
             Mentions légales
-          </a>
-        </p>
+          </Link>
+        </div>
       </div>
+      <style>{`
+        @media (max-width: 900px) {
+          .footer-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .footer-grid nav {
+            justify-content: flex-start !important;
+          }
+        }
+      `}</style>
     </footer>
   );
 

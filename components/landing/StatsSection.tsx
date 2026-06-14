@@ -55,10 +55,10 @@ export function StatsSection() {
               <Eyebrow light>Ce que vous achetez vraiment</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(2.8rem, 5.8vw, 5.6rem)",
+                  fontSize: "clamp(2.35rem, 4.5vw, 4.25rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.98,
@@ -68,7 +68,7 @@ export function StatsSection() {
                 Du calme
                 <br />
                 pendant l&apos;intense.
-              </h2>
+              </h3>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeUp} custom={2}>
@@ -77,7 +77,7 @@ export function StatsSection() {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.9rem",
                 lineHeight: 1.9,
-                color: "rgba(var(--cream-rgb),0.62)",
+                color: "rgba(var(--cream-rgb),0.78)",
                 maxWidth: 430,
               }}
             >
@@ -98,10 +98,10 @@ export function StatsSection() {
           className="stats-grid"
         >
           <CountUpStat
-            value={25}
+            value={18}
             suffix=" ans"
             label="d'expérience"
-            detail="Maison fondée en 2016"
+            detail="Depuis 2008"
             delay={0}
             border
           />

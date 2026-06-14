@@ -320,10 +320,10 @@ export function ServicesSection({ images }: { images: HomeImages }) {
               <Eyebrow>Nos Prestations</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(2.4rem, 5vw, 4.2rem)",
+                  fontSize: "clamp(2.05rem, 3.8vw, 3.35rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 1.1,
@@ -333,7 +333,7 @@ export function ServicesSection({ images }: { images: HomeImages }) {
                 Le bon format
                 <br />
                 pour votre évènement.
-              </h2>
+              </h3>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeIn} custom={2}>
@@ -341,7 +341,7 @@ export function ServicesSection({ images }: { images: HomeImages }) {
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.82rem",
-                fontWeight: 300,
+                fontWeight: 400,
                 color: "var(--warm-gray)",
                 maxWidth: 340,
                 lineHeight: 1.8,
@@ -411,6 +411,9 @@ export function ServicesSection({ images }: { images: HomeImages }) {
           }
           .service-panel-expanded {
             padding: 2rem 1.35rem !important;
+          }
+          .service-panel-expanded h3 {
+            font-size: clamp(1.85rem, 7.8vw, 2.25rem) !important;
           }
           .service-panel .service-panel-collapsed > div > div {
             width: 24px !important;

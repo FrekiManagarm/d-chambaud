@@ -194,10 +194,10 @@ export function GallerySection({ images }: { images: HomeImages }) {
               <Eyebrow light>Nos Réalisations</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3rem, 7vw, 6.8rem)",
+                  fontSize: "clamp(2.55rem, 5.2vw, 5.1rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.92,
@@ -208,7 +208,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
                 Des images qui
                 <br />
                 donnent faim.
-              </h2>
+              </h3>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeIn} custom={2}>
@@ -217,7 +217,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.95rem",
                 fontWeight: 400,
-                color: "rgba(var(--cream-rgb),0.68)",
+                color: "rgba(var(--cream-rgb),0.78)",
                 maxWidth: 360,
                 lineHeight: 1.85,
               }}
@@ -281,7 +281,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
                     fontSize: "0.62rem",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: "rgba(var(--cream-rgb),0.28)",
+                    color: "rgba(var(--cream-rgb),0.62)",
                   }}
                 >
                   sur {String(total).padStart(2, "0")}
@@ -576,7 +576,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
                       fontSize: "0.58rem",
                       letterSpacing: "0.16em",
                       textTransform: "uppercase",
-                      color: "rgba(var(--cream-rgb),0.48)",
+                      color: "rgba(var(--cream-rgb),0.7)",
                     }}
                   >
                     Glisser
@@ -708,6 +708,10 @@ export function GallerySection({ images }: { images: HomeImages }) {
           .gallery-header {
             gap: 1.5rem !important;
             margin-bottom: 2.5rem !important;
+          }
+          .gallery-header h3 {
+            font-size: clamp(2.35rem, 10vw, 3.1rem) !important;
+            line-height: 0.98 !important;
           }
           .gallery-experience {
             gap: 2rem !important;

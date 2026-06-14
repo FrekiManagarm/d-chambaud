@@ -191,8 +191,8 @@ export function MagneticButton({
         fontWeight: 500,
         textDecoration: "none",
         backgroundColor: isGold ? "var(--gold)" : "transparent",
-        color: isGold ? "var(--dark)" : "rgba(var(--cream-rgb),0.7)",
-        border: isGold ? "none" : "1px solid rgba(var(--cream-rgb),0.22)",
+        color: isGold ? "var(--dark)" : "rgba(var(--cream-rgb),0.86)",
+        border: isGold ? "none" : "1px solid rgba(var(--cream-rgb),0.38)",
       }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
@@ -309,20 +309,20 @@ export const Eyebrow = ({
   children: React.ReactNode;
   light?: boolean;
 }) => (
-  <p
+  <h2
     style={{
       fontFamily: "var(--font-montserrat), sans-serif",
-      fontSize: "0.58rem",
-      letterSpacing: "0.42em",
+      fontSize: "clamp(0.68rem, 1vw, 0.82rem)",
+      letterSpacing: "0.22em",
       textTransform: "uppercase",
-      fontWeight: 500,
-      color: "var(--gold)",
-      marginBottom: "0.9rem",
+      fontWeight: 700,
+      color: light ? "rgba(var(--gold-light-rgb),0.94)" : "var(--bronze)",
+      marginBottom: "1.05rem",
       opacity: light ? 0.9 : 1,
     }}
   >
     {children}
-  </p>
+  </h2>
 );
 
 /* ─── ContactField ─── */
@@ -427,7 +427,7 @@ export function ContactField({
           lineHeight: 1.45,
           color: error
             ? "rgba(245,190,170,0.95)"
-            : "rgba(var(--cream-rgb),0.48)",
+            : "rgba(var(--cream-rgb),0.64)",
         }}
       >
         {error || helper || ""}

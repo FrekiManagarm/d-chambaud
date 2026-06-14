@@ -252,7 +252,7 @@ function FormulaRow({
               textTransform: "uppercase",
               color: f.highlight
                 ? "var(--gold)"
-                : "rgba(var(--charcoal-rgb),0.44)",
+                : "rgba(var(--charcoal-rgb),0.62)",
             }}
           >
             {f.highlight ? "Recommandé" : f.sub}
@@ -279,7 +279,7 @@ function FormulaRow({
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.86rem",
             fontWeight: 600,
-            color: "rgba(var(--charcoal-rgb),0.62)",
+            color: "rgba(var(--charcoal-rgb),0.78)",
             lineHeight: 1.75,
             maxWidth: 560,
           }}
@@ -292,7 +292,7 @@ function FormulaRow({
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.76rem",
             fontWeight: 400,
-            color: "rgba(var(--charcoal-rgb),0.48)",
+            color: "rgba(var(--charcoal-rgb),0.68)",
             lineHeight: 1.65,
             maxWidth: 560,
             marginTop: "0.55rem",
@@ -322,7 +322,7 @@ function FormulaRow({
                 fontSize: "0.56rem",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: "rgba(var(--charcoal-rgb),0.52)",
+                color: "rgba(var(--charcoal-rgb),0.68)",
                 backgroundColor: f.highlight
                   ? "rgba(var(--bronze-rgb),0.07)"
                   : "rgba(var(--cream-rgb),0.36)",
@@ -365,7 +365,7 @@ function FormulaRow({
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.64rem",
                 fontWeight: 300,
-                color: "rgba(var(--charcoal-rgb),0.46)",
+                color: "rgba(var(--charcoal-rgb),0.68)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -380,7 +380,7 @@ function FormulaRow({
             fontSize: "0.58rem",
             letterSpacing: "0.18em",
             textTransform: "uppercase",
-            color: "rgba(var(--charcoal-rgb),0.38)",
+            color: "rgba(var(--charcoal-rgb),0.62)",
           }}
         >
           {f.sub}
@@ -437,10 +437,10 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               <Eyebrow>{pricing.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3rem, 6vw, 5.6rem)",
+                  fontSize: "clamp(2.45rem, 4.6vw, 4.35rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.95,
@@ -452,7 +452,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                 {pricing.titleLineOne}
                 <br />
                 {pricing.titleLineTwo}
-              </h2>
+              </h3>
             </HeadingReveal>
 
             <RevealOnScroll variant={fadeUp} custom={2}>
@@ -461,7 +461,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.9rem",
                   fontWeight: 300,
-                  color: "rgba(var(--charcoal-rgb),0.62)",
+                  color: "rgba(var(--charcoal-rgb),0.76)",
                   marginTop: "1.4rem",
                   lineHeight: 1.85,
                   maxWidth: 520,
@@ -503,7 +503,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                     fontWeight: 500,
                     color: isActive
                       ? "var(--charcoal)"
-                      : "rgba(var(--charcoal-rgb),0.42)",
+                      : "rgba(var(--charcoal-rgb),0.64)",
                     background: "none",
                     border: "none",
                     cursor: "pointer",
@@ -564,7 +564,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                 fontSize: "0.62rem",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "rgba(var(--charcoal-rgb),0.42)",
+                color: "rgba(var(--charcoal-rgb),0.64)",
               }}
             >
               {activeSummaryLabel}
@@ -599,7 +599,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.78rem",
                 lineHeight: 1.7,
-                color: "rgba(var(--charcoal-rgb),0.54)",
+                color: "rgba(var(--charcoal-rgb),0.7)",
                 maxWidth: 600,
               }}
             >
@@ -699,8 +699,8 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
         }
 
         @media (max-width: 430px) {
-          .formulas-section h2 {
-            font-size: 2.75rem !important;
+          .formulas-section h3 {
+            font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
           .formula-list-header {

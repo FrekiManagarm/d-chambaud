@@ -227,7 +227,7 @@ export default function Navigation() {
           ))}
 
           <MotionLink
-            href="/#contact"
+            href="/contact"
             initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.55 }}
@@ -324,7 +324,7 @@ export default function Navigation() {
                 </MotionLink>
               ))}
               <Link
-                href="/#contact"
+                href="/contact"
                 onClick={() => setMobileOpen(false)}
                 style={{
                   display: "block",

@@ -3,17 +3,19 @@
 import {
   AboutSection,
   ClientsSection,
-  ContactSection,
+  FinalContactCTA,
   Footer,
   FormulasSection,
   GallerySection,
   HeroSection,
   MarqueeStrip,
   PavillonSection,
+  ServiceAreasSection,
   ServicesSection,
   StatsSection,
   TestimonialsSection,
   ValuesSection,
+  getHomeAbout,
   getHomeImages,
   getHomePricing,
   useHomePageCMS,
@@ -21,6 +23,7 @@ import {
 
 export default function Page() {
   const cms = useHomePageCMS();
+  const about = getHomeAbout(cms);
   const images = getHomeImages(cms);
   const pricing = getHomePricing(cms);
 
@@ -28,16 +31,17 @@ export default function Page() {
     <main>
       <HeroSection images={images} />
       <MarqueeStrip />
-      <AboutSection images={images} />
+      <AboutSection about={about} images={images} />
       <GallerySection images={images} />
       <ValuesSection images={images} />
       <StatsSection />
       <ClientsSection />
       <ServicesSection images={images} />
+      <ServiceAreasSection />
       <FormulasSection pricing={pricing} />
       <PavillonSection images={images} />
       <TestimonialsSection />
-      <ContactSection />
+      <FinalContactCTA />
       <Footer />
     </main>
   );

@@ -26,9 +26,18 @@ export const HomePage: GlobalConfig = {
           fields: [
             imageRelationship("heroImage", "Image du hero"),
             imageRelationship("aboutImage", "Portrait / image à propos"),
-            imageRelationship("valuesPrimaryImage", "Image éditoriale principale"),
-            imageRelationship("valuesSecondaryImage", "Image éditoriale secondaire"),
-            imageRelationship("valuesBridgeImage", "Grande image de transition"),
+            imageRelationship(
+              "valuesPrimaryImage",
+              "Image éditoriale principale",
+            ),
+            imageRelationship(
+              "valuesSecondaryImage",
+              "Image éditoriale secondaire",
+            ),
+            imageRelationship(
+              "valuesBridgeImage",
+              "Grande image de transition",
+            ),
           ],
         },
         {
@@ -103,6 +112,77 @@ export const HomePage: GlobalConfig = {
                 imageRelationship("stripOne", "Bandeau 1"),
                 imageRelationship("stripTwo", "Bandeau 2"),
                 imageRelationship("stripThree", "Bandeau 3"),
+              ],
+            },
+          ],
+        },
+        {
+          label: "À propos",
+          fields: [
+            {
+              name: "about",
+              type: "group",
+              label: "Section à propos",
+              fields: [
+                {
+                  name: "eyebrow",
+                  type: "text",
+                  label: "Petit titre",
+                  localized: true,
+                  defaultValue: "À Propos",
+                },
+                {
+                  name: "titleLineOne",
+                  type: "text",
+                  label: "Titre - ligne 1",
+                  localized: true,
+                  defaultValue: "Le chef que l'on choisit",
+                },
+                {
+                  name: "titleLineTwo",
+                  type: "text",
+                  label: "Titre - ligne 2",
+                  localized: true,
+                  defaultValue: "quand le repas compte vraiment.",
+                },
+                {
+                  name: "firstParagraph",
+                  type: "textarea",
+                  label: "Premier paragraphe",
+                  localized: true,
+                  defaultValue:
+                    "David Chambaud accompagne les mariages, réceptions privées et événements professionnels avec une cuisine lisible, généreuse et tenue jusqu'au dernier service.",
+                },
+                {
+                  name: "secondParagraph",
+                  type: "textarea",
+                  label: "Deuxième paragraphe",
+                  localized: true,
+                  defaultValue:
+                    "Son approche réunit le goût du produit, l'exigence du dressage et une organisation discrète: les invités voient la fluidité, jamais la mécanique.",
+                },
+                {
+                  name: "quote",
+                  type: "textarea",
+                  label: "Citation",
+                  localized: true,
+                  defaultValue:
+                    "Un événement réussi se reconnaît à ce que les invités ressentent: le plaisir, le rythme, l'évidence.",
+                },
+                {
+                  name: "quoteAuthor",
+                  type: "text",
+                  label: "Auteur de la citation",
+                  localized: true,
+                  defaultValue: "David Chambaud",
+                },
+                {
+                  name: "ctaLabel",
+                  type: "text",
+                  label: "Libellé du lien",
+                  localized: true,
+                  defaultValue: "Prendre contact",
+                },
               ],
             },
           ],

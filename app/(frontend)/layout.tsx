@@ -5,6 +5,8 @@ import Navigation from "@/components/Navigation";
 import LoadingScreen from "@/components/LoadingScreen";
 import ScrollProgress from "@/components/ScrollProgress";
 import SmoothCursor from "@/components/SmoothCursor";
+import { businessJsonLd, jsonLdScript, siteConfig } from "@/lib/seo";
+import { Providers } from "./providers";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -22,17 +24,16 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://david-chambaud.fr"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
+    default: "Traiteur Bordeaux & chef à domicile | David Chambaud",
     template: "%s | David Chambaud Traiteur",
   },
   description:
-    "Chef traiteur en Nouvelle-Aquitaine depuis 2008. Réceptions, mariages, dîners privés et chef à domicile autour de Bordeaux. Gastronomie raffinée, produits de saison, expériences sur mesure.",
+    "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
   keywords: [
     "traiteur Bordeaux",
     "traiteur nouvelle aquitaine",
-    "traiteur Saint-Émilion",
     "chef à domicile Bordeaux",
     "traiteur Saint-Émilion",
     "traiteur mariage Gironde",
@@ -47,23 +48,31 @@ export const metadata: Metadata = {
     "traiteur séminaire Bordeaux",
     "buffet gastronomique Gironde",
   ],
-  authors: [{ name: "David Chambaud", url: "https://chambaud.fr" }],
+  authors: [{ name: "David Chambaud", url: siteConfig.url }],
   creator: "David Chambaud",
   publisher: "David Chambaud Traiteur",
   openGraph: {
     type: "website",
-    locale: "fr_FR",
-    url: "https://chambaud.fr",
-    siteName: "David Chambaud Traiteur",
-    title: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
+    locale: siteConfig.locale,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: "Traiteur Bordeaux & chef à domicile | David Chambaud",
     description:
-      "Chef traiteur en Nouvelle-Aquitaine depuis 2008. Réceptions, mariages, dîners privés et chef à domicile autour de Bordeaux.",
+      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "David Chambaud, traiteur à Bordeaux et en Nouvelle-Aquitaine",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "David Chambaud — Traiteur & Chef à Domicile | Nouvelle-Aquitaine",
+    title: "Traiteur Bordeaux & chef à domicile | David Chambaud",
     description:
-      "Chef traiteur en Nouvelle-Aquitaine. Réceptions, mariages et dîners privés. Une gastronomie raffinée depuis 2008.",
+      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
   },
   robots: {
     index: true,
@@ -76,66 +85,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://chambaud.fr",
-  },
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "CateringBusiness",
-  "@id": "https://chambaud.fr",
-  name: "David Chambaud Traiteur",
-  description:
-    "Chef traiteur en Nouvelle-Aquitaine spécialisé dans la création d'expériences culinaires sur mesure pour des événements privés et professionnels.",
-  url: "https://chambaud.fr",
-  telephone: "+33650754406",
-  email: "david@chambaud.fr",
-  address: {
-    "@type": "PostalAddress",
-    addressRegion: "Nouvelle-Aquitaine",
-    addressLocality: "Bordeaux",
-    addressCountry: "FR",
-  },
-  areaServed: {
-    "@type": "State",
-    name: "Nouvelle-Aquitaine",
-  },
-  priceRange: "€€€",
-  image: "https://chambaud.fr/20260212_DSC2953.jpg",
-  sameAs: ["https://www.instagram.com/chambauddavid"],
-  servesCuisine: ["Française", "Gastronomique"],
-  foundingDate: "2008",
-  founder: {
-    "@type": "Person",
-    name: "David Chambaud",
-    jobTitle: "Chef Traiteur",
-  },
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: "Prestations traiteur",
-    itemListElement: [
-      {
-        "@type": "Offer",
-        name: "Traiteur événementiel",
-        description:
-          "Cocktails dinatoires, buffets raffinés et repas gastronomiques",
-      },
-      {
-        "@type": "Offer",
-        name: "Traiteur mariage",
-        description: "Mariages hors du commun en Gironde et Nouvelle-Aquitaine",
-      },
-      {
-        "@type": "Offer",
-        name: "Chef à domicile",
-        description: "Expérience gastronomique dans l'intimité de votre maison",
-      },
-      {
-        "@type": "Offer",
-        name: "Réceptions & séminaires",
-        description: "Anniversaires, baptêmes, séminaires d'entreprise",
-      },
-    ],
+    canonical: siteConfig.url,
   },
 };
 
@@ -147,13 +97,13 @@ export default function RootLayout({
       <body className="min-h-screen">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(businessJsonLd) }}
         />
         <LoadingScreen />
         <ScrollProgress />
         <SmoothCursor />
         <Navigation />
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

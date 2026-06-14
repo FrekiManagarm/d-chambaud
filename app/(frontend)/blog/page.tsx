@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { getBlogPosts } from "@/lib/blog";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Media } from "@/payload-types";
 
 export const dynamic = "force-dynamic";
@@ -30,6 +31,18 @@ export const metadata = {
   title: "Journal",
   description:
     "Articles, inspirations culinaires et notes de saison de David Chambaud.",
+  alternates: {
+    canonical: absoluteUrl("/blog"),
+  },
+  openGraph: {
+    title: "Journal | David Chambaud",
+    description:
+      "Articles, inspirations culinaires et notes de saison de David Chambaud.",
+    url: absoluteUrl("/blog"),
+    type: "website",
+    locale: siteConfig.locale,
+    siteName: siteConfig.name,
+  },
 };
 
 export default async function BlogPage() {

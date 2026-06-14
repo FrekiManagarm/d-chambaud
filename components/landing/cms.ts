@@ -1,12 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { galleryItems } from "./GallerySection";
 import { fallbackPricing } from "./FormulasSection";
 import { services } from "./ServicesSection";
 import type { Formula, PricingContent, PricingTab } from "./FormulasSection";
-import type { CMSHomePage, CMSRelationship, HomeImages } from "./types";
+import type {
+  AboutContent,
+  CMSHomePage,
+  CMSRelationship,
+  HomeImages,
+} from "./types";
+
+const homePageCMSQueryKey = ["cms", "home-page"] as const;
+
+async function fetchHomePageCMS({
+  signal,
+}: {
+  signal?: AbortSignal;
+}): Promise<CMSHomePage | null> {
+  const response = await fetch("/api/globals/home-page?depth=2", { signal });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch home page CMS content");
+  }
+
+  return response.json();
+}
 
 const mediaURL = (media: CMSRelationship, fallback: string) => {
   if (media && typeof media === "object" && typeof media.url === "string") {
@@ -16,31 +37,44 @@ const mediaURL = (media: CMSRelationship, fallback: string) => {
   return fallback;
 };
 
+export const fallbackAbout: AboutContent = {
+  ctaLabel: "Prendre contact",
+  eyebrow: "À Propos",
+  firstParagraph:
+    "David Chambaud accompagne les mariages, réceptions privées et événements professionnels avec une cuisine lisible, généreuse et tenue jusqu'au dernier service.",
+  quote:
+    "Un événement réussi se reconnaît à ce que les invités ressentent: le plaisir, le rythme, l'évidence.",
+  quoteAuthor: "David Chambaud",
+  secondParagraph:
+    "Son approche réunit le goût du produit, l'exigence du dressage et une organisation discrète: les invités voient la fluidité, jamais la mécanique.",
+  titleLineOne: "Le chef que l'on choisit",
+  titleLineTwo: "quand le repas compte vraiment.",
+};
+
 export function useHomePageCMS() {
-  const [cms, setCms] = useState<CMSHomePage | null>(null);
+  const { data } = useQuery({
+    queryKey: homePageCMSQueryKey,
+    queryFn: fetchHomePageCMS,
+  });
 
-  useEffect(() => {
-    let active = true;
+  return data ?? null;
+}
 
-    fetch("/api/globals/home-page?depth=2")
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: CMSHomePage | null) => {
-        if (active && data) {
-          setCms(data);
-        }
-      })
-      .catch(() => {
-        if (active) {
-          setCms(null);
-        }
-      });
+export function getHomeAbout(cms: CMSHomePage | null): AboutContent {
+  const about = cms?.about;
 
-    return () => {
-      active = false;
-    };
-  }, []);
-
-  return cms;
+  return {
+    ctaLabel: about?.ctaLabel?.trim() || fallbackAbout.ctaLabel,
+    eyebrow: about?.eyebrow?.trim() || fallbackAbout.eyebrow,
+    firstParagraph:
+      about?.firstParagraph?.trim() || fallbackAbout.firstParagraph,
+    quote: about?.quote?.trim() || fallbackAbout.quote,
+    quoteAuthor: about?.quoteAuthor?.trim() || fallbackAbout.quoteAuthor,
+    secondParagraph:
+      about?.secondParagraph?.trim() || fallbackAbout.secondParagraph,
+    titleLineOne: about?.titleLineOne?.trim() || fallbackAbout.titleLineOne,
+    titleLineTwo: about?.titleLineTwo?.trim() || fallbackAbout.titleLineTwo,
+  };
 }
 
 export function getHomeImages(cms: CMSHomePage | null): HomeImages {
@@ -171,7 +205,9 @@ export function getHomePricing(cms: CMSHomePage | null): PricingContent {
   return {
     ctaLabel: cmsPricing?.ctaLabel?.trim() || fallbackPricing.ctaLabel,
     eyebrow:
-      cmsPricing?.eyebrow?.trim() || fallbackPricing.eyebrow || `Tarifs ${yearLabel}`,
+      cmsPricing?.eyebrow?.trim() ||
+      fallbackPricing.eyebrow ||
+      `Tarifs ${yearLabel}`,
     footerNote: cmsPricing?.footerNote?.trim() || fallbackPricing.footerNote,
     intro: cmsPricing?.intro?.trim() || fallbackPricing.intro,
     tabs: cmsTabs,
@@ -181,5 +217,4 @@ export function getHomePricing(cms: CMSHomePage | null): PricingContent {
       cmsPricing?.titleLineTwo?.trim() || fallbackPricing.titleLineTwo,
     yearLabel,
   };
-
 }

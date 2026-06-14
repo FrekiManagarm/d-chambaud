@@ -121,7 +121,7 @@ function TestimonialCard({
             fontSize: "0.46rem",
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: "rgba(var(--cream-rgb),0.38)",
+            color: "rgba(var(--cream-rgb),0.68)",
             fontWeight: 500,
             whiteSpace: "nowrap",
           }}
@@ -179,7 +179,7 @@ function TestimonialCard({
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.52rem",
               letterSpacing: "0.1em",
-              color: "rgba(var(--cream-rgb),0.34)",
+              color: "rgba(var(--cream-rgb),0.64)",
               marginTop: "0.15rem",
             }}
           >
@@ -233,7 +233,7 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
           style={{
             display: "grid",
             gap: "1rem",
-            color: "rgba(var(--cream-rgb),0.58)",
+            color: "rgba(var(--cream-rgb),0.74)",
           }}
         >
           <p
@@ -319,10 +319,10 @@ export function TestimonialsSection() {
               <Eyebrow light>Ils nous font confiance</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3rem, 6vw, 5.6rem)",
+                  fontSize: "clamp(2.45rem, 4.6vw, 4.35rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.95,
@@ -333,7 +333,7 @@ export function TestimonialsSection() {
                 Quelques mots
                 <br />
                 après le service.
-              </h2>
+              </h3>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeUp} custom={2}>
@@ -343,7 +343,7 @@ export function TestimonialsSection() {
                 fontSize: "0.88rem",
                 fontWeight: 300,
                 lineHeight: 1.85,
-                color: "rgba(var(--cream-rgb),0.58)",
+                color: "rgba(var(--cream-rgb),0.76)",
                 maxWidth: 360,
               }}
             >
@@ -380,7 +380,7 @@ export function TestimonialsSection() {
                 fontSize: "0.62rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "rgba(var(--cream-rgb),0.34)",
+                color: "rgba(var(--cream-rgb),0.66)",
               }}
             >
               Avis collectés sur Google, Tripadvisor &amp; site officiel
@@ -451,8 +451,8 @@ export function TestimonialsSection() {
           }
         }
         @media (max-width: 430px) {
-          .testimonials-section h2 {
-            font-size: 2.78rem !important;
+          .testimonials-section h3 {
+            font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
           .testimonials-section {

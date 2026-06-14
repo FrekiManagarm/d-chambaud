@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { getBlogPostBySlug } from "@/lib/blog";
+import { absoluteUrl, siteConfig } from "@/lib/seo";
 import type { Media } from "@/payload-types";
 
 export const dynamic = "force-dynamic";
@@ -55,13 +56,16 @@ export async function generateMetadata({
     title,
     description,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: absoluteUrl(`/blog/${post.slug}`),
     },
     openGraph: {
       description,
       images: heroImage?.url ? [heroImage.url] : undefined,
+      locale: siteConfig.locale,
+      siteName: siteConfig.name,
       title,
       type: "article",
+      url: absoluteUrl(`/blog/${post.slug}`),
     },
   };
 }

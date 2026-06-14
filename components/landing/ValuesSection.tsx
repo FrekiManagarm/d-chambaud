@@ -49,7 +49,7 @@ function ValueBand({
           fontSize: "clamp(7rem, 18vw, 14rem)",
           fontWeight: 300,
           fontStyle: "italic",
-          color: "rgba(var(--gold-rgb),0.055)",
+          color: "rgba(var(--gold-rgb),0.035)",
           lineHeight: 1,
           userSelect: "none",
           pointerEvents: "none",
@@ -99,7 +99,7 @@ function ValueBand({
               style={{
                 fontFamily: "var(--font-cormorant), serif",
                 fontSize: "clamp(2rem, 4.5vw, 3.5rem)",
-                fontWeight: 300,
+                fontWeight: 400,
                 fontStyle: "italic",
                 color: "var(--charcoal)",
                 lineHeight: 1.1,
@@ -121,7 +121,7 @@ function ValueBand({
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.88rem",
               lineHeight: 1.95,
-              fontWeight: 400,
+              fontWeight: 500,
               color: "var(--charcoal)",
               maxWidth: 420,
             }}
@@ -172,10 +172,10 @@ export function ValuesSection({ images }: { images: HomeImages }) {
               <Eyebrow>Scénographie culinaire</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3rem, 6.6vw, 6.4rem)",
+                  fontSize: "clamp(2.45rem, 5vw, 4.8rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.96,
@@ -185,7 +185,7 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                 Un repas ne se pose pas
                 <br />
                 sur une table.
-              </h2>
+              </h3>
             </HeadingReveal>
             <RevealOnScroll variant={fadeUp} custom={2}>
               <p
@@ -193,7 +193,7 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.94rem",
                   lineHeight: 1.9,
-                  color: "rgba(var(--charcoal-rgb),0.64)",
+                  color: "rgba(var(--charcoal-rgb),0.78)",
                   maxWidth: 560,
                   marginTop: "1.6rem",
                 }}
@@ -350,8 +350,13 @@ export function ValuesSection({ images }: { images: HomeImages }) {
             gap: 1.25rem !important;
             margin-bottom: 2.5rem !important;
           }
+          .values-heading h3 {
+            font-size: clamp(2.35rem, 9.5vw, 3rem) !important;
+            line-height: 1 !important;
+          }
           .values-collage {
-            min-height: 360px !important;
+            min-height: auto !important;
+            aspect-ratio: 4 / 5 !important;
           }
         }
       `}</style>

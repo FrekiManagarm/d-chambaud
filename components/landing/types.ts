@@ -8,6 +8,7 @@ export type CMSMedia = {
 export type CMSRelationship = CMSMedia | number | string | null | undefined;
 
 export type CMSHomePage = {
+  about?: CMSAbout;
   aboutImage?: CMSRelationship;
   gallery?: {
     alt?: string | null;
@@ -35,6 +36,28 @@ export type CMSHomePage = {
   valuesBridgeImage?: CMSRelationship;
   valuesPrimaryImage?: CMSRelationship;
   valuesSecondaryImage?: CMSRelationship;
+};
+
+export type CMSAbout = {
+  ctaLabel?: string | null;
+  eyebrow?: string | null;
+  firstParagraph?: string | null;
+  quote?: string | null;
+  quoteAuthor?: string | null;
+  secondParagraph?: string | null;
+  titleLineOne?: string | null;
+  titleLineTwo?: string | null;
+};
+
+export type AboutContent = {
+  ctaLabel: string;
+  eyebrow: string;
+  firstParagraph: string;
+  quote: string;
+  quoteAuthor: string;
+  secondParagraph: string;
+  titleLineOne: string;
+  titleLineTwo: string;
 };
 
 export type CMSPricing = {

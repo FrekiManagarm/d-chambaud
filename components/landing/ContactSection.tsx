@@ -114,10 +114,10 @@ export function ContactSection() {
               <Eyebrow>Contact</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3rem, 6vw, 5.7rem)",
+                  fontSize: "clamp(2.45rem, 4.6vw, 4.35rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.96,
@@ -129,7 +129,7 @@ export function ContactSection() {
                 Une date,
                 <br />
                 un lieu, une envie.
-              </h2>
+              </h3>
             </HeadingReveal>
 
             <RevealOnScroll variant={fadeUp} custom={2}>
@@ -138,7 +138,7 @@ export function ContactSection() {
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.92rem",
                   fontWeight: 300,
-                  color: "rgba(var(--charcoal-rgb),0.64)",
+                  color: "rgba(var(--charcoal-rgb),0.78)",
                   lineHeight: 1.9,
                   maxWidth: 540,
                   marginTop: "1.5rem",
@@ -215,7 +215,7 @@ export function ContactSection() {
                           fontSize: "0.54rem",
                           letterSpacing: "0.2em",
                           textTransform: "uppercase",
-                          color: "rgba(var(--charcoal-rgb),0.44)",
+                          color: "rgba(var(--charcoal-rgb),0.62)",
                           marginBottom: "0.18rem",
                         }}
                       >
@@ -245,7 +245,7 @@ export function ContactSection() {
                   gridTemplateColumns: "auto 1fr",
                   gap: "1rem",
                   alignItems: "start",
-                  color: "rgba(var(--charcoal-rgb),0.62)",
+                  color: "rgba(var(--charcoal-rgb),0.74)",
                 }}
               >
                 <div
@@ -315,7 +315,7 @@ export function ContactSection() {
                         fontFamily: "var(--font-montserrat), sans-serif",
                         fontSize: "0.76rem",
                         lineHeight: 1.55,
-                        color: "rgba(var(--charcoal-rgb),0.58)",
+                        color: "rgba(var(--charcoal-rgb),0.72)",
                       }}
                     >
                       {desc}
@@ -373,7 +373,7 @@ export function ContactSection() {
                       fontFamily: "var(--font-montserrat), sans-serif",
                       fontSize: "0.82rem",
                       fontWeight: 300,
-                      color: "rgba(var(--cream-rgb),0.62)",
+                      color: "rgba(var(--cream-rgb),0.74)",
                       lineHeight: 1.8,
                       maxWidth: 390,
                     }}
@@ -546,8 +546,8 @@ export function ContactSection() {
         }
 
         @media (max-width: 430px) {
-          .contact-section h2 {
-            font-size: 2.75rem !important;
+          .contact-section h3 {
+            font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
           .contact-field input,

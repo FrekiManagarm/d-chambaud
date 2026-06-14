@@ -123,6 +123,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
           alt=""
           fill
           priority
+          sizes="36vw"
           style={{ objectFit: "cover", objectPosition: "center" }}
         />
         <div
@@ -165,7 +166,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
               fontSize: "0.44rem",
               letterSpacing: "0.28em",
               textTransform: "uppercase",
-              color: "rgba(var(--cream-rgb),0.28)",
+              color: "rgba(var(--cream-rgb),0.56)",
             }}
           >
             Nouvelle-Aquitaine
@@ -311,7 +312,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             letterSpacing: "0.2em",
             textTransform: "uppercase",
             fontWeight: 400,
-            color: "rgba(var(--cream-rgb),0.6)",
+            color: "rgba(var(--cream-rgb),0.78)",
             marginBottom: "3.5rem",
           }}
         >
@@ -359,7 +360,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             fontSize: "0.48rem",
             letterSpacing: "0.35em",
             textTransform: "uppercase",
-            color: "rgba(var(--cream-rgb),0.25)",
+            color: "rgba(var(--cream-rgb),0.56)",
           }}
         >
           Défiler
@@ -368,7 +369,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
           animate={{ y: [0, 9, 0] }}
           transition={{ repeat: Infinity, duration: 2.2, ease: "easeInOut" }}
         >
-          <ChevronDown size={13} color="rgba(var(--cream-rgb),0.25)" />
+          <ChevronDown size={13} color="rgba(var(--cream-rgb),0.56)" />
         </motion.div>
       </motion.div>
 

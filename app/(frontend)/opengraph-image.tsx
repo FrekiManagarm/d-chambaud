@@ -2,6 +2,8 @@ import { ImageResponse } from "next/og";
 import { readFileSync } from "fs";
 import path from "path";
 
+import { siteConfig } from "@/lib/seo";
+
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -124,7 +126,7 @@ export default async function Image() {
           color: "rgba(189,156,110,0.38)",
         }}
       >
-        chambaud.fr
+        {siteConfig.url.replace("https://", "")}
       </div>
     </div>,
     {

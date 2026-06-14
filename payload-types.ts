@@ -492,6 +492,16 @@ export interface HomePage {
     stripTwo?: (number | null) | Media;
     stripThree?: (number | null) | Media;
   };
+  about?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    firstParagraph?: string | null;
+    secondParagraph?: string | null;
+    quote?: string | null;
+    quoteAuthor?: string | null;
+    ctaLabel?: string | null;
+  };
   pricing?: {
     eyebrow?: string | null;
     titleLineOne?: string | null;
@@ -575,6 +585,18 @@ export interface HomePageSelect<T extends boolean = true> {
         stripOne?: T;
         stripTwo?: T;
         stripThree?: T;
+      };
+  about?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        firstParagraph?: T;
+        secondParagraph?: T;
+        quote?: T;
+        quoteAuthor?: T;
+        ctaLabel?: T;
       };
   pricing?:
     | T

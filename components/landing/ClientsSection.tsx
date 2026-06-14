@@ -8,7 +8,7 @@ import { Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
 const clientLogos = [
   { src: "/Chateau-le-Puy-Logo.webp", alt: "Château Le Puy" },
   {
-    src: "/Logo_ChâteauLesCarmesHautBrion.jpg",
+    src: "/Logo_Cha%CC%82teauLesCarmesHautBrion.jpg",
     alt: "Château Les Carmes Haut-Brion",
   },
   { src: "/chateau-faugeres-1998.jpg", alt: "Château Faugères" },
@@ -65,10 +65,10 @@ export function ClientsSection() {
             <Eyebrow>Références</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.06}>
-            <h2
+            <h3
               style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.5rem, 5vw, 4.8rem)",
+                fontSize: "clamp(2.2rem, 4vw, 3.7rem)",
                 fontStyle: "italic",
                 fontWeight: 300,
                 lineHeight: 1,
@@ -78,7 +78,7 @@ export function ClientsSection() {
               Des lieux exigeants,
               <br />
               des repas remarqués.
-            </h2>
+            </h3>
           </HeadingReveal>
         </div>
         <RevealOnScroll variant={fadeUp} custom={2}>
@@ -87,7 +87,7 @@ export function ClientsSection() {
               fontFamily: "var(--font-montserrat), sans-serif",
               fontSize: "0.9rem",
               lineHeight: 1.85,
-              color: "rgba(var(--charcoal-rgb),0.62)",
+              color: "rgba(var(--charcoal-rgb),0.78)",
               maxWidth: 460,
             }}
           >
@@ -177,6 +177,9 @@ export function ClientsSection() {
             padding-left: 1rem !important;
             padding-right: 1rem !important;
             gap: 1.25rem !important;
+          }
+          .clients-heading h3 {
+            font-size: clamp(2.1rem, 8.5vw, 2.85rem) !important;
           }
         }
       `}</style>

@@ -205,10 +205,10 @@ export function PavillonSection({ images }: { images: HomeImages }) {
             </RevealOnScroll>
 
             <HeadingReveal delay={0.08}>
-              <h2
+              <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(3.1rem, 6.4vw, 6rem)",
+                  fontSize: "clamp(2.55rem, 4.9vw, 4.7rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
                   lineHeight: 0.96,
@@ -219,7 +219,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                 Une parenthèse
                 <br />
                 où l&apos;on reste.
-              </h2>
+              </h3>
             </HeadingReveal>
 
             <RevealOnScroll variant={fadeUp} custom={2}>
@@ -229,7 +229,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   fontSize: "0.95rem",
                   fontWeight: 400,
                   lineHeight: 1.9,
-                  color: "rgba(var(--cream-rgb),0.66)",
+                  color: "rgba(var(--cream-rgb),0.78)",
                   maxWidth: 620,
                 }}
               >
@@ -294,7 +294,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                       style={{
                         fontFamily: "var(--font-montserrat), sans-serif",
                         fontSize: "0.86rem",
-                        color: "rgba(var(--cream-rgb),0.62)",
+                        color: "rgba(var(--cream-rgb),0.76)",
                         lineHeight: 1.75,
                       }}
                     >
@@ -345,7 +345,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.74rem",
                     lineHeight: 1.65,
-                    color: "rgba(var(--cream-rgb),0.42)",
+                    color: "rgba(var(--cream-rgb),0.68)",
                     maxWidth: 260,
                   }}
                 >
@@ -490,8 +490,8 @@ export function PavillonSection({ images }: { images: HomeImages }) {
         }
 
         @media (max-width: 430px) {
-          .pavillon-section h2 {
-            font-size: 2.72rem !important;
+          .pavillon-section h3 {
+            font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
           .pavillon-section p {
@@ -503,6 +503,9 @@ export function PavillonSection({ images }: { images: HomeImages }) {
           }
           .pavillon-gallery {
             min-height: 420px !important;
+          }
+          .pavillon-strip-images > div {
+            aspect-ratio: 4 / 3 !important;
           }
         }
       `}</style>

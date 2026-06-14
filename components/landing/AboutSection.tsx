@@ -1,17 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
 
-import type { HomeImages } from "./types";
-import { Eyebrow, HeadingReveal, RevealOnScroll, fadeIn, fadeUp, lineGrow } from "./shared";
+import type { AboutContent, HomeImages } from "./types";
+import {
+  Eyebrow,
+  HeadingReveal,
+  RevealOnScroll,
+  fadeIn,
+  fadeUp,
+  lineGrow,
+} from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    ABOUT — magazine spread with pull quote
 ════════════════════════════════════════════════════════════ */
-export function AboutSection({ images }: { images: HomeImages }) {
+export function AboutSection({
+  about,
+  images,
+}: {
+  about: AboutContent;
+  images: HomeImages;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -132,13 +150,13 @@ export function AboutSection({ images }: { images: HomeImages }) {
         {/* Text */}
         <div>
           <RevealOnScroll variant={fadeUp}>
-            <Eyebrow light>À Propos</Eyebrow>
+            <Eyebrow>{about.eyebrow}</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.05}>
-            <h2
+            <h3
               style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+                fontSize: "clamp(2.15rem, 4vw, 3.55rem)",
                 fontStyle: "italic",
                 fontWeight: 300,
                 lineHeight: 1.08,
@@ -146,10 +164,9 @@ export function AboutSection({ images }: { images: HomeImages }) {
                 marginBottom: "2rem",
               }}
             >
-              Le chef que l&apos;on choisit
-              <br />
-              quand le repas compte vraiment.
-            </h2>
+              {about.titleLineOne} <br />
+              {about.titleLineTwo}
+            </h3>
           </HeadingReveal>
           <RevealOnScroll variant={lineGrow}>
             <div
@@ -163,10 +180,7 @@ export function AboutSection({ images }: { images: HomeImages }) {
             />
           </RevealOnScroll>
 
-          {[
-            "David Chambaud accompagne les mariages, réceptions privées et événements professionnels avec une cuisine lisible, généreuse et tenue jusqu'au dernier service.",
-            "Son approche réunit le goût du produit, l'exigence du dressage et une organisation discrète: les invités voient la fluidité, jamais la mécanique.",
-          ].map((para, i) => (
+          {[about.firstParagraph, about.secondParagraph].map((paragraph, i) => (
             <RevealOnScroll key={i} variant={fadeUp} custom={2 + i}>
               <p
                 style={{
@@ -174,11 +188,11 @@ export function AboutSection({ images }: { images: HomeImages }) {
                   fontSize: "0.9rem",
                   fontWeight: 500,
                   lineHeight: 1.95,
-                  color: "rgba(var(--charcoal-rgb),0.66)",
+                  color: "rgba(var(--charcoal-rgb),0.78)",
                   marginBottom: "1.1rem",
                 }}
               >
-                {para}
+                {paragraph}
               </p>
             </RevealOnScroll>
           ))}
@@ -203,20 +217,20 @@ export function AboutSection({ images }: { images: HomeImages }) {
                   opacity: 0.9,
                 }}
               >
-                « Un événement réussi se reconnaît à ce que les invités
-                ressentent: le plaisir, le rythme, l&apos;évidence. »
+                « {about.quote} »
               </blockquote>
               <p
                 style={{
                   fontFamily: "var(--font-montserrat), sans-serif",
                   fontSize: "0.52rem",
                   letterSpacing: "0.32em",
-                  color: "var(--gold)",
+                  color: "var(--bronze)",
                   marginTop: "0.75rem",
                   textTransform: "uppercase",
+                  fontWeight: 600,
                 }}
               >
-                — David Chambaud
+                — {about.quoteAuthor}
               </p>
             </div>
           </RevealOnScroll>
@@ -234,11 +248,12 @@ export function AboutSection({ images }: { images: HomeImages }) {
                 fontSize: "0.62rem",
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
-                color: "var(--gold)",
+                color: "var(--bronze)",
                 textDecoration: "none",
+                fontWeight: 600,
               }}
             >
-              <span>Prendre contact</span>
+              <span>{about.ctaLabel}</span>
               <ArrowRight size={13} />
             </motion.a>
           </RevealOnScroll>
@@ -248,9 +263,9 @@ export function AboutSection({ images }: { images: HomeImages }) {
       <style>{`
         @media (max-width: 768px) {
           .about-grid { grid-template-columns: 1fr !important; gap: 3rem !important; }
+          .about-grid h3 { font-size: clamp(2.1rem, 8.5vw, 2.85rem) !important; }
         }
       `}</style>
     </section>
   );
-
 }
