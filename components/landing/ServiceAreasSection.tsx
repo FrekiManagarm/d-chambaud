@@ -38,7 +38,7 @@ export function ServiceAreasSection() {
               marginBottom: "1rem",
             }}
           >
-            Zones d'intervention
+            Zones d&apos;intervention
           </p>
           <h2
             style={{

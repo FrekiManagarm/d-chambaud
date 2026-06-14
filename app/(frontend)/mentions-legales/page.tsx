@@ -120,7 +120,7 @@ export default function LegalPage() {
               fontWeight: 700,
             }}
           >
-            Retour à l'accueil
+            Retour à l&apos;accueil
           </Link>
         </div>
       </section>

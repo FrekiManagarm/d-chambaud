@@ -16,6 +16,7 @@ export const siteConfig = {
     "Bordeaux",
     "Gironde",
     "Saint-Émilion",
+    "Arcachon",
     "Libourne",
     "Pessac",
     "Mérignac",
@@ -110,7 +111,11 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "L'objectif est de garder une cuisine mémorable, élégante et lisible, avec des propositions adaptées aux enfants, intolérances et régimes particuliers.",
       },
     ],
-    related: ["traiteur-bordeaux", "traiteur-gironde", "traiteur-saint-emilion"],
+    related: [
+      "traiteur-bordeaux",
+      "traiteur-gironde",
+      "traiteur-saint-emilion",
+    ],
   },
   {
     slug: "chef-a-domicile-bordeaux",
@@ -141,7 +146,11 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "L'équipe prend en charge la partie culinaire pour que les hôtes restent avec leurs invités, du premier échange jusqu'à la fin du service.",
       },
     ],
-    related: ["traiteur-bordeaux", "traiteur-mariage-bordeaux", "traiteur-gironde"],
+    related: [
+      "traiteur-bordeaux",
+      "traiteur-mariage-bordeaux",
+      "traiteur-gironde",
+    ],
   },
   {
     slug: "traiteur-gironde",
@@ -207,7 +216,11 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "Le format peut rester très événementiel ou devenir plus intime, avec un dîner servi, une table d'hôtes ou une réception sur plusieurs temps.",
       },
     ],
-    related: ["traiteur-gironde", "traiteur-mariage-bordeaux", "traiteur-bordeaux"],
+    related: [
+      "traiteur-gironde",
+      "traiteur-mariage-bordeaux",
+      "traiteur-bordeaux",
+    ],
   },
   {
     slug: "traiteur-nouvelle-aquitaine",
@@ -238,7 +251,11 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "Mariage, dîner à domicile, lancement, baptême ou séminaire: le format est adapté sans perdre la signature culinaire ni la rigueur du service.",
       },
     ],
-    related: ["traiteur-bordeaux", "traiteur-gironde", "chef-a-domicile-bordeaux"],
+    related: [
+      "traiteur-bordeaux",
+      "traiteur-gironde",
+      "chef-a-domicile-bordeaux",
+    ],
   },
 ];
 

@@ -129,9 +129,9 @@ export default async function LocalSeoPage({ params }: LocalSeoPageProps) {
               </section>
             ))}
             <p>
-              Pour une demande de {page.intent}, le plus simple est d'indiquer
-              la date, le lieu, le nombre d'invités, le format attendu et les
-              premières envies culinaires.
+              Pour une demande de {page.intent}, le plus simple est
+              d&apos;indiquer la date, le lieu, le nombre d&apos;invités, le
+              format attendu et les premières envies culinaires.
             </p>
           </div>
         </div>
