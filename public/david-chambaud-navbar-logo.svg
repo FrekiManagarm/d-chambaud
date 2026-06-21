@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#F5EDD8"/>
+  <circle cx="256" cy="256" r="198" fill="#2A2820"/>
+  <circle cx="256" cy="256" r="198" stroke="#BD9C6E" stroke-width="10"/>
+  <circle cx="256" cy="256" r="169" stroke="#F5EDD8" stroke-opacity="0.28" stroke-width="3"/>
+  <g transform="translate(80 150) scale(2.94)">
+    <path
+      d="M15 49C29 34 48 29 54 35C62 44 39 59 20 58C9 57 8 52 15 49Z"
+      stroke="#D9BC83"
+      stroke-width="8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M48 56C41 39 50 18 66 8"
+      stroke="#D9BC83"
+      stroke-width="10"
+      stroke-linecap="round"
+    />
+    <path
+      d="M101 24C86 18 68 31 67 44C66 58 84 58 109 48"
+      stroke="#D9BC83"
+      stroke-width="10"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>
