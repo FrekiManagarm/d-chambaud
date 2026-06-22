@@ -17,11 +17,6 @@ const legacyContentRedirects = [
     permanent: true,
   },
   {
-    source: "/hello-world",
-    destination: `${canonicalSiteUrl}/blog`,
-    permanent: true,
-  },
-  {
     source: "/mariages",
     destination: `${canonicalSiteUrl}/traiteur-mariage-bordeaux`,
     permanent: true,
@@ -72,13 +67,13 @@ const canonicalHostRedirects = [
   },
   {
     source: "/:path*",
-    has: [{ type: "host", value: "chambaud.fr" }],
+    has: [{ type: "host", value: "david-chambaud.fr" }],
     destination: `${canonicalSiteUrl}/:path*`,
     permanent: true,
   },
   {
     source: "/:path*",
-    has: [{ type: "host", value: "www.chambaud.fr" }],
+    has: [{ type: "host", value: "www.david-chambaud.fr" }],
     destination: `${canonicalSiteUrl}/:path*`,
     permanent: true,
   },
