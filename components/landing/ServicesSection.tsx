@@ -11,6 +11,7 @@ import {
   TreePine,
   UtensilsCrossed,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import {
   getServiceBrochureDownloadHref,
@@ -24,7 +25,17 @@ import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeIn, fadeUp } from "./
 /* ════════════════════════════════════════════════════════════
    SERVICES — editorial rows, icon slides in on hover
 ════════════════════════════════════════════════════════════ */
-export const services = [
+type ServiceItem = {
+  brochureCategory: ServiceBrochureCategory;
+  desc: string;
+  Icon: LucideIcon;
+  img: string;
+  num: string;
+  sub: string;
+  title: string;
+};
+
+export const services: ServiceItem[] = [
   {
     num: "01",
     Icon: UtensilsCrossed,
@@ -71,7 +82,7 @@ function ServicePanel({
   isActive,
   onActivate,
 }: {
-  service: (typeof services)[0] & { brochureCategory: ServiceBrochureCategory };
+  service: ServiceItem;
   brochure?: ServiceBrochureSummary;
   index: number;
   isActive: boolean;
@@ -115,8 +126,8 @@ function ServicePanel({
           position: "absolute",
           inset: 0,
           backgroundColor: isActive
-            ? "rgba(var(--dark-rgb),0.62)"
-            : "rgba(var(--dark-rgb),0.82)",
+            ? "rgba(var(--dark-rgb),0.46)"
+            : "rgba(var(--dark-rgb),0.70)",
           transition: reduce ? "none" : "background-color 0.65s ease",
           pointerEvents: "none",
           zIndex: 1,
@@ -129,8 +140,8 @@ function ServicePanel({
           position: "absolute",
           inset: 0,
           background: isActive
-            ? "linear-gradient(180deg, rgba(var(--dark-rgb),0.28) 0%, rgba(var(--dark-rgb),0.18) 36%, rgba(var(--dark-rgb),0.88) 100%), linear-gradient(90deg, rgba(var(--dark-rgb),0.72) 0%, rgba(var(--dark-rgb),0.18) 54%, rgba(var(--dark-rgb),0.36) 100%)"
-            : "linear-gradient(180deg, rgba(var(--dark-rgb),0.34) 0%, rgba(var(--dark-rgb),0.72) 100%)",
+            ? "linear-gradient(180deg, rgba(var(--dark-rgb),0.12) 0%, rgba(var(--dark-rgb),0.08) 38%, rgba(var(--dark-rgb),0.72) 100%), linear-gradient(90deg, rgba(var(--dark-rgb),0.52) 0%, rgba(var(--dark-rgb),0.10) 56%, rgba(var(--dark-rgb),0.22) 100%)"
+            : "linear-gradient(180deg, rgba(var(--dark-rgb),0.18) 0%, rgba(var(--dark-rgb),0.54) 100%)",
           transition: reduce ? "none" : "opacity 0.65s ease",
           pointerEvents: "none",
           zIndex: 2,
@@ -466,167 +477,8 @@ export function ServicesSection({
         ))}
       </motion.div>
 
-      <div className="service-brochures-shell">
-        <RevealOnScroll variant={fadeUp}>
-          <div className="service-brochures-head">
-            <div>
-              <Eyebrow>Plaquettes</Eyebrow>
-              <h3>Télécharger par prestation.</h3>
-            </div>
-            <p>
-              Chaque document correspond à une catégorie précise pour préparer
-              votre échange avec les bonnes informations.
-            </p>
-          </div>
-        </RevealOnScroll>
-
-        <div className="service-brochures-grid">
-          {services.map((service) => {
-            const brochure = brochuresByCategory[service.brochureCategory];
-            const Icon = service.Icon;
-
-            return (
-              <article className="service-brochure-card" key={service.num}>
-                <Icon aria-hidden="true" size={20} />
-                <div>
-                  <span>{service.title}</span>
-                  <small>
-                    {brochure?.title || "Plaquette bientôt disponible"}
-                  </small>
-                </div>
-                {brochure ? (
-                  <a href={getServiceBrochureDownloadHref(brochure)}>
-                    <Download aria-hidden="true" size={15} />
-                    <span>Télécharger</span>
-                  </a>
-                ) : (
-                  <span className="service-brochure-missing">À venir</span>
-                )}
-              </article>
-            );
-          })}
-        </div>
-      </div>
-
       <style>{`
-        .service-brochures-shell {
-          max-width: 1300px;
-          margin: 0 auto;
-          padding: 3rem 2rem 0;
-        }
-        .service-brochures-head {
-          display: grid;
-          grid-template-columns: minmax(0, 0.8fr) minmax(260px, 0.45fr);
-          gap: 2rem;
-          align-items: end;
-          margin-bottom: 1.15rem;
-        }
-        .service-brochures-head h3 {
-          margin-top: 0.75rem;
-          font-family: var(--font-cormorant), serif;
-          font-size: clamp(1.95rem, 3vw, 2.75rem);
-          font-style: italic;
-          font-weight: 300;
-          line-height: 1;
-          color: var(--charcoal);
-        }
-        .service-brochures-head p {
-          margin: 0;
-          font-family: var(--font-montserrat), sans-serif;
-          font-size: 0.82rem;
-          font-weight: 300;
-          color: rgba(var(--charcoal-rgb),0.68);
-          line-height: 1.8;
-        }
-        .service-brochures-grid {
-          display: grid;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          border-top: 1px solid rgba(var(--charcoal-rgb),0.12);
-          border-bottom: 1px solid rgba(var(--charcoal-rgb),0.12);
-        }
-        .service-brochure-card {
-          display: grid;
-          grid-template-columns: auto 1fr;
-          gap: 0.85rem;
-          min-width: 0;
-          padding: 1rem;
-          border-right: 1px solid rgba(var(--charcoal-rgb),0.1);
-        }
-        .service-brochure-card:last-child {
-          border-right: 0;
-        }
-        .service-brochure-card svg {
-          color: var(--gold);
-        }
-        .service-brochure-card div,
-        .service-brochure-card span,
-        .service-brochure-card small {
-          min-width: 0;
-        }
-        .service-brochure-card div span {
-          display: block;
-          font-family: var(--font-cormorant), serif;
-          font-size: 1.35rem;
-          font-style: italic;
-          line-height: 1;
-          color: var(--charcoal);
-        }
-        .service-brochure-card small {
-          display: block;
-          margin-top: 0.35rem;
-          overflow: hidden;
-          color: rgba(var(--charcoal-rgb),0.58);
-          font-family: var(--font-montserrat), sans-serif;
-          font-size: 0.7rem;
-          line-height: 1.45;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .service-brochure-card a,
-        .service-brochure-missing {
-          grid-column: 1 / -1;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.45rem;
-          width: fit-content;
-          min-height: 36px;
-          margin-top: 0.45rem;
-          border: 1px solid rgba(var(--charcoal-rgb),0.16);
-          padding: 0 0.8rem;
-          font-family: var(--font-montserrat), sans-serif;
-          font-size: 0.58rem;
-          font-weight: 600;
-          letter-spacing: 0.18em;
-          text-transform: uppercase;
-          text-decoration: none;
-        }
-        .service-brochure-card a {
-          color: var(--dark);
-          background: var(--gold);
-          border-color: var(--gold);
-        }
-        .service-brochure-missing {
-          color: rgba(var(--charcoal-rgb),0.46);
-        }
         @media (max-width: 768px) {
-          .service-brochures-shell {
-            padding: 2rem 1rem 0;
-          }
-          .service-brochures-head,
-          .service-brochures-grid {
-            grid-template-columns: 1fr;
-          }
-          .service-brochures-head {
-            gap: 1rem;
-          }
-          .service-brochure-card {
-            border-right: 0;
-            border-bottom: 1px solid rgba(var(--charcoal-rgb),0.1);
-          }
-          .service-brochure-card:last-child {
-            border-bottom: 0;
-          }
           .services-accordion {
             flex-direction: column !important;
             height: auto !important;

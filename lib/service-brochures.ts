@@ -6,15 +6,21 @@ export const serviceBrochureMimeTypes = [
   powerpointContentType,
 ];
 
-export const serviceBrochureCategoryOptions = [
+export type ServiceBrochureCategory =
+  | "traiteur"
+  | "mariages"
+  | "chef-a-domicile"
+  | "receptions";
+
+export const serviceBrochureCategoryOptions: {
+  label: string;
+  value: ServiceBrochureCategory;
+}[] = [
   { label: "Traiteur", value: "traiteur" },
   { label: "Mariages", value: "mariages" },
   { label: "Chef à domicile", value: "chef-a-domicile" },
   { label: "Réceptions", value: "receptions" },
 ];
-
-export type ServiceBrochureCategory =
-  (typeof serviceBrochureCategoryOptions)[number]["value"];
 
 type ServiceBrochureFile = {
   filename?: string | null;

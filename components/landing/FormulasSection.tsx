@@ -222,10 +222,11 @@ function FormulaRow({ f, index }: { f: Formula; index: number }) {
       style={{
         position: "relative",
         display: "grid",
-        gridTemplateColumns: "minmax(0, 1fr) auto",
-        gap: "1.5rem",
-        padding: "1.25rem 0",
-        borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
+        gridTemplateColumns: "minmax(0, 1fr) minmax(48px, 0.2fr) auto",
+        gap: "1rem",
+        alignItems: "end",
+        padding: "1.35rem 0",
+        borderBottom: "1px solid rgba(var(--charcoal-rgb),0.1)",
       }}
     >
       <div>
@@ -283,12 +284,23 @@ function FormulaRow({ f, index }: { f: Formula; index: number }) {
         </p>
       </div>
 
+      <span
+        className="formula-leader"
+        aria-hidden
+        style={{
+          display: "block",
+          minWidth: 48,
+          borderBottom: "1px dotted rgba(var(--charcoal-rgb),0.28)",
+          transform: "translateY(-0.55rem)",
+        }}
+      />
+
       <div
         className="formula-row-price"
         style={{
           display: "grid",
           justifyItems: "end",
-          alignContent: "center",
+          alignContent: "end",
           minWidth: 154,
         }}
       >
@@ -346,7 +358,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "var(--cream)",
-        padding: "6.5rem 0",
+        padding: "7rem 0",
       }}
     >
       <div
@@ -362,10 +374,10 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
           className="formulas-layout"
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 0.9fr) minmax(280px, 0.5fr)",
-            gap: "3.25rem",
-            alignItems: "end",
-            marginBottom: "3rem",
+            gridTemplateColumns: "minmax(0, 0.78fr) minmax(280px, 0.48fr)",
+            gap: "4.5rem",
+            alignItems: "start",
+            marginBottom: "3.25rem",
           }}
         >
           <div>
@@ -409,17 +421,59 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
           </div>
 
           <div
+            className="formula-context"
+            style={{
+              borderTop: "1px solid rgba(var(--charcoal-rgb),0.14)",
+              paddingTop: "1.2rem",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.72rem",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--gold)",
+              }}
+            >
+              Lecture simple
+            </p>
+            <p
+              style={{
+                marginTop: "0.65rem",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.86rem",
+                fontWeight: 300,
+                color: "rgba(var(--charcoal-rgb),0.74)",
+                lineHeight: 1.75,
+              }}
+            >
+              Choisissez une famille tarifaire, comparez le prix de départ, puis
+              demandez un devis pour ajuster le menu et la logistique.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="formulas-board"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "minmax(190px, 0.28fr) minmax(0, 1fr)",
+            borderTop: "1px solid rgba(var(--charcoal-rgb),0.18)",
+            borderBottom: "1px solid rgba(var(--charcoal-rgb),0.18)",
+          }}
+        >
+          <div
             className="formula-tabs"
             role="tablist"
             aria-label="Catégories de formules"
             style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              gap: "0.35rem",
-              borderBottom: "1px solid rgba(var(--charcoal-rgb),0.12)",
+              display: "grid",
+              alignContent: "start",
+              borderRight: "1px solid rgba(var(--charcoal-rgb),0.12)",
             }}
           >
-            {pricing.tabs.map((tab) => {
+            {pricing.tabs.map((tab, index) => {
               const isActive = activeTab === tab.key;
 
               return (
@@ -431,31 +485,54 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                   onClick={() => setRequestedTab(tab.key)}
                   style={{
                     position: "relative",
-                    padding: "0 0.75rem 0.9rem",
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "0.62rem",
-                    letterSpacing: "0.18em",
-                    textTransform: "uppercase",
-                    fontWeight: 500,
-                    color: isActive
-                      ? "var(--charcoal)"
-                      : "rgba(var(--charcoal-rgb),0.64)",
+                    display: "grid",
+                    gap: "0.4rem",
+                    padding: "1.2rem 1.1rem 1.2rem 0",
+                    textAlign: "left",
                     background: "none",
                     border: "none",
+                    borderBottom: "1px solid rgba(var(--charcoal-rgb),0.08)",
                     cursor: "pointer",
+                    color: isActive
+                      ? "var(--charcoal)"
+                      : "rgba(var(--charcoal-rgb),0.58)",
                   }}
                 >
-                  {tab.label}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "0.58rem",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      color: isActive
+                        ? "var(--gold)"
+                        : "rgba(var(--charcoal-rgb),0.42)",
+                    }}
+                  >
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-cormorant), serif",
+                      fontSize: "1.35rem",
+                      fontStyle: "italic",
+                      fontWeight: 300,
+                      lineHeight: 1,
+                      letterSpacing: 0,
+                    }}
+                  >
+                    {tab.label}
+                  </span>
                   {isActive && (
                     <motion.span
                       layoutId="formula-tab-line"
                       aria-hidden
                       style={{
                         position: "absolute",
-                        left: "0.9rem",
-                        right: "0.9rem",
-                        bottom: -1,
-                        height: 1,
+                        top: "1.15rem",
+                        bottom: "1.15rem",
+                        right: -1,
+                        width: 1,
                         backgroundColor: "var(--gold)",
                       }}
                       transition={{
@@ -469,101 +546,122 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               );
             })}
           </div>
-        </div>
-
-        <div className="formulas-board">
-          <div
-            className="formula-list-header"
-            style={{
-              marginBottom: "0.25rem",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "var(--font-cormorant), serif",
-                fontSize: "1.85rem",
-                fontStyle: "italic",
-                fontWeight: 300,
-                color: "var(--charcoal)",
-                lineHeight: 1,
-              }}
-            >
-              {activeLabel}
-            </h3>
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              className="formula-grid"
-              style={{ display: "grid" }}
-            >
-              {currentFormulas.length > 0 ? (
-                currentFormulas.map((formula, index) => (
-                  <FormulaRow key={formula.name} f={formula} index={index} />
-                ))
-              ) : (
-                <p
-                  style={{
-                    borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
-                    padding: "1.25rem 0",
-                    fontFamily: "var(--font-montserrat), sans-serif",
-                    fontSize: "0.86rem",
-                    color: "rgba(var(--charcoal-rgb),0.7)",
-                  }}
-                >
-                  Les tarifs de cette catégorie arrivent bientôt.
-                </p>
-              )}
-            </motion.div>
-          </AnimatePresence>
 
           <div
-            className="formula-footer"
+            className="formula-panel"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              gap: "1.5rem",
-              alignItems: "center",
-              paddingTop: "1.35rem",
-              borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
+              padding: "2rem 0 2rem 2.5rem",
             }}
           >
-            <p
+            <div
+              className="formula-panel-header"
               style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.76rem",
-                lineHeight: 1.65,
-                color: "rgba(var(--charcoal-rgb),0.7)",
-                maxWidth: 600,
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: "1rem",
+                alignItems: "end",
+                marginBottom: "0.6rem",
               }}
             >
-              {pricing.footerNote}
-            </p>
-            <motion.a
-              className="formula-cta"
-              href="/contact"
-              whileHover={{ y: -1 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 160, damping: 18 }}
+              <h3
+                style={{
+                  fontFamily: "var(--font-cormorant), serif",
+                  fontSize: "clamp(2rem, 3.2vw, 3rem)",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  color: "var(--charcoal)",
+                  lineHeight: 1,
+                  letterSpacing: 0,
+                }}
+              >
+                {activeLabel}
+              </h3>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.58rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "rgba(var(--charcoal-rgb),0.58)",
+                }}
+              >
+                Prix de départ
+              </p>
+            </div>
+
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                className="formula-grid"
+                role="tabpanel"
+                style={{ display: "grid" }}
+              >
+                {currentFormulas.length > 0 ? (
+                  currentFormulas.map((formula, index) => (
+                    <FormulaRow key={formula.name} f={formula} index={index} />
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
+                      padding: "1.25rem 0",
+                      fontFamily: "var(--font-montserrat), sans-serif",
+                      fontSize: "0.86rem",
+                      color: "rgba(var(--charcoal-rgb),0.7)",
+                    }}
+                  >
+                    Les tarifs de cette catégorie arrivent bientôt.
+                  </p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            <div
+              className="formula-footer"
               style={{
-                display: "inline-flex",
+                display: "grid",
+                gridTemplateColumns: "1fr auto",
+                gap: "1.5rem",
                 alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.62rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                fontWeight: 500,
-                color: "var(--dark)",
-                backgroundColor: "var(--gold)",
-                padding: "0.95rem 1.35rem",
-                textDecoration: "none",
-                whiteSpace: "nowrap",
+                paddingTop: "1.35rem",
               }}
             >
-              <span>{pricing.ctaLabel}</span>
-            </motion.a>
+              <p
+                style={{
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.76rem",
+                  lineHeight: 1.65,
+                  color: "rgba(var(--charcoal-rgb),0.7)",
+                  maxWidth: 600,
+                }}
+              >
+                {pricing.footerNote}
+              </p>
+              <motion.a
+                className="formula-cta"
+                href="/contact"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 160, damping: 18 }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontFamily: "var(--font-montserrat), sans-serif",
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  color: "var(--dark)",
+                  backgroundColor: "var(--gold)",
+                  padding: "0.95rem 1.35rem",
+                  textDecoration: "none",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                <span>{pricing.ctaLabel}</span>
+              </motion.a>
+            </div>
           </div>
         </div>
       </div>
@@ -579,7 +677,8 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             padding-right: 1rem !important;
           }
           .formulas-layout,
-          .formula-list-header,
+          .formulas-board,
+          .formula-panel-header,
           .formula-footer {
             grid-template-columns: 1fr !important;
           }
@@ -588,35 +687,35 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             margin-bottom: 2.5rem !important;
           }
           .formula-tabs {
-            display: grid !important;
             grid-template-columns: 1fr !important;
-            gap: 0 !important;
-            justify-content: stretch !important;
-            border-top: 1px solid rgba(var(--charcoal-rgb),0.12);
+            border-right: 0 !important;
+            border-bottom: 1px solid rgba(var(--charcoal-rgb),0.12);
           }
           .formula-tabs button {
-            width: 100% !important;
-            padding: 0.85rem 0 !important;
-            text-align: left !important;
-            border-bottom: 1px solid rgba(var(--charcoal-rgb),0.08) !important;
+            padding: 1rem 0 !important;
           }
-          .formula-tabs button span {
-            left: 0 !important;
-            right: auto !important;
-            width: 4rem !important;
+          .formula-tabs button span[aria-hidden] {
+            display: none !important;
+          }
+          .formula-panel {
+            padding: 1.5rem 0 0 !important;
+          }
+          .formula-panel-header {
+            gap: 0.5rem !important;
+          }
+          .formula-grid article {
+            grid-template-columns: 1fr !important;
+            gap: 0.8rem !important;
+          }
+          .formula-leader {
+            display: none !important;
+          }
+          .formula-row {
+            padding: 1.3rem 0 !important;
           }
           .formula-row-price {
             justify-items: start !important;
             min-width: 0 !important;
-          }
-          .formula-grid article {
-            grid-template-columns: 1fr !important;
-            gap: 1rem !important;
-          }
-          .formula-row {
-            padding: 1.55rem 0 !important;
-          }
-          .formula-row-price {
             align-content: start !important;
           }
           .formula-row-price > div {
@@ -640,11 +739,8 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
-          .formula-list-header {
-            gap: 0.45rem !important;
-          }
-          .formula-list-header h3 {
-            font-size: 1.8rem !important;
+          .formula-panel-header h3 {
+            font-size: 2rem !important;
           }
           .formula-row h3 {
             font-size: 1.55rem !important;
@@ -658,9 +754,6 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
         @media (min-width: 769px) and (max-width: 1100px) {
           .formulas-layout {
             grid-template-columns: 1fr !important;
-          }
-          .formula-tabs {
-            justify-content: flex-start !important;
           }
         }
       `}</style>

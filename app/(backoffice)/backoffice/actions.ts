@@ -6,6 +6,10 @@ import { redirect } from "next/navigation";
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 import { plainTextToLexical } from "@/lib/backoffice/rich-text";
+import {
+  serviceBrochureCategoryOptions,
+  type ServiceBrochureCategory,
+} from "@/lib/service-brochures";
 import type { HomePage, Post } from "@/payload-types";
 
 type PostWriteData = Partial<Post> & {
@@ -22,6 +26,21 @@ const text = (formData: FormData, key: string) => {
 };
 
 const checked = (formData: FormData, key: string) => formData.get(key) === "on";
+
+const serviceBrochureCategoryValues = new Set(
+  serviceBrochureCategoryOptions.map((option) => option.value),
+);
+
+const serviceBrochureCategory = (
+  formData: FormData,
+  key: string,
+): ServiceBrochureCategory => {
+  const value = text(formData, key);
+
+  return serviceBrochureCategoryValues.has(value as ServiceBrochureCategory)
+    ? (value as ServiceBrochureCategory)
+    : "traiteur";
+};
 
 const toIsoDate = (value: string) => {
   if (!value) {
@@ -330,7 +349,7 @@ export const updateServiceBrochureAction = async (
     id,
     overrideAccess: true,
     data: {
-      category: text(formData, "category"),
+      category: serviceBrochureCategory(formData, "category"),
       title: text(formData, "title"),
       description: text(formData, "description"),
     },
