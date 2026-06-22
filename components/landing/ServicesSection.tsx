@@ -3,8 +3,21 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { ArrowRight, Heart, Home, TreePine, UtensilsCrossed } from "lucide-react";
+import {
+  ArrowRight,
+  Download,
+  Heart,
+  Home,
+  TreePine,
+  UtensilsCrossed,
+} from "lucide-react";
 
+import {
+  getServiceBrochureDownloadHref,
+  groupServiceBrochuresByCategory,
+  type ServiceBrochureCategory,
+  type ServiceBrochureSummary,
+} from "@/lib/service-brochures";
 import type { HomeImages } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeIn, fadeUp } from "./shared";
 
@@ -16,6 +29,7 @@ export const services = [
     num: "01",
     Icon: UtensilsCrossed,
     title: "Traiteur",
+    brochureCategory: "traiteur",
     sub: "Réceptions",
     desc: "Cocktails dinatoires, buffets dessinés pour circuler, repas assis et formats hybrides pour donner du relief à vos invités.",
     img: "/AdobeStock_418339639.jpeg",
@@ -24,6 +38,7 @@ export const services = [
     num: "02",
     Icon: Heart,
     title: "Mariages",
+    brochureCategory: "mariages",
     sub: "Célébrations",
     desc: "Du vin d'honneur au dîner puis au brunch, une prestation pensée pour tenir la journée sans perdre la gourmandise.",
     img: "/AdobeStock_522340892.jpeg",
@@ -32,6 +47,7 @@ export const services = [
     num: "03",
     Icon: Home,
     title: "Chef à Domicile",
+    brochureCategory: "chef-a-domicile",
     sub: "Service Privé",
     desc: "Une expérience à la maison, en petit comité, avec le confort d'un service précis et l'intensité d'une vraie table.",
     img: "/AdobeStock_54050217.jpeg",
@@ -40,6 +56,7 @@ export const services = [
     num: "04",
     Icon: TreePine,
     title: "Réceptions",
+    brochureCategory: "receptions",
     sub: "Tous Événements",
     desc: "Séminaires, baptêmes, anniversaires, lancements: une cuisine qui rassemble sans faire perdre le fil de l'événement.",
     img: "/AdobeStock_555480279.jpeg",
@@ -49,11 +66,13 @@ export const services = [
 /* ─── ServicePanel — accordion slot ─── */
 function ServicePanel({
   service,
+  brochure,
   index,
   isActive,
   onActivate,
 }: {
-  service: (typeof services)[0];
+  service: (typeof services)[0] & { brochureCategory: ServiceBrochureCategory };
+  brochure?: ServiceBrochureSummary;
   index: number;
   isActive: boolean;
   onActivate: () => void;
@@ -260,27 +279,60 @@ function ServicePanel({
         >
           {service.desc}
         </p>
-        <motion.a
-          href="/contact"
-          whileHover={{ gap: "1.2rem" }}
-          whileTap={{ scale: 0.98 }}
+        <div
           style={{
-            display: "inline-flex",
+            display: "flex",
             alignItems: "center",
-            gap: "0.6rem",
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.58rem",
-            letterSpacing: "0.26em",
-            textTransform: "uppercase",
-            fontWeight: 600,
-            color: "rgba(var(--gold-light-rgb),0.98)",
-            textDecoration: "none",
-            textShadow: "0 2px 14px rgba(var(--dark-rgb),0.68)",
+            flexWrap: "wrap",
+            gap: "1rem",
           }}
         >
-          <span>Demander un devis</span>
-          <ArrowRight size={12} />
-        </motion.a>
+          <motion.a
+            href="/contact"
+            whileHover={{ gap: "1.2rem" }}
+            whileTap={{ scale: 0.98 }}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.6rem",
+              fontFamily: "var(--font-montserrat), sans-serif",
+              fontSize: "0.58rem",
+              letterSpacing: "0.26em",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              color: "rgba(var(--gold-light-rgb),0.98)",
+              textDecoration: "none",
+              textShadow: "0 2px 14px rgba(var(--dark-rgb),0.68)",
+            }}
+          >
+            <span>Demander un devis</span>
+            <ArrowRight size={12} />
+          </motion.a>
+
+          {brochure ? (
+            <motion.a
+              href={getServiceBrochureDownloadHref(brochure)}
+              whileHover={{ gap: "1.2rem" }}
+              whileTap={{ scale: 0.98 }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.6rem",
+                fontFamily: "var(--font-montserrat), sans-serif",
+                fontSize: "0.58rem",
+                letterSpacing: "0.26em",
+                textTransform: "uppercase",
+                fontWeight: 600,
+                color: "var(--cream)",
+                textDecoration: "none",
+                textShadow: "0 2px 14px rgba(var(--dark-rgb),0.68)",
+              }}
+            >
+              <span>Télécharger la plaquette</span>
+              <Download size={12} />
+            </motion.a>
+          ) : null}
+        </div>
       </motion.div>
 
       {/* Corner accent */}
@@ -318,11 +370,18 @@ function ServicePanel({
   );
 }
 
-export function ServicesSection({ images }: { images: HomeImages }) {
+export function ServicesSection({
+  images,
+  serviceBrochures,
+}: {
+  images: HomeImages;
+  serviceBrochures: ServiceBrochureSummary[];
+}) {
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px 0px" });
   const reduce = useReducedMotion();
+  const brochuresByCategory = groupServiceBrochuresByCategory(serviceBrochures);
 
   return (
     <section
@@ -399,6 +458,7 @@ export function ServicesSection({ images }: { images: HomeImages }) {
           <ServicePanel
             key={s.num}
             service={{ ...s, img: images.services[i] || s.img }}
+            brochure={brochuresByCategory[s.brochureCategory]}
             index={i}
             isActive={active === i}
             onActivate={() => setActive(i)}
@@ -406,8 +466,167 @@ export function ServicesSection({ images }: { images: HomeImages }) {
         ))}
       </motion.div>
 
+      <div className="service-brochures-shell">
+        <RevealOnScroll variant={fadeUp}>
+          <div className="service-brochures-head">
+            <div>
+              <Eyebrow>Plaquettes</Eyebrow>
+              <h3>Télécharger par prestation.</h3>
+            </div>
+            <p>
+              Chaque document correspond à une catégorie précise pour préparer
+              votre échange avec les bonnes informations.
+            </p>
+          </div>
+        </RevealOnScroll>
+
+        <div className="service-brochures-grid">
+          {services.map((service) => {
+            const brochure = brochuresByCategory[service.brochureCategory];
+            const Icon = service.Icon;
+
+            return (
+              <article className="service-brochure-card" key={service.num}>
+                <Icon aria-hidden="true" size={20} />
+                <div>
+                  <span>{service.title}</span>
+                  <small>
+                    {brochure?.title || "Plaquette bientôt disponible"}
+                  </small>
+                </div>
+                {brochure ? (
+                  <a href={getServiceBrochureDownloadHref(brochure)}>
+                    <Download aria-hidden="true" size={15} />
+                    <span>Télécharger</span>
+                  </a>
+                ) : (
+                  <span className="service-brochure-missing">À venir</span>
+                )}
+              </article>
+            );
+          })}
+        </div>
+      </div>
+
       <style>{`
+        .service-brochures-shell {
+          max-width: 1300px;
+          margin: 0 auto;
+          padding: 3rem 2rem 0;
+        }
+        .service-brochures-head {
+          display: grid;
+          grid-template-columns: minmax(0, 0.8fr) minmax(260px, 0.45fr);
+          gap: 2rem;
+          align-items: end;
+          margin-bottom: 1.15rem;
+        }
+        .service-brochures-head h3 {
+          margin-top: 0.75rem;
+          font-family: var(--font-cormorant), serif;
+          font-size: clamp(1.95rem, 3vw, 2.75rem);
+          font-style: italic;
+          font-weight: 300;
+          line-height: 1;
+          color: var(--charcoal);
+        }
+        .service-brochures-head p {
+          margin: 0;
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 0.82rem;
+          font-weight: 300;
+          color: rgba(var(--charcoal-rgb),0.68);
+          line-height: 1.8;
+        }
+        .service-brochures-grid {
+          display: grid;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+          border-top: 1px solid rgba(var(--charcoal-rgb),0.12);
+          border-bottom: 1px solid rgba(var(--charcoal-rgb),0.12);
+        }
+        .service-brochure-card {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 0.85rem;
+          min-width: 0;
+          padding: 1rem;
+          border-right: 1px solid rgba(var(--charcoal-rgb),0.1);
+        }
+        .service-brochure-card:last-child {
+          border-right: 0;
+        }
+        .service-brochure-card svg {
+          color: var(--gold);
+        }
+        .service-brochure-card div,
+        .service-brochure-card span,
+        .service-brochure-card small {
+          min-width: 0;
+        }
+        .service-brochure-card div span {
+          display: block;
+          font-family: var(--font-cormorant), serif;
+          font-size: 1.35rem;
+          font-style: italic;
+          line-height: 1;
+          color: var(--charcoal);
+        }
+        .service-brochure-card small {
+          display: block;
+          margin-top: 0.35rem;
+          overflow: hidden;
+          color: rgba(var(--charcoal-rgb),0.58);
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 0.7rem;
+          line-height: 1.45;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        .service-brochure-card a,
+        .service-brochure-missing {
+          grid-column: 1 / -1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.45rem;
+          width: fit-content;
+          min-height: 36px;
+          margin-top: 0.45rem;
+          border: 1px solid rgba(var(--charcoal-rgb),0.16);
+          padding: 0 0.8rem;
+          font-family: var(--font-montserrat), sans-serif;
+          font-size: 0.58rem;
+          font-weight: 600;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          text-decoration: none;
+        }
+        .service-brochure-card a {
+          color: var(--dark);
+          background: var(--gold);
+          border-color: var(--gold);
+        }
+        .service-brochure-missing {
+          color: rgba(var(--charcoal-rgb),0.46);
+        }
         @media (max-width: 768px) {
+          .service-brochures-shell {
+            padding: 2rem 1rem 0;
+          }
+          .service-brochures-head,
+          .service-brochures-grid {
+            grid-template-columns: 1fr;
+          }
+          .service-brochures-head {
+            gap: 1rem;
+          }
+          .service-brochure-card {
+            border-right: 0;
+            border-bottom: 1px solid rgba(var(--charcoal-rgb),0.1);
+          }
+          .service-brochure-card:last-child {
+            border-bottom: 0;
+          }
           .services-accordion {
             flex-direction: column !important;
             height: auto !important;
