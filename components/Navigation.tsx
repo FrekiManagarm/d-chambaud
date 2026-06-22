@@ -359,8 +359,7 @@ export default function Navigation() {
           }
 
           .brand-logo-mention {
-            font-size: 0.34rem !important;
-            letter-spacing: 0.08em !important;
+            display: none !important;
           }
 
           .brand-logo-text > span:first-child {
@@ -369,7 +368,9 @@ export default function Navigation() {
           }
 
           .brand-logo-subtitle {
-            display: none !important;
+            display: inline !important;
+            font-size: 0.78rem !important;
+            line-height: 1.12 !important;
           }
 
           .mobile-menu-panel {

@@ -386,7 +386,7 @@ export function TestimonialsSection() {
               Avis collectés sur Google, Tripadvisor &amp; site officiel
             </p>
             <motion.a
-              href="#contact"
+              href="/contact"
               whileHover={{ gap: "1rem" }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 160, damping: 18 }}

@@ -18,6 +18,7 @@ import {
   getHomeImages,
   getHomePricing,
   useHomePageCMS,
+  useServiceBrochures,
 } from "@/components/landing";
 
 export default function Page() {
@@ -25,6 +26,7 @@ export default function Page() {
   const about = getHomeAbout(cms);
   const images = getHomeImages(cms);
   const pricing = getHomePricing(cms);
+  const serviceBrochures = useServiceBrochures();
 
   return (
     <main>
@@ -35,7 +37,7 @@ export default function Page() {
       <ValuesSection images={images} />
       <StatsSection />
       <ClientsSection />
-      <ServicesSection images={images} />
+      <ServicesSection images={images} serviceBrochures={serviceBrochures} />
       <FormulasSection pricing={pricing} />
       <PavillonSection images={images} />
       <TestimonialsSection />

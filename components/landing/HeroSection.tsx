@@ -330,7 +330,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             justifyContent: "center",
           }}
         >
-          <MagneticButton href="#contact" variant="gold">
+          <MagneticButton href="/contact" variant="gold">
             Demander un Devis
           </MagneticButton>
           <MagneticButton href="#services" variant="outline">

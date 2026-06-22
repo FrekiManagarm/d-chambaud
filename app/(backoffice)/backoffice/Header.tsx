@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  Download,
   FileText,
   Home,
   Images,
@@ -45,6 +46,11 @@ const navigation = [
     href: "/backoffice/images",
     label: "Images",
     icon: Images,
+  },
+  {
+    href: "/backoffice/plaquettes",
+    label: "Plaquettes",
+    icon: Download,
   },
 ];
 

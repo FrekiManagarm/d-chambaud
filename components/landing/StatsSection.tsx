@@ -1,6 +1,12 @@
 "use client";
 
-import { CountUpStat, Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
+import {
+  CountUpStat,
+  Eyebrow,
+  HeadingReveal,
+  RevealOnScroll,
+  fadeUp,
+} from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    STATS — theatrical numbers, borderless
@@ -98,10 +104,10 @@ export function StatsSection() {
           className="stats-grid"
         >
           <CountUpStat
-            value={18}
+            value={25}
             suffix=" ans"
             label="d'expérience"
-            detail="Depuis 2008"
+            detail=""
             delay={0}
             border
           />
@@ -148,5 +154,4 @@ export function StatsSection() {
       `}</style>
     </section>
   );
-
 }

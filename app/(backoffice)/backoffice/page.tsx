@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  Download,
   FileText,
   Images,
   PanelsTopLeft,
@@ -19,7 +20,7 @@ export default async function BackofficePage() {
   const user = await requireBackofficeUser();
   const payload = await getPayloadClient();
 
-  const [homePage, posts] = await Promise.all([
+  const [homePage, posts, serviceBrochures] = await Promise.all([
     payload.findGlobal({
       slug: "home-page",
       locale: "fr",
@@ -29,6 +30,13 @@ export default async function BackofficePage() {
     payload.find({
       collection: "posts",
       locale: "fr",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      pagination: true,
+    }),
+    payload.find({
+      collection: "service-brochures",
       depth: 0,
       limit: 1,
       overrideAccess: true,
@@ -84,6 +92,13 @@ export default async function BackofficePage() {
             <span>Images</span>
             <strong>Médiathèque</strong>
             <small>Upload, aperçu et texte alternatif des visuels.</small>
+          </Link>
+
+          <Link className="bo-dashboard-card" href="/backoffice/plaquettes">
+            <Download aria-hidden="true" size={22} />
+            <span>Plaquettes</span>
+            <strong>{serviceBrochures.totalDocs}</strong>
+            <small>PowerPoint de prestation, upload et téléchargement.</small>
           </Link>
 
           <Link className="bo-dashboard-card" href="/backoffice/cms">

@@ -3,6 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { resolveMediaURL } from "@/lib/media-url";
+import type { ServiceBrochureSummary } from "@/lib/service-brochures";
 
 import { galleryItems } from "./GallerySection";
 import { fallbackPricing } from "./FormulasSection";
@@ -15,6 +16,11 @@ import type {
 } from "./types";
 
 const homePageCMSQueryKey = ["cms", "home-page"] as const;
+const serviceBrochuresQueryKey = ["cms", "service-brochures"] as const;
+
+type ServiceBrochuresResponse = {
+  docs?: ServiceBrochureSummary[];
+};
 
 async function fetchHomePageCMS({
   signal,
@@ -51,6 +57,34 @@ export function useHomePageCMS() {
   });
 
   return data ?? null;
+}
+
+async function fetchServiceBrochures({
+  signal,
+}: {
+  signal?: AbortSignal;
+}): Promise<ServiceBrochureSummary[]> {
+  const response = await fetch(
+    "/api/service-brochures?depth=0&limit=100&sort=-updatedAt",
+    { signal },
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch service brochures");
+  }
+
+  const data = (await response.json()) as ServiceBrochuresResponse;
+
+  return data.docs ?? [];
+}
+
+export function useServiceBrochures() {
+  const { data } = useQuery({
+    queryKey: serviceBrochuresQueryKey,
+    queryFn: fetchServiceBrochures,
+  });
+
+  return data ?? [];
 }
 
 export function getHomeAbout(cms: CMSHomePage | null): AboutContent {

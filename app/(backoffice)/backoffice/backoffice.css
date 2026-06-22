@@ -300,6 +300,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.bo-form-field-full {
+  grid-column: 1 / -1;
+}
+
 .bo-form-field {
   display: grid;
   gap: 0.38rem;
@@ -425,6 +429,10 @@
   font-size: 0.86rem;
 }
 
+.bo-brochure-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(160px, 0.6fr) 160px minmax(220px, auto);
+}
+
 .bo-table-row:last-child {
   border-bottom: 0;
 }
@@ -500,6 +508,13 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
+}
+
+.bo-empty-state {
+  margin: 0;
+  padding: 1rem;
+  color: rgba(37, 35, 29, 0.58);
+  font-size: 0.86rem;
 }
 
 .bo-danger-button {

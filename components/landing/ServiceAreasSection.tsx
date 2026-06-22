@@ -30,12 +30,12 @@ export function ServiceAreasSection() {
           <p
             style={{
               fontFamily: "var(--font-montserrat), sans-serif",
-              fontSize: "0.62rem",
-              letterSpacing: "0.24em",
+              fontSize: "clamp(0.92rem, 1.25vw, 1.12rem)",
+              letterSpacing: "0.16em",
               textTransform: "uppercase",
               fontWeight: 700,
               color: "var(--gold)",
-              marginBottom: "1rem",
+              marginBottom: "1.25rem",
             }}
           >
             Zones d&apos;intervention

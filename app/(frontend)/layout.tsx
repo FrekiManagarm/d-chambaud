@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "David Chambaud Traiteur | %s",
   },
   description:
-    "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
+    "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2016: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
   keywords: [
     "traiteur Bordeaux",
     "traiteur nouvelle aquitaine",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: "David Chambaud | Traiteur Bordeaux & chef à domicile",
     description:
-      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
+      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2016: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
     images: [
       {
         url: "/opengraph-image",
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "David Chambaud | Traiteur Bordeaux & chef à domicile",
     description:
-      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2008: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
+      "Traiteur à Bordeaux et en Nouvelle-Aquitaine depuis 2016: mariages, réceptions, dîners privés et chef à domicile sur mesure.",
   },
   robots: {
     index: true,

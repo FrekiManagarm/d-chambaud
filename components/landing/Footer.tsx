@@ -11,7 +11,7 @@ import { IconInstagram } from "./shared";
 const mainLinks = [
   { href: "/#services", label: "Prestations" },
   { href: "/#formules", label: "Formules" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/contact", label: "Contact" },
   { href: "/blog", label: "Journal" },
 ];
 

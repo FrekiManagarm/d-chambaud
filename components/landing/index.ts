@@ -18,4 +18,5 @@ export {
   getHomeImages,
   getHomePricing,
   useHomePageCMS,
+  useServiceBrochures,
 } from "./cms";

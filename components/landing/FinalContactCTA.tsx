@@ -58,12 +58,12 @@ export function FinalContactCTA() {
             <p
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "clamp(0.68rem, 1vw, 0.82rem)",
-                letterSpacing: "0.22em",
+                fontSize: "clamp(0.92rem, 1.25vw, 1.12rem)",
+                letterSpacing: "0.16em",
                 textTransform: "uppercase",
                 fontWeight: 700,
                 color: "rgba(var(--gold-light-rgb),0.92)",
-                marginBottom: "1rem",
+                marginBottom: "1.25rem",
               }}
             >
               Demande de devis

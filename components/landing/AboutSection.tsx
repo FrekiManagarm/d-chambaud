@@ -237,7 +237,7 @@ export function AboutSection({
 
           <RevealOnScroll variant={fadeUp} custom={5}>
             <motion.a
-              href="#contact"
+              href="/contact"
               whileHover={{ gap: "1.2rem" }}
               style={{
                 display: "inline-flex",

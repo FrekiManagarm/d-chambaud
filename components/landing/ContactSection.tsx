@@ -4,7 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 
-import { ContactField, Eyebrow, HeadingReveal, IconInstagram, RevealOnScroll, fadeUp } from "./shared";
+import {
+  ContactField,
+  Eyebrow,
+  HeadingReveal,
+  IconInstagram,
+  RevealOnScroll,
+  fadeUp,
+} from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    CONTACT — split layout with animated form
@@ -265,8 +272,8 @@ export function ContactSection() {
                     maxWidth: 430,
                   }}
                 >
-                  Réponse généralement sous 24 à 48 h ouvrées. Pour un mariage
-                  ou une demande proche, le téléphone reste le plus direct.
+                  Réponse sous 24 à 48 h ouvrées. Pour un mariage ou une demande
+                  proche, le téléphone reste le plus direct.
                 </p>
               </div>
             </RevealOnScroll>
@@ -568,5 +575,4 @@ export function ContactSection() {
       `}</style>
     </section>
   );
-
 }

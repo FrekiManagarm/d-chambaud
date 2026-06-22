@@ -312,12 +312,12 @@ export const Eyebrow = ({
   <h2
     style={{
       fontFamily: "var(--font-montserrat), sans-serif",
-      fontSize: "clamp(0.68rem, 1vw, 0.82rem)",
-      letterSpacing: "0.22em",
+      fontSize: "clamp(0.92rem, 1.25vw, 1.12rem)",
+      letterSpacing: "0.16em",
       textTransform: "uppercase",
       fontWeight: 700,
       color: light ? "rgba(var(--gold-light-rgb),0.94)" : "var(--bronze)",
-      marginBottom: "1.05rem",
+      marginBottom: "1.25rem",
       opacity: light ? 0.9 : 1,
     }}
   >

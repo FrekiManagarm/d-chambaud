@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 
 import { Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
 
@@ -45,7 +44,7 @@ const fallbackFormulasByTab: Record<string, Formula[]> = {
       name: "Mariage buffet campagne",
       price: "à partir de 75",
       unit: "€ / pers.",
-      sub: "Ouverture des festivités",
+      sub: "",
       tone: "Pour une réception détendue, généreuse, facile à faire vivre.",
       detail: "Buffet froid et chaud pensé pour circuler, discuter, revenir.",
       features: [
@@ -59,7 +58,7 @@ const fallbackFormulasByTab: Record<string, Formula[]> = {
       name: "Mariage buffet champêtre",
       price: "à partir de 85",
       unit: "€ / pers.",
-      sub: "La gourmandise locale",
+      sub: "",
       tone: "Une formule vivante, chaleureuse, très adaptée aux grands groupes.",
       detail: "Produits de saison, présentation soignée, service fluide.",
       features: [
@@ -73,7 +72,7 @@ const fallbackFormulasByTab: Record<string, Formula[]> = {
       name: "Mariage gourmand",
       price: "à partir de 99",
       unit: "€ / pers.",
-      sub: "Terroir & convivialité",
+      sub: "",
       tone: "Le format le plus complet pour marquer le repas sans rigidité.",
       detail: "Pièces cocktails, service cadencé et table gourmande.",
       features: [
@@ -194,36 +193,38 @@ export const fallbackPricing: PricingContent = {
   yearLabel: "2026-27",
 };
 
-function FormulaRow({
-  f,
-  index,
-}: {
-  f: Formula;
-  index: number;
-}) {
+function getFormulaSummary(formula: Formula) {
+  return (
+    formula.sub ||
+    formula.tone ||
+    formula.detail ||
+    "Devis adapté à votre réception."
+  );
+}
+
+function FormulaRow({ f, index }: { f: Formula; index: number }) {
   return (
     <motion.article
       className="formula-row"
       layout
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -8 }}
+      exit={{ opacity: 0, y: -6 }}
       whileHover={{
-        y: -2,
-        backgroundColor: "rgba(var(--gold-rgb),0.055)",
+        backgroundColor: "rgba(var(--gold-rgb),0.045)",
       }}
       transition={{
         type: "spring",
-        stiffness: 120,
-        damping: 22,
-        delay: index * 0.04,
+        stiffness: 130,
+        damping: 24,
+        delay: index * 0.03,
       }}
       style={{
         position: "relative",
         display: "grid",
         gridTemplateColumns: "minmax(0, 1fr) auto",
-        gap: "2rem",
-        padding: "1.8rem 0",
+        gap: "1.5rem",
+        padding: "1.25rem 0",
         borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
       }}
     >
@@ -232,106 +233,54 @@ function FormulaRow({
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "0.75rem",
-            marginBottom: "0.7rem",
+            gap: "0.65rem",
+            marginBottom: "0.35rem",
           }}
         >
-          <span
+          <h3
             style={{
-              width: f.highlight ? 28 : 16,
-              height: 1,
-              backgroundColor: "var(--gold)",
-              opacity: f.highlight ? 1 : 0.45,
-            }}
-          />
-          <p
-            style={{
-              fontFamily: "var(--font-montserrat), sans-serif",
-              fontSize: "0.58rem",
-              letterSpacing: "0.24em",
-              textTransform: "uppercase",
-              color: f.highlight
-                ? "var(--gold)"
-                : "rgba(var(--charcoal-rgb),0.62)",
+              fontFamily: "var(--font-cormorant), serif",
+              fontSize: "clamp(1.45rem, 2.3vw, 2rem)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              lineHeight: 1.05,
+              color: "var(--charcoal)",
+              letterSpacing: 0,
             }}
           >
-            {f.highlight ? "Recommandé" : f.sub}
-          </p>
-        </div>
-
-        <h3
-          style={{
-            fontFamily: "var(--font-cormorant), serif",
-            fontSize: "clamp(1.9rem, 3vw, 2.75rem)",
-            fontStyle: "italic",
-            fontWeight: 300,
-            lineHeight: 1,
-            marginBottom: "0.75rem",
-            color: "var(--charcoal)",
-            letterSpacing: 0,
-          }}
-        >
-          {f.name}
-        </h3>
-
-        <p
-          style={{
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.86rem",
-            fontWeight: 600,
-            color: "rgba(var(--charcoal-rgb),0.78)",
-            lineHeight: 1.75,
-            maxWidth: 560,
-          }}
-        >
-          {f.tone}
-        </p>
-
-        <p
-          style={{
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.76rem",
-            fontWeight: 400,
-            color: "rgba(var(--charcoal-rgb),0.68)",
-            lineHeight: 1.65,
-            maxWidth: 560,
-            marginTop: "0.55rem",
-          }}
-        >
-          {f.detail}
-        </p>
-
-        <div
-          className="formula-tags"
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "0.45rem",
-            marginTop: "1rem",
-          }}
-        >
-          {f.features.slice(0, 3).map((feature) => (
+            {f.name}
+          </h3>
+          {f.highlight ? (
             <span
-              key={feature}
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                border: "1px solid rgba(var(--charcoal-rgb),0.1)",
-                padding: "0.42rem 0.6rem",
+                border: "1px solid rgba(var(--gold-rgb),0.42)",
+                padding: "0.28rem 0.45rem",
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.56rem",
-                letterSpacing: "0.08em",
+                fontSize: "0.52rem",
+                fontWeight: 600,
+                letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: "rgba(var(--charcoal-rgb),0.68)",
-                backgroundColor: f.highlight
-                  ? "rgba(var(--bronze-rgb),0.07)"
-                  : "rgba(var(--cream-rgb),0.36)",
+                color: "var(--gold)",
+                whiteSpace: "nowrap",
               }}
             >
-              {feature}
+              Conseillé
             </span>
-          ))}
+          ) : null}
         </div>
+
+        <p
+          style={{
+            fontFamily: "var(--font-montserrat), sans-serif",
+            fontSize: "0.82rem",
+            fontWeight: 300,
+            color: "rgba(var(--charcoal-rgb),0.68)",
+            lineHeight: 1.6,
+            maxWidth: 640,
+          }}
+        >
+          {getFormulaSummary(f)}
+        </p>
       </div>
 
       <div
@@ -340,7 +289,7 @@ function FormulaRow({
           display: "grid",
           justifyItems: "end",
           alignContent: "center",
-          minWidth: 172,
+          minWidth: 154,
         }}
       >
         <div
@@ -349,10 +298,10 @@ function FormulaRow({
           <span
             style={{
               fontFamily: "var(--font-cormorant), serif",
-              fontSize: f.unit ? "clamp(2.1rem, 3.5vw, 3.2rem)" : "1.8rem",
+              fontSize: f.unit ? "clamp(1.8rem, 3vw, 2.45rem)" : "1.55rem",
               fontStyle: f.unit ? "normal" : "italic",
               fontWeight: 300,
-              lineHeight: 0.9,
+              lineHeight: 1,
               color: f.highlight ? "var(--gold)" : "var(--charcoal)",
               whiteSpace: "nowrap",
             }}
@@ -363,7 +312,7 @@ function FormulaRow({
             <span
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.64rem",
+                fontSize: "0.62rem",
                 fontWeight: 300,
                 color: "rgba(var(--charcoal-rgb),0.68)",
                 whiteSpace: "nowrap",
@@ -373,18 +322,6 @@ function FormulaRow({
             </span>
           )}
         </div>
-        <p
-          style={{
-            marginTop: "0.55rem",
-            fontFamily: "var(--font-montserrat), sans-serif",
-            fontSize: "0.58rem",
-            letterSpacing: "0.18em",
-            textTransform: "uppercase",
-            color: "rgba(var(--charcoal-rgb),0.62)",
-          }}
-        >
-          {f.sub}
-        </p>
       </div>
     </motion.article>
   );
@@ -399,7 +336,6 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
   const activePricingTab = pricing.tabs.find((tab) => tab.key === activeTab);
   const currentFormulas = activePricingTab?.formulas ?? [];
   const activeLabel = activePricingTab?.label ?? "";
-  const activeSummaryLabel = activePricingTab?.summaryLabel || "Sur mesure";
 
   return (
     <section
@@ -410,7 +346,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
         position: "relative",
         overflow: "hidden",
         backgroundColor: "var(--cream)",
-        padding: "7.5rem 0",
+        padding: "6.5rem 0",
       }}
     >
       <div
@@ -426,10 +362,10 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
           className="formulas-layout"
           style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 0.82fr) minmax(300px, 0.42fr)",
-            gap: "4rem",
+            gridTemplateColumns: "minmax(0, 0.9fr) minmax(280px, 0.5fr)",
+            gap: "3.25rem",
             alignItems: "end",
-            marginBottom: "4rem",
+            marginBottom: "3rem",
           }}
         >
           <div>
@@ -440,10 +376,10 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               <h3
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
-                  fontSize: "clamp(2.45rem, 4.6vw, 4.35rem)",
+                  fontSize: "clamp(2.35rem, 4vw, 3.75rem)",
                   fontStyle: "italic",
                   fontWeight: 300,
-                  lineHeight: 0.95,
+                  lineHeight: 1,
                   color: "var(--charcoal)",
                   letterSpacing: 0,
                   marginTop: "1rem",
@@ -462,8 +398,8 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                   fontSize: "0.9rem",
                   fontWeight: 300,
                   color: "rgba(var(--charcoal-rgb),0.76)",
-                  marginTop: "1.4rem",
-                  lineHeight: 1.85,
+                  marginTop: "1.2rem",
+                  lineHeight: 1.75,
                   maxWidth: 520,
                 }}
               >
@@ -495,7 +431,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                   onClick={() => setRequestedTab(tab.key)}
                   style={{
                     position: "relative",
-                    padding: "0 0.9rem 1rem",
+                    padding: "0 0.75rem 0.9rem",
                     fontFamily: "var(--font-montserrat), sans-serif",
                     fontSize: "0.62rem",
                     letterSpacing: "0.18em",
@@ -539,17 +475,13 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
           <div
             className="formula-list-header"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr auto",
-              gap: "1rem",
-              alignItems: "end",
-              marginBottom: "0.5rem",
+              marginBottom: "0.25rem",
             }}
           >
             <h3
               style={{
                 fontFamily: "var(--font-cormorant), serif",
-                fontSize: "2rem",
+                fontSize: "1.85rem",
                 fontStyle: "italic",
                 fontWeight: 300,
                 color: "var(--charcoal)",
@@ -558,17 +490,6 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             >
               {activeLabel}
             </h3>
-            <p
-              style={{
-                fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.62rem",
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: "rgba(var(--charcoal-rgb),0.64)",
-              }}
-            >
-              {activeSummaryLabel}
-            </p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -577,9 +498,23 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               className="formula-grid"
               style={{ display: "grid" }}
             >
-              {currentFormulas.map((formula, index) => (
-                <FormulaRow key={formula.name} f={formula} index={index} />
-              ))}
+              {currentFormulas.length > 0 ? (
+                currentFormulas.map((formula, index) => (
+                  <FormulaRow key={formula.name} f={formula} index={index} />
+                ))
+              ) : (
+                <p
+                  style={{
+                    borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
+                    padding: "1.25rem 0",
+                    fontFamily: "var(--font-montserrat), sans-serif",
+                    fontSize: "0.86rem",
+                    color: "rgba(var(--charcoal-rgb),0.7)",
+                  }}
+                >
+                  Les tarifs de cette catégorie arrivent bientôt.
+                </p>
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -590,15 +525,15 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               gridTemplateColumns: "1fr auto",
               gap: "1.5rem",
               alignItems: "center",
-              paddingTop: "1.6rem",
+              paddingTop: "1.35rem",
               borderTop: "1px solid rgba(var(--charcoal-rgb),0.12)",
             }}
           >
             <p
               style={{
                 fontFamily: "var(--font-montserrat), sans-serif",
-                fontSize: "0.78rem",
-                lineHeight: 1.7,
+                fontSize: "0.76rem",
+                lineHeight: 1.65,
                 color: "rgba(var(--charcoal-rgb),0.7)",
                 maxWidth: 600,
               }}
@@ -607,26 +542,27 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             </p>
             <motion.a
               className="formula-cta"
-              href="#contact"
-              whileHover={{ gap: "1rem" }}
+              href="/contact"
+              whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 160, damping: 18 }}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: "0.75rem",
+                justifyContent: "center",
                 fontFamily: "var(--font-montserrat), sans-serif",
                 fontSize: "0.62rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
                 fontWeight: 500,
-                color: "var(--gold)",
+                color: "var(--dark)",
+                backgroundColor: "var(--gold)",
+                padding: "0.95rem 1.35rem",
                 textDecoration: "none",
                 whiteSpace: "nowrap",
               }}
             >
               <span>{pricing.ctaLabel}</span>
-              <ArrowRight size={13} />
             </motion.a>
           </div>
         </div>
@@ -694,12 +630,13 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
             align-items: flex-start !important;
           }
           .formula-cta {
-            padding-top: 0.2rem !important;
+            width: 100% !important;
+            padding: 0.95rem 1.35rem !important;
           }
         }
 
         @media (max-width: 430px) {
-          .formulas-section h3 {
+          .formulas-layout h3 {
             font-size: 2.35rem !important;
             letter-spacing: 0 !important;
           }
@@ -708,6 +645,9 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
           }
           .formula-list-header h3 {
             font-size: 1.8rem !important;
+          }
+          .formula-row h3 {
+            font-size: 1.55rem !important;
           }
           .formula-tabs button {
             font-size: 0.56rem !important;
@@ -726,5 +666,4 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
       `}</style>
     </section>
   );
-
 }

@@ -316,3 +316,41 @@ export const deleteMediaAction = async (id: number) => {
   revalidatePath("/backoffice/images");
   redirect("/backoffice/images?deleted=1");
 };
+
+export const updateServiceBrochureAction = async (
+  id: number,
+  formData: FormData,
+) => {
+  await requireBackofficeUser();
+
+  const payload = await getPayloadClient();
+
+  await payload.update({
+    collection: "service-brochures",
+    id,
+    overrideAccess: true,
+    data: {
+      category: text(formData, "category"),
+      title: text(formData, "title"),
+      description: text(formData, "description"),
+    },
+  });
+
+  revalidatePath("/backoffice/plaquettes");
+  redirect("/backoffice/plaquettes?saved=1");
+};
+
+export const deleteServiceBrochureAction = async (id: number) => {
+  await requireBackofficeUser();
+
+  const payload = await getPayloadClient();
+
+  await payload.delete({
+    collection: "service-brochures",
+    id,
+    overrideAccess: true,
+  });
+
+  revalidatePath("/backoffice/plaquettes");
+  redirect("/backoffice/plaquettes?deleted=1");
+};

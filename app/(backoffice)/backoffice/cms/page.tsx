@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  Download,
   FileText,
   Home,
   Images,
@@ -38,6 +39,12 @@ const payloadAreas = [
     label: "Articles",
     description: "Brouillons, contenu riche, image principale et SEO.",
     icon: FileText,
+  },
+  {
+    href: "/admin/collections/service-brochures",
+    label: "Plaquettes",
+    description: "PowerPoint de prestation disponibles au téléchargement.",
+    icon: Download,
   },
   {
     href: "/admin/collections/users",

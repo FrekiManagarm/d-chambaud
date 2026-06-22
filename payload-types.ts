@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     posts: Post;
+    'service-brochures': ServiceBrochure;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    'service-brochures': ServiceBrochuresSelect<false> | ServiceBrochuresSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -239,6 +241,27 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-brochures".
+ */
+export interface ServiceBrochure {
+  id: number;
+  title: string;
+  category: 'traiteur' | 'mariages' | 'chef-a-domicile' | 'receptions';
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -272,6 +295,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'service-brochures';
+        value: number | ServiceBrochure;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -416,6 +443,26 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-brochures_select".
+ */
+export interface ServiceBrochuresSelect<T extends boolean = true> {
+  title?: T;
+  category?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

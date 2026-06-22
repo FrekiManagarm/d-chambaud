@@ -9,6 +9,7 @@ import { fileURLToPath } from "url";
 
 import { Media } from "./collections/Media.ts";
 import { Posts } from "./collections/Posts.ts";
+import { ServiceBrochures } from "./collections/ServiceBrochures.ts";
 import { Users } from "./collections/Users.ts";
 import { HomePage } from "./globals/HomePage.ts";
 
@@ -19,7 +20,7 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Media, Posts],
+  collections: [Users, Media, Posts, ServiceBrochures],
   editor: lexicalEditor({}),
   globals: [HomePage],
   i18n: {

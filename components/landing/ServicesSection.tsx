@@ -82,7 +82,11 @@ function ServicePanel({
         src={service.img}
         alt=""
         fill
-        style={{ objectFit: "cover", objectPosition: "center" }}
+        style={{
+          objectFit: "cover",
+          objectPosition: "center",
+          pointerEvents: "none",
+        }}
         sizes="(max-width: 768px) 100vw, 25vw"
       />
 
@@ -92,10 +96,25 @@ function ServicePanel({
           position: "absolute",
           inset: 0,
           backgroundColor: isActive
-            ? "rgba(var(--dark-rgb),0.50)"
-            : "rgba(var(--dark-rgb),0.76)",
+            ? "rgba(var(--dark-rgb),0.62)"
+            : "rgba(var(--dark-rgb),0.82)",
           transition: reduce ? "none" : "background-color 0.65s ease",
+          pointerEvents: "none",
           zIndex: 1,
+        }}
+      />
+
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: isActive
+            ? "linear-gradient(180deg, rgba(var(--dark-rgb),0.28) 0%, rgba(var(--dark-rgb),0.18) 36%, rgba(var(--dark-rgb),0.88) 100%), linear-gradient(90deg, rgba(var(--dark-rgb),0.72) 0%, rgba(var(--dark-rgb),0.18) 54%, rgba(var(--dark-rgb),0.36) 100%)"
+            : "linear-gradient(180deg, rgba(var(--dark-rgb),0.34) 0%, rgba(var(--dark-rgb),0.72) 100%)",
+          transition: reduce ? "none" : "opacity 0.65s ease",
+          pointerEvents: "none",
+          zIndex: 2,
         }}
       />
 
@@ -110,7 +129,8 @@ function ServicePanel({
             left: 0,
             width: 1,
             backgroundColor: "rgba(var(--gold-rgb),0.18)",
-            zIndex: 2,
+            pointerEvents: "none",
+            zIndex: 3,
           }}
         />
       )}
@@ -166,6 +186,7 @@ function ServicePanel({
               fontWeight: 400,
               color: "var(--cream)",
               letterSpacing: "0.06em",
+              textShadow: "0 2px 14px rgba(var(--dark-rgb),0.72)",
             }}
           >
             {service.title}
@@ -184,7 +205,7 @@ function ServicePanel({
           left: 0,
           right: 0,
           padding: "3rem",
-          zIndex: 3,
+          zIndex: 4,
           pointerEvents: isActive ? "auto" : "none",
         }}
       >
@@ -204,8 +225,9 @@ function ServicePanel({
             letterSpacing: "0.38em",
             textTransform: "uppercase",
             fontWeight: 600,
-            color: "var(--gold)",
+            color: "rgba(var(--gold-light-rgb),0.96)",
             marginBottom: "0.65rem",
+            textShadow: "0 2px 14px rgba(var(--dark-rgb),0.68)",
           }}
         >
           {service.num} · {service.sub}
@@ -219,6 +241,7 @@ function ServicePanel({
             color: "var(--cream)",
             lineHeight: 1.04,
             marginBottom: "1rem",
+            textShadow: "0 4px 24px rgba(var(--dark-rgb),0.78)",
           }}
         >
           {service.title}
@@ -227,18 +250,20 @@ function ServicePanel({
           style={{
             fontFamily: "var(--font-montserrat), sans-serif",
             fontSize: "0.9rem",
-            fontWeight: 400,
+            fontWeight: 500,
             lineHeight: 1.8,
-            color: "rgba(var(--cream-rgb),0.78)",
+            color: "rgba(var(--cream-rgb),0.94)",
             marginBottom: "1.55rem",
             maxWidth: "40ch",
+            textShadow: "0 2px 18px rgba(var(--dark-rgb),0.78)",
           }}
         >
           {service.desc}
         </p>
         <motion.a
-          href="#contact"
+          href="/contact"
           whileHover={{ gap: "1.2rem" }}
+          whileTap={{ scale: 0.98 }}
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -248,8 +273,9 @@ function ServicePanel({
             letterSpacing: "0.26em",
             textTransform: "uppercase",
             fontWeight: 600,
-            color: "var(--gold)",
+            color: "rgba(var(--gold-light-rgb),0.98)",
             textDecoration: "none",
+            textShadow: "0 2px 14px rgba(var(--dark-rgb),0.68)",
           }}
         >
           <span>Demander un devis</span>
@@ -269,6 +295,7 @@ function ServicePanel({
           backgroundColor: "var(--gold)",
           opacity: isActive ? 0.5 : 0.18,
           transition: "opacity 0.55s ease",
+          pointerEvents: "none",
           zIndex: 4,
         }}
       />
@@ -283,6 +310,7 @@ function ServicePanel({
           backgroundColor: "var(--gold)",
           opacity: isActive ? 0.5 : 0.18,
           transition: "opacity 0.55s ease",
+          pointerEvents: "none",
           zIndex: 4,
         }}
       />
