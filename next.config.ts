@@ -67,13 +67,13 @@ const canonicalHostRedirects = [
   },
   {
     source: "/:path*",
-    has: [{ type: "host", value: "david-chambaud.fr" }],
+    has: [{ type: "host", value: "chambaud.fr" }],
     destination: `${canonicalSiteUrl}/:path*`,
     permanent: true,
   },
   {
     source: "/:path*",
-    has: [{ type: "host", value: "www.david-chambaud.fr" }],
+    has: [{ type: "host", value: "www.chambaud.fr" }],
     destination: `${canonicalSiteUrl}/:path*`,
     permanent: true,
   },
