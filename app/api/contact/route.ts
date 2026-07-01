@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import { Lettr } from "lettr";
 
 export const runtime = "nodejs";
 
@@ -6,6 +6,7 @@ const CONTACT_TO_EMAIL =
   process.env.CONTACT_TO_EMAIL || "contact@david-chambaud.fr";
 const CONTACT_FROM_EMAIL =
   process.env.CONTACT_FROM_EMAIL || "David Chambaud <contact@david-chambaud.fr>";
+const CONTACT_FROM_NAME = process.env.CONTACT_FROM_NAME;
 
 type ContactField =
   | "name"
@@ -77,6 +78,26 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#039;");
 }
 
+function parseSender(sender: string) {
+  const match = sender.match(/^\s*"?([^"<]+?)"?\s*<([^>]+)>\s*$/);
+
+  if (!match) {
+    return { email: sender.trim(), name: CONTACT_FROM_NAME };
+  }
+
+  return {
+    email: match[2].trim(),
+    name: CONTACT_FROM_NAME || match[1].trim(),
+  };
+}
+
+function getRecipients(value: string) {
+  return value
+    .split(",")
+    .map((email) => email.trim())
+    .filter(Boolean);
+}
+
 function buildHtmlEmail(payload: ContactPayload) {
   const rows = [
     ["Nom", payload.name],
@@ -142,12 +163,11 @@ export async function POST(request: Request) {
     );
   }
 
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || 465);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+  const apiKey = process.env.LETTR_API_KEY;
+  const recipients = getRecipients(CONTACT_TO_EMAIL);
+  const sender = parseSender(CONTACT_FROM_EMAIL);
 
-  if (!host || !user || !pass) {
+  if (!apiKey || recipients.length === 0 || !sender.email) {
     return Response.json(
       {
         message:
@@ -158,21 +178,21 @@ export async function POST(request: Request) {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host,
-      port,
-      secure: port === 465,
-      auth: { user, pass },
-    });
-
-    await transporter.sendMail({
-      from: CONTACT_FROM_EMAIL,
-      to: CONTACT_TO_EMAIL,
-      replyTo: payload.email,
+    const lettr = new Lettr(apiKey);
+    const { error } = await lettr.emails.send({
+      from: sender.email,
+      from_name: sender.name,
+      to: recipients,
+      reply_to: payload.email,
       subject: `Nouvelle demande traiteur - ${payload.name}`,
       text: buildTextEmail(payload),
       html: buildHtmlEmail(payload),
     });
+
+    if (error) {
+      console.error("Lettr contact email error", error);
+      throw new Error(error.message);
+    }
   } catch {
     return Response.json(
       {
