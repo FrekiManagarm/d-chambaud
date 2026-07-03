@@ -86,6 +86,11 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/*": ["node_modules/sharp/**/*", "node_modules/@img/sharp-*/**/*"],
   },
+  env: {
+    DATABASE_URL: process.env.DATABASE_URL,
+    PAYLOAD_SECRET: process.env.PAYLOAD_SECRET,
+    LETTR_API_KEY: process.env.LETTR_API_KEY,
+  },
 };
 
 export default withPayload(nextConfig);

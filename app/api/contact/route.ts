@@ -5,7 +5,8 @@ export const runtime = "nodejs";
 const CONTACT_TO_EMAIL =
   process.env.CONTACT_TO_EMAIL || "contact@david-chambaud.fr";
 const CONTACT_FROM_EMAIL =
-  process.env.CONTACT_FROM_EMAIL || "David Chambaud <contact@david-chambaud.fr>";
+  process.env.CONTACT_FROM_EMAIL ||
+  "David Chambaud <contact@mailing.david-chambaud.fr>";
 const CONTACT_FROM_NAME = process.env.CONTACT_FROM_NAME;
 
 type ContactField =
