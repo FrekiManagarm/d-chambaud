@@ -12,6 +12,7 @@ const CONTACT_FROM_NAME = process.env.CONTACT_FROM_NAME;
 type ContactField =
   | "name"
   | "email"
+  | "phone"
   | "eventType"
   | "location"
   | "guests"
@@ -27,6 +28,7 @@ type FieldErrors = Partial<Record<ContactField, string>>;
 const requiredFields = [
   ["name", "Indiquez votre nom."],
   ["email", "Indiquez une adresse email."],
+  ["phone", "Indiquez votre numéro de téléphone."],
   ["eventType", "Précisez le type d'événement."],
   ["message", "Ajoutez quelques mots sur votre demande."],
 ] as const satisfies readonly (readonly [ContactField, string])[];
@@ -49,6 +51,17 @@ function validateContactPayload(payload: Partial<ContactPayload>) {
     errors.email = "L'adresse email semble incomplète.";
   }
 
+  const phone = clean(payload.phone);
+  const phoneDigits = phone.replace(/\D/g, "");
+  if (
+    phone &&
+    (!/^[+\d][\d\s().-]*$/.test(phone) ||
+      phoneDigits.length < 10 ||
+      phoneDigits.length > 15)
+  ) {
+    errors.phone = "Le numéro de téléphone semble invalide.";
+  }
+
   return errors;
 }
 
@@ -58,6 +71,7 @@ function buildTextEmail(payload: ContactPayload) {
     "",
     `Nom: ${payload.name}`,
     `Email: ${payload.email}`,
+    `Téléphone: ${payload.phone}`,
     `Type d'événement: ${payload.eventType}`,
     `Lieu: ${payload.location || "Non précisé"}`,
     `Invités: ${payload.guests || "Non précisé"}`,
@@ -103,6 +117,7 @@ function buildHtmlEmail(payload: ContactPayload) {
   const rows = [
     ["Nom", payload.name],
     ["Email", payload.email],
+    ["Téléphone", payload.phone],
     ["Type d'événement", payload.eventType],
     ["Lieu", payload.location || "Non précisé"],
     ["Invités", payload.guests || "Non précisé"],
@@ -149,6 +164,7 @@ export async function POST(request: Request) {
   const payload: ContactPayload = {
     name: clean(body.name),
     email: clean(body.email),
+    phone: clean(body.phone),
     eventType: clean(body.eventType),
     location: clean(body.location),
     guests: clean(body.guests),

@@ -30,6 +30,7 @@ export function ContactSection() {
     const requiredFields = [
       ["name", "Indiquez votre nom."],
       ["email", "Indiquez une adresse email."],
+      ["phone", "Indiquez votre numéro de téléphone."],
       ["eventType", "Précisez le type d'événement."],
       ["message", "Ajoutez quelques mots sur votre demande."],
     ] as const;
@@ -43,6 +44,17 @@ export function ContactSection() {
     const email = String(formData.get("email") || "").trim();
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       nextErrors.email = "L'adresse email semble incomplète.";
+    }
+
+    const phone = String(formData.get("phone") || "").trim();
+    const phoneDigits = phone.replace(/\D/g, "");
+    if (
+      phone &&
+      (!/^[+\d][\d\s().-]*$/.test(phone) ||
+        phoneDigits.length < 10 ||
+        phoneDigits.length > 15)
+    ) {
+      nextErrors.phone = "Le numéro de téléphone semble invalide.";
     }
 
     setErrors(nextErrors);
@@ -425,6 +437,14 @@ export function ContactSection() {
                       required
                     />
                   </div>
+                  <ContactField
+                    label="Votre téléphone"
+                    name="phone"
+                    type="tel"
+                    helper="Ex. 06 50 75 44 06"
+                    error={errors.phone}
+                    required
+                  />
                   <ContactField
                     label="Type d'événement"
                     name="eventType"

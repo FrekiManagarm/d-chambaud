@@ -400,6 +400,7 @@ export function ContactField({
           id={inputId}
           name={name}
           rows={5}
+          required={required}
           aria-invalid={!!error}
           aria-describedby={`${inputId}-hint`}
           onFocus={() => setFocused(true)}
@@ -411,6 +412,7 @@ export function ContactField({
           id={inputId}
           name={name}
           type={type}
+          required={required}
           aria-invalid={!!error}
           aria-describedby={`${inputId}-hint`}
           onFocus={() => setFocused(true)}
