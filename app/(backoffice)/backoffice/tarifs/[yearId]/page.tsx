@@ -71,7 +71,7 @@ export default async function PricingYearPage({
               {offers.map(({ category, offer }) =>
                 offer.id ? (
                   <Link className="bo-button" href={`/backoffice/tarifs/${yearId}/offers/${offer.id}`} key={offer.id}>
-                    {offer.name} · {category.label}
+                    {offer.name} · {category.label} · {offer.price}
                   </Link>
                 ) : null,
               )}

@@ -6,6 +6,7 @@ import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { deletePricingOfferAction } from "../../../../actions";
 import { BackofficeHeader } from "../../../../Header";
+import { ConfirmSubmitButton } from "../../../../ConfirmSubmitButton";
 import { PricingOfferForm } from "../../../PricingOfferForm";
 import { PricingFormError } from "../../../PricingFormError";
 
@@ -33,5 +34,5 @@ export default async function PricingOfferPage({
 
   const deleteAction = deletePricingOfferAction.bind(null, yearId, category.id, offerId);
 
-  return <div className="bo-page"><BackofficeHeader userEmail={user.email} /><main className="bo-shell"><section className="bo-page-head"><div><p className="bo-kicker">{year.label}</p><h1>{offer.name}</h1></div><Link className="bo-button" href={`/backoffice/tarifs/${yearId}`}>Retour</Link></section><PricingFormError error={error} /><PricingOfferForm categories={year.categories ?? []} categoryId={category.id} offer={offer} redirectTo={`/backoffice/tarifs/${yearId}/offers/${offerId}`} yearId={yearId} /><form action={deleteAction}><input name="redirectTo" type="hidden" value={`/backoffice/tarifs/${yearId}/offers/${offerId}`} /><button className="bo-button bo-danger-button" type="submit">Supprimer l’offre</button></form></main></div>;
+  return <div className="bo-page"><BackofficeHeader userEmail={user.email} /><main className="bo-shell"><section className="bo-page-head"><div><p className="bo-kicker">{year.label}</p><h1>{offer.name}</h1></div><Link className="bo-button" href={`/backoffice/tarifs/${yearId}`}>Retour</Link></section><PricingFormError error={error} /><PricingOfferForm categories={year.categories ?? []} categoryId={category.id} offer={offer} redirectTo={`/backoffice/tarifs/${yearId}/offers/${offerId}`} yearId={yearId} /><form action={deleteAction}><input name="redirectTo" type="hidden" value={`/backoffice/tarifs/${yearId}/offers/${offerId}`} /><ConfirmSubmitButton className="bo-button bo-danger-button" confirmation="Supprimer définitivement cet élément ? Cette action est irréversible." type="submit">Supprimer l’offre</ConfirmSubmitButton></form></main></div>;
 }

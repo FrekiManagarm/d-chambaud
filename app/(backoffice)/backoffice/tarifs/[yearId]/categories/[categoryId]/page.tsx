@@ -6,6 +6,7 @@ import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { deletePricingCategoryAction } from "../../../../actions";
 import { BackofficeHeader } from "../../../../Header";
+import { ConfirmSubmitButton } from "../../../../ConfirmSubmitButton";
 import { PricingCategoryForm } from "../../../PricingCategoryForm";
 import { PricingFormError } from "../../../PricingFormError";
 
@@ -32,5 +33,5 @@ export default async function PricingCategoryPage({
 
   const deleteAction = deletePricingCategoryAction.bind(null, yearId, categoryId);
 
-  return <div className="bo-page"><BackofficeHeader userEmail={user.email} /><main className="bo-shell"><section className="bo-page-head"><div><p className="bo-kicker">{year.label}</p><h1>{category.label}</h1></div><Link className="bo-button" href={`/backoffice/tarifs/${yearId}/categories`}>Retour</Link></section><PricingFormError error={error} /><PricingCategoryForm category={category} redirectTo={`/backoffice/tarifs/${yearId}/categories/${categoryId}`} yearId={yearId} /><form action={deleteAction}><input name="redirectTo" type="hidden" value={`/backoffice/tarifs/${yearId}/categories/${categoryId}`} /><button className="bo-button bo-danger-button" type="submit">Supprimer la catégorie</button></form></main></div>;
+  return <div className="bo-page"><BackofficeHeader userEmail={user.email} /><main className="bo-shell"><section className="bo-page-head"><div><p className="bo-kicker">{year.label}</p><h1>{category.label}</h1></div><Link className="bo-button" href={`/backoffice/tarifs/${yearId}/categories`}>Retour</Link></section><PricingFormError error={error} /><PricingCategoryForm category={category} redirectTo={`/backoffice/tarifs/${yearId}/categories/${categoryId}`} yearId={yearId} /><form action={deleteAction}><input name="redirectTo" type="hidden" value={`/backoffice/tarifs/${yearId}/categories/${categoryId}`} /><ConfirmSubmitButton className="bo-button bo-danger-button" confirmation="Supprimer définitivement cet élément ? Cette action est irréversible." type="submit">Supprimer la catégorie</ConfirmSubmitButton></form></main></div>;
 }

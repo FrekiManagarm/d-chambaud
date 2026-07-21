@@ -5,6 +5,7 @@ import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { BackofficeHeader } from "../Header";
+import { ConfirmSubmitButton } from "../ConfirmSubmitButton";
 import { PricingFormError } from "./PricingFormError";
 import {
   deletePricingYearAction,
@@ -95,7 +96,13 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
                     </form>
                     <form action={deleteAction}>
                       <input name="redirectTo" type="hidden" value="/backoffice/tarifs" />
-                      <button className="bo-button bo-danger-button" type="submit">Supprimer</button>
+                      <ConfirmSubmitButton
+                        className="bo-button bo-danger-button"
+                        confirmation="Supprimer définitivement cet élément ? Cette action est irréversible."
+                        type="submit"
+                      >
+                        Supprimer
+                      </ConfirmSubmitButton>
                     </form>
                   </div>
                 </div>
