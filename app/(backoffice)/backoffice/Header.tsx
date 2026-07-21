@@ -13,7 +13,7 @@ export function BackofficeHeader({ userEmail }: HeaderProps) {
       <div className="bo-header-inner">
         <Link className="bo-brand" href="/backoffice">
           <span className="bo-brand-mark">DC</span>
-          <span>
+          <span className="bo-brand-copy">
             <strong>David Chambaud</strong>
             <small>Gestion du site</small>
           </span>
@@ -21,13 +21,15 @@ export function BackofficeHeader({ userEmail }: HeaderProps) {
 
         <div className="bo-header-actions">
           <Link
-            className="bo-button"
+            className="bo-button bo-site-link"
             href="/"
             rel="noreferrer"
             target="_blank"
+            title="Voir le site"
+            aria-label="Voir le site"
           >
             <ArrowUpRight aria-hidden="true" size={18} />
-            <span>Voir le site</span>
+            <span className="bo-site-link-label">Voir le site</span>
           </Link>
           <span className="bo-user-email">{userEmail}</span>
           <LogoutButton />
