@@ -34,6 +34,53 @@ describe("buildPostData", () => {
     assert.equal(isDuplicateSlugError(new Error("Validation failed")), false);
   });
 
+  test("recognizes a nested Payload validation error for the slug", () => {
+    assert.equal(
+      isDuplicateSlugError({
+        message: "The following field is invalid: slug",
+        data: {
+          errors: [
+            {
+              path: "slug",
+              message: "Value must be unique",
+            },
+          ],
+        },
+      }),
+      true,
+    );
+  });
+
+  test("does not retry nested validation errors for another field", () => {
+    assert.equal(
+      isDuplicateSlugError({
+        message: "The following field is invalid: author",
+        data: {
+          errors: [
+            {
+              path: "author",
+              message: "Value must be unique",
+            },
+          ],
+        },
+      }),
+      false,
+    );
+    assert.equal(
+      isDuplicateSlugError({
+        data: {
+          errors: [
+            {
+              path: "slug",
+              message: "Value is required",
+            },
+          ],
+        },
+      }),
+      false,
+    );
+  });
+
   test("builds automatic post data when creating an article", () => {
     const data = buildPostData({
       title: "Été 2026 : l’art de recevoir !",

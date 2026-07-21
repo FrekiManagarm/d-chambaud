@@ -46,15 +46,9 @@ export const nextAvailableSlug = (base: string, takenSlugs: Iterable<string>) =>
 export const isDuplicateSlugError = (error: unknown) => {
   const values: unknown[] = [error];
   const seen = new Set<object>();
-  const messages: string[] = [];
 
   while (values.length > 0) {
     const value = values.pop();
-
-    if (typeof value === "string") {
-      messages.push(value.toLowerCase());
-      continue;
-    }
 
     if (!value || typeof value !== "object" || seen.has(value)) {
       continue;
@@ -65,28 +59,35 @@ export const isDuplicateSlugError = (error: unknown) => {
       cause?: unknown;
       code?: unknown;
       data?: unknown;
+      detail?: unknown;
       errors?: unknown;
       message?: unknown;
+      path?: unknown;
     };
+    const fields = [
+      metadata.code,
+      metadata.detail,
+      metadata.message,
+      metadata.path,
+      ...Object.values(metadata),
+    ]
+      .filter((field): field is string => typeof field === "string")
+      .map((field) => field.toLowerCase());
+    const mentionsSlug = fields.some((field) => field.includes("slug"));
+    const isUnique = fields.some(
+      (field) => field.includes("duplicate") || field.includes("unique"),
+    );
+    const hasUniqueConstraintCode =
+      metadata.code === "23505" || metadata.code === 23505;
 
-    if (metadata.code === "23505" || metadata.code === 23505) {
+    if (mentionsSlug && (isUnique || hasUniqueConstraintCode)) {
       return true;
     }
 
-    values.push(
-      metadata.cause,
-      metadata.data,
-      metadata.errors,
-      metadata.message,
-    );
+    values.push(...Object.values(metadata), metadata.cause, metadata.data, metadata.errors);
   }
 
-  const message = messages.join(" ");
-
-  return (
-    message.includes("slug") &&
-    (message.includes("duplicate") || message.includes("unique"))
-  );
+  return false;
 };
 
 export const buildPostData = (
