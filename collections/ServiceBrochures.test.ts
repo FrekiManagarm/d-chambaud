@@ -28,6 +28,21 @@ describe("ServiceBrochures collection", () => {
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     ]);
     assert.equal(ServiceBrochures.access?.read?.({} as never), true);
+    assert.equal(ServiceBrochures.hooks?.afterChange?.length, 1);
+    assert.equal(ServiceBrochures.hooks?.afterDelete?.length, 1);
+  });
+
+  test("allows only authenticated users to mutate brochures", () => {
+    const mutations = [
+      ServiceBrochures.access?.create,
+      ServiceBrochures.access?.update,
+      ServiceBrochures.access?.delete,
+    ];
+
+    for (const mutation of mutations) {
+      assert.equal(mutation?.({ req: { user: null } } as never), false);
+      assert.equal(mutation?.({ req: { user: {} } } as never), true);
+    }
   });
 
   test("requires a title field for backoffice and download labels", () => {

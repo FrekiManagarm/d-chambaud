@@ -13,39 +13,34 @@ export function AboutForm({ about }: AboutFormProps) {
     <form action={saveAboutAction} className="bo-form-stack">
       <section className="bo-card bo-form-section">
         <div className="bo-section-head">
-          <div>
-            <p className="bo-kicker">Section publique</p>
-            <h2>Texte de la section à propos</h2>
-          </div>
-          <button className="bo-button bo-button-primary" type="submit">
-            <Save aria-hidden="true" size={17} />
-            <span>Enregistrer</span>
-          </button>
+          <h2>Titre</h2>
         </div>
 
         <div className="bo-form-grid">
           <label className="bo-form-field">
-            <span>Petit titre</span>
+            <span>Surtitre</span>
             <input defaultValue={about?.eyebrow ?? ""} name="eyebrow" />
           </label>
           <label className="bo-form-field">
-            <span>Libellé du lien</span>
-            <input defaultValue={about?.ctaLabel ?? ""} name="ctaLabel" />
-          </label>
-          <label className="bo-form-field">
-            <span>Titre ligne 1</span>
+            <span>Début du titre</span>
             <input
               defaultValue={about?.titleLineOne ?? ""}
               name="titleLineOne"
             />
           </label>
-          <label className="bo-form-field">
-            <span>Titre ligne 2</span>
+          <label className="bo-form-field bo-form-field-full">
+            <span>Suite du titre</span>
             <input
               defaultValue={about?.titleLineTwo ?? ""}
               name="titleLineTwo"
             />
           </label>
+        </div>
+      </section>
+
+      <section className="bo-card bo-form-section">
+        <div className="bo-section-head">
+          <h2>Textes</h2>
         </div>
 
         <label className="bo-form-field">
@@ -65,6 +60,12 @@ export function AboutForm({ about }: AboutFormProps) {
             rows={4}
           />
         </label>
+      </section>
+
+      <section className="bo-card bo-form-section">
+        <div className="bo-section-head">
+          <h2>Citation</h2>
+        </div>
 
         <div className="bo-form-grid">
           <label className="bo-form-field">
@@ -76,6 +77,22 @@ export function AboutForm({ about }: AboutFormProps) {
             <input defaultValue={about?.quoteAuthor ?? ""} name="quoteAuthor" />
           </label>
         </div>
+      </section>
+
+      <section className="bo-card bo-form-section">
+        <div className="bo-section-head">
+          <h2>Bouton</h2>
+        </div>
+
+        <label className="bo-form-field">
+          <span>Texte du bouton</span>
+          <input defaultValue={about?.ctaLabel ?? ""} name="ctaLabel" />
+        </label>
+
+        <button className="bo-button bo-button-primary" type="submit">
+          <Save aria-hidden="true" size={17} />
+          <span>Enregistrer</span>
+        </button>
       </section>
     </form>
   );

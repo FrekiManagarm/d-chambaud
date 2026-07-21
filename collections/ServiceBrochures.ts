@@ -8,6 +8,11 @@ import {
   serviceBrochureCategoryOptions,
   serviceBrochureMimeTypes,
 } from "@/lib/service-brochures";
+import { revalidatePublishedResource } from "@/lib/published-resource-cache";
+
+const revalidateServiceBrochures = () => {
+  revalidatePublishedResource("service-brochures");
+};
 
 export const ServiceBrochures: CollectionConfig = {
   slug: "service-brochures",
@@ -17,6 +22,13 @@ export const ServiceBrochures: CollectionConfig = {
   },
   access: {
     read: () => true,
+    create: ({ req }) => Boolean(req.user),
+    update: ({ req }) => Boolean(req.user),
+    delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [revalidateServiceBrochures],
+    afterDelete: [revalidateServiceBrochures],
   },
   admin: {
     defaultColumns: ["title", "filename", "updatedAt"],

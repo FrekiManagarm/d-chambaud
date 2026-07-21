@@ -4,20 +4,36 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
+import {
+  formatPricingError,
+  isMissingPricingItemError,
+} from "@/lib/backoffice/pricing-errors";
 import { getPayloadClient } from "@/lib/backoffice/payload";
-import { plainTextToLexical } from "@/lib/backoffice/rich-text";
+import {
+  addOffer,
+  addPricingCategory,
+  addPricingYear,
+  deleteOffer,
+  deletePricingCategory,
+  deletePricingYear,
+  emptyPricing,
+  moveOffer,
+  setActivePricingYear,
+  type Pricing,
+  updatePricingCategory,
+  updatePricingYear,
+} from "@/lib/backoffice/pricing";
+import {
+  buildPostData,
+  isDuplicateSlugError,
+  nextAvailableSlug,
+  type PostFields,
+} from "@/lib/backoffice/post-data";
 import {
   serviceBrochureCategoryOptions,
   type ServiceBrochureCategory,
 } from "@/lib/service-brochures";
-import type { HomePage, Post } from "@/payload-types";
-
-type PostWriteData = Partial<Post> & {
-  content: Post["content"];
-  excerpt: string;
-  title: string;
-  _status: "draft" | "published";
-};
+import type { HomePage } from "@/payload-types";
 
 const text = (formData: FormData, key: string) => {
   const value = formData.get(key);
@@ -42,14 +58,6 @@ const serviceBrochureCategory = (
     : "traiteur";
 };
 
-const toIsoDate = (value: string) => {
-  if (!value) {
-    return new Date().toISOString();
-  }
-
-  return new Date(value).toISOString();
-};
-
 const parseAbout = (formData: FormData): NonNullable<HomePage["about"]> => ({
   ctaLabel: text(formData, "ctaLabel"),
   eyebrow: text(formData, "eyebrow"),
@@ -60,128 +68,6 @@ const parseAbout = (formData: FormData): NonNullable<HomePage["about"]> => ({
   titleLineOne: text(formData, "titleLineOne"),
   titleLineTwo: text(formData, "titleLineTwo"),
 });
-
-const parsePricing = (formData: FormData): NonNullable<HomePage["pricing"]> => {
-  const years = [];
-  const yearCount = Number(text(formData, "yearCount")) || 0;
-
-  for (let yearIndex = 0; yearIndex < yearCount; yearIndex += 1) {
-    const label = text(formData, `year.${yearIndex}.label`);
-
-    if (!label) {
-      continue;
-    }
-
-    const categories = [];
-    const categoryCount =
-      Number(text(formData, `year.${yearIndex}.categoryCount`)) || 0;
-
-    for (
-      let categoryIndex = 0;
-      categoryIndex < categoryCount;
-      categoryIndex += 1
-    ) {
-      const categoryLabel = text(
-        formData,
-        `year.${yearIndex}.category.${categoryIndex}.label`,
-      );
-      const summaryLabel = text(
-        formData,
-        `year.${yearIndex}.category.${categoryIndex}.summaryLabel`,
-      );
-
-      if (!categoryLabel && !summaryLabel) {
-        continue;
-      }
-
-      const offers = [];
-      const offerCount =
-        Number(
-          text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offerCount`,
-          ),
-        ) || 0;
-
-      for (let offerIndex = 0; offerIndex < offerCount; offerIndex += 1) {
-        const name = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.name`,
-        );
-        const price = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.price`,
-        );
-
-        if (!name && !price) {
-          continue;
-        }
-
-        const features = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.features`,
-        )
-          .split("\n")
-          .map((feature) => feature.trim())
-          .filter(Boolean)
-          .map((feature) => ({ text: feature }));
-
-        offers.push({
-          name: name || "Nouvelle offre",
-          price: price || "Sur devis",
-          unit: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.unit`,
-          ),
-          sub: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.sub`,
-          ),
-          tone: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.tone`,
-          ),
-          detail: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.detail`,
-          ),
-          features,
-          highlight: checked(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.highlight`,
-          ),
-        });
-      }
-
-      categories.push({
-        label: categoryLabel || "Nouvelle categorie",
-        summaryLabel,
-        offers,
-      });
-    }
-
-    years.push({
-      label,
-      isActive: checked(formData, `year.${yearIndex}.isActive`),
-      categories,
-    });
-  }
-
-  const hasActiveYear = years.some((year) => year.isActive);
-
-  return {
-    eyebrow: text(formData, "eyebrow"),
-    titleLineOne: text(formData, "titleLineOne"),
-    titleLineTwo: text(formData, "titleLineTwo"),
-    intro: text(formData, "intro"),
-    footerNote: text(formData, "footerNote"),
-    ctaLabel: text(formData, "ctaLabel"),
-    years: years.map((year, index) => ({
-      ...year,
-      isActive: hasActiveYear ? year.isActive : index === 0,
-    })),
-  };
-};
 
 export const saveAboutAction = async (formData: FormData) => {
   await requireBackofficeUser();
@@ -209,71 +95,323 @@ export const saveAboutAction = async (formData: FormData) => {
   redirect("/backoffice/a-propos?saved=1");
 };
 
-export const savePricingAction = async (formData: FormData) => {
-  await requireBackofficeUser();
+const updatePricingGlobal = async (
+  mutate: (pricing: Pricing) => Pricing,
+  redirectTo: string,
+  errorRedirectTo = redirectTo,
+) => {
+  let errorMessage: string | undefined;
+  let missingPricingItem = false;
 
-  const payload = await getPayloadClient();
-  const current = await payload.findGlobal({
-    slug: "home-page",
-    locale: "fr",
-    depth: 0,
-    overrideAccess: true,
-  });
+  try {
+    await requireBackofficeUser();
 
-  await payload.updateGlobal({
-    slug: "home-page",
-    locale: "fr",
-    overrideAccess: true,
-    data: {
-      ...current,
-      pricing: parsePricing(formData),
-    },
-  });
+    const payload = await getPayloadClient();
+    const current = await payload.findGlobal({
+      slug: "home-page",
+      locale: "fr",
+      depth: 0,
+      overrideAccess: true,
+    });
+
+    await payload.updateGlobal({
+      slug: "home-page",
+      locale: "fr",
+      overrideAccess: true,
+      data: {
+        ...current,
+        pricing: mutate(current.pricing ?? emptyPricing()),
+      },
+    });
+  } catch (error) {
+    errorMessage = formatPricingError(error);
+    missingPricingItem = isMissingPricingItemError(error);
+  }
+
+  if (errorMessage) {
+    const errorRedirect = missingPricingItem
+      ? "/backoffice/tarifs"
+      : errorRedirectTo;
+
+    redirect(`${errorRedirect}?error=${encodeURIComponent(errorMessage)}`);
+  }
 
   revalidatePath("/");
   revalidatePath("/backoffice/tarifs");
-  redirect("/backoffice/tarifs?saved=1");
+  redirect(`${redirectTo}?saved=1`);
 };
 
-const postDataFromForm = (formData: FormData): PostWriteData => {
-  const title = text(formData, "title");
-  const slug = text(formData, "slug");
-  const status: "published" | "draft" =
-    text(formData, "status") === "published" ? "published" : "draft";
-  const categoryLabels = text(formData, "categories")
-    .split(",")
-    .map((category) => category.trim())
+const requiredText = (formData: FormData, key: string, message: string) => {
+  const value = text(formData, key);
+
+  if (!value) {
+    throw new Error(message);
+  }
+
+  return value;
+};
+
+const pricingFeatures = (formData: FormData) =>
+  text(formData, "features")
+    .split("\n")
+    .map((feature) => feature.trim())
     .filter(Boolean)
-    .map((label) => ({ label }));
+    .map((feature) => ({ text: feature }));
 
-  return {
-    title,
-    slug,
-    publishedAt: toIsoDate(text(formData, "publishedAt")),
-    author: text(formData, "author") || "David Chambaud",
-    categories: categoryLabels,
-    excerpt: text(formData, "excerpt"),
-    content: plainTextToLexical(text(formData, "content")),
-    seo: {
-      title: text(formData, "seoTitle"),
-      description: text(formData, "seoDescription"),
-    },
-    _status: status,
-  };
+const pricingErrorRedirectTo = (formData: FormData, fallback: string) => {
+  const redirectTo = text(formData, "redirectTo");
+
+  return redirectTo === "/backoffice/tarifs" ||
+    redirectTo.startsWith("/backoffice/tarifs/")
+    ? redirectTo
+    : fallback;
 };
+
+export const createPricingYearAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addPricingYear(
+        pricing,
+        requiredText(formData, "label", "La saison est obligatoire."),
+      ),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs/new"),
+  );
+
+export const updatePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      updatePricingYear(pricing, yearId, {
+        label: requiredText(formData, "label", "La saison est obligatoire."),
+      }),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, `/backoffice/tarifs/${yearId}`),
+  );
+
+export const deletePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) => deletePricingYear(pricing, yearId),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs"),
+  );
+
+export const setActivePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) => setActivePricingYear(pricing, yearId),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs"),
+  );
+
+export const createPricingCategoryAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addPricingCategory(
+        pricing,
+        yearId,
+        requiredText(formData, "label", "La catégorie est obligatoire."),
+      ),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/new`,
+    ),
+  );
+
+export const updatePricingCategoryAction = async (
+  yearId: string,
+  categoryId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      updatePricingCategory(
+        pricing,
+        yearId,
+        categoryId,
+        {
+          label: requiredText(formData, "label", "La catégorie est obligatoire."),
+          summaryLabel: text(formData, "summaryLabel"),
+        },
+      ),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/${categoryId}`,
+    ),
+  );
+
+export const deletePricingCategoryAction = async (
+  yearId: string,
+  categoryId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      deletePricingCategory(pricing, yearId, categoryId),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/${categoryId}`,
+    ),
+  );
+
+export const createPricingOfferAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addOffer(
+        pricing,
+        yearId,
+        requiredText(formData, "categoryId", "La catégorie est obligatoire."),
+        {
+          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
+          price: requiredText(formData, "price", "Le prix est obligatoire."),
+          unit: text(formData, "unit"),
+          detail: text(formData, "detail"),
+          features: pricingFeatures(formData),
+          highlight: checked(formData, "highlight"),
+        },
+      ),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, `/backoffice/tarifs/${yearId}/offers/new`),
+  );
+
+export const updatePricingOfferAction = async (
+  yearId: string,
+  categoryId: string,
+  offerId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) =>
+      moveOffer(
+        pricing,
+        yearId,
+        categoryId,
+        requiredText(formData, "categoryId", "La catégorie est obligatoire."),
+        offerId,
+        {
+          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
+          price: requiredText(formData, "price", "Le prix est obligatoire."),
+          unit: text(formData, "unit"),
+          detail: text(formData, "detail"),
+          features: pricingFeatures(formData),
+          highlight: checked(formData, "highlight"),
+        },
+      ),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/offers/${offerId}`,
+    ),
+  );
+
+export const deletePricingOfferAction = async (
+  yearId: string,
+  categoryId: string,
+  offerId: string,
+  formData: FormData,
+) =>
+  updatePricingGlobal(
+    (pricing) => deleteOffer(pricing, yearId, categoryId, offerId),
+    "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/offers/${offerId}`,
+    ),
+  );
+
+export const savePricingSectionAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) => ({
+      ...pricing,
+      eyebrow: text(formData, "eyebrow"),
+      titleLineOne: text(formData, "titleLineOne"),
+      titleLineTwo: text(formData, "titleLineTwo"),
+      intro: text(formData, "intro"),
+      footerNote: text(formData, "footerNote"),
+      ctaLabel: text(formData, "ctaLabel"),
+    }),
+    "/backoffice/tarifs/settings",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs/settings"),
+  );
+
+const postFieldsFromForm = (formData: FormData): PostFields => ({
+  title: text(formData, "title"),
+  publishedAt: text(formData, "publishedAt"),
+  status: text(formData, "status"),
+  excerpt: text(formData, "excerpt"),
+  content: text(formData, "content"),
+});
 
 export const createPostAction = async (formData: FormData) => {
   await requireBackofficeUser();
 
   const payload = await getPayloadClient();
+  const postData = buildPostData(postFieldsFromForm(formData));
+  const baseSlug = postData.slug;
+  const takenSlugs: string[] = [];
+  let created = false;
 
-  await payload.create({
-    collection: "posts",
-    draft: true,
-    locale: "fr",
-    overrideAccess: true,
-    data: postDataFromForm(formData),
-  });
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    const slug = nextAvailableSlug(baseSlug, takenSlugs);
+    const existing = await payload.find({
+      collection: "posts",
+      draft: true,
+      locale: "fr",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+
+    if (existing.docs.length === 0) {
+      postData.slug = slug;
+
+      try {
+        await payload.create({
+          collection: "posts",
+          draft: true,
+          locale: "fr",
+          overrideAccess: true,
+          data: postData,
+        });
+        created = true;
+      } catch (error) {
+        if (!isDuplicateSlugError(error)) {
+          throw error;
+        }
+      }
+
+      if (created) {
+        break;
+      }
+    }
+
+    takenSlugs.push(slug);
+  }
+
+  if (!created) {
+    throw new Error("Impossible de générer un slug unique pour cet article.");
+  }
 
   revalidatePath("/blog");
   revalidatePath("/backoffice/articles");
@@ -284,6 +422,13 @@ export const updatePostAction = async (id: number, formData: FormData) => {
   await requireBackofficeUser();
 
   const payload = await getPayloadClient();
+  const current = await payload.findByID({
+    collection: "posts",
+    id,
+    locale: "fr",
+    depth: 0,
+    overrideAccess: true,
+  });
 
   await payload.update({
     collection: "posts",
@@ -291,13 +436,29 @@ export const updatePostAction = async (id: number, formData: FormData) => {
     id,
     locale: "fr",
     overrideAccess: true,
-    data: postDataFromForm(formData),
+    data: buildPostData(postFieldsFromForm(formData), current),
   });
 
   revalidatePath("/blog");
-  revalidatePath(`/blog/${text(formData, "slug")}`);
+  revalidatePath(`/blog/${current.slug}`);
   revalidatePath("/backoffice/articles");
   redirect("/backoffice/articles?saved=1");
+};
+
+export const deletePostAction = async (id: number) => {
+  await requireBackofficeUser();
+
+  const payload = await getPayloadClient();
+
+  await payload.delete({
+    collection: "posts",
+    id,
+    overrideAccess: true,
+  });
+
+  revalidatePath("/blog");
+  revalidatePath("/backoffice/articles");
+  redirect("/backoffice/articles?deleted=1");
 };
 
 export const updateMediaAltAction = async (id: number, formData: FormData) => {
@@ -315,8 +476,6 @@ export const updateMediaAltAction = async (id: number, formData: FormData) => {
     },
   });
 
-  revalidatePath("/");
-  revalidatePath("/backoffice/images");
   redirect("/backoffice/images?saved=1");
 };
 
@@ -331,8 +490,6 @@ export const deleteMediaAction = async (id: number) => {
     overrideAccess: true,
   });
 
-  revalidatePath("/");
-  revalidatePath("/backoffice/images");
   redirect("/backoffice/images?deleted=1");
 };
 
@@ -355,7 +512,6 @@ export const updateServiceBrochureAction = async (
     },
   });
 
-  revalidatePath("/backoffice/plaquettes");
   redirect("/backoffice/plaquettes?saved=1");
 };
 
@@ -370,6 +526,5 @@ export const deleteServiceBrochureAction = async (id: number) => {
     overrideAccess: true,
   });
 
-  revalidatePath("/backoffice/plaquettes");
   redirect("/backoffice/plaquettes?deleted=1");
 };

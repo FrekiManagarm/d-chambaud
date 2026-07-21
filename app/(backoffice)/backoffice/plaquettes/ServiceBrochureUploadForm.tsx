@@ -6,6 +6,11 @@ import { FormEvent, useState } from "react";
 
 import { serviceBrochureCategoryOptions } from "@/lib/service-brochures";
 
+const powerpointMimeTypes = new Set([
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+]);
+
 export function ServiceBrochureUploadForm() {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -14,7 +19,6 @@ export function ServiceBrochureUploadForm() {
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    setIsLoading(true);
 
     const form = event.currentTarget;
     const formData = new FormData(form);
@@ -26,42 +30,68 @@ export function ServiceBrochureUploadForm() {
 
     if (!(file instanceof File) || file.size === 0) {
       setError("Ajoutez un fichier PowerPoint avant d'envoyer.");
-      setIsLoading(false);
       return;
     }
 
+    const hasPowerPointExtension = /\.pptx?$/i.test(file.name);
+    if (!powerpointMimeTypes.has(file.type) && !hasPowerPointExtension) {
+      setError("Choisissez un fichier PowerPoint au format .ppt ou .pptx.");
+      return;
+    }
+
+    if (typeof title !== "string" || !title.trim()) {
+      setError("Indiquez le titre de la plaquette.");
+      return;
+    }
+
+    if (
+      typeof category !== "string" ||
+      !serviceBrochureCategoryOptions.some(
+        (option) => option.value === category,
+      )
+    ) {
+      setError("Choisissez la catégorie correspondant à cette plaquette.");
+      return;
+    }
+
+    setIsLoading(true);
     payload.append("file", file);
     payload.append(
       "_payload",
       JSON.stringify({
-        category: typeof category === "string" ? category : "",
-        title: typeof title === "string" ? title : "",
-        description: typeof description === "string" ? description : "",
+        category,
+        title: title.trim(),
+        description: typeof description === "string" ? description.trim() : "",
       }),
     );
 
-    const response = await fetch("/api/service-brochures", {
-      method: "POST",
-      credentials: "include",
-      body: payload,
-    });
+    try {
+      const response = await fetch("/api/service-brochures", {
+        method: "POST",
+        credentials: "include",
+        body: payload,
+      });
 
-    setIsLoading(false);
+      if (!response.ok) {
+        setError(
+          "La plaquette n’a pas pu être ajoutée. Vérifiez le fichier PowerPoint et réessayez.",
+        );
+        return;
+      }
 
-    if (!response.ok) {
-      setError("La plaquette n'a pas pu être envoyée.");
-      return;
+      form.reset();
+      router.refresh();
+    } catch {
+      setError("L’envoi a échoué. Vérifiez votre connexion et réessayez.");
+    } finally {
+      setIsLoading(false);
     }
-
-    form.reset();
-    router.refresh();
   };
 
   return (
     <form className="bo-card bo-form-section" onSubmit={onSubmit}>
       <div className="bo-section-head">
         <div>
-          <p className="bo-kicker">Upload</p>
           <h2>Ajouter une plaquette</h2>
         </div>
         <button
@@ -70,7 +100,7 @@ export function ServiceBrochureUploadForm() {
           type="submit"
         >
           <Upload aria-hidden="true" size={17} />
-          <span>{isLoading ? "Envoi..." : "Envoyer"}</span>
+          <span>{isLoading ? "Envoi..." : "Ajouter la plaquette"}</span>
         </button>
       </div>
 
@@ -111,7 +141,11 @@ export function ServiceBrochureUploadForm() {
         </label>
       </div>
 
-      {error ? <p className="bo-form-error">{error}</p> : null}
+      {error ? (
+        <p aria-live="polite" className="bo-form-error">
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

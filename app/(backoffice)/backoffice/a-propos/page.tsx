@@ -31,16 +31,19 @@ export default async function AboutPage({ searchParams }: AboutPageProps) {
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
-            <p className="bo-kicker">À propos</p>
-            <h1>Présentation du chef</h1>
+            <h1>Présentation</h1>
             <p className="bo-muted">
-              Modifiez les textes affichés dans la section à propos de la page
-              d&apos;accueil.
+              Modifiez les éléments affichés sur la page d&apos;accueil.
             </p>
           </div>
-          <Link className="bo-button" href="/#a-propos" target="_blank">
-            Voir la section
-          </Link>
+          <div className="bo-header-actions">
+            <Link className="bo-button" href="/backoffice">
+              Retour à l&apos;accueil
+            </Link>
+            <Link className="bo-button" href="/#a-propos" target="_blank">
+              Voir la section
+            </Link>
+          </div>
         </section>
 
         {saved ? (
