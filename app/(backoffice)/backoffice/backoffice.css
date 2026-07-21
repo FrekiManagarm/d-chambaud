@@ -138,10 +138,6 @@
   padding: 2rem 0 4rem;
 }
 
-.bo-shell-wide {
-  width: min(1680px, calc(100% - 2rem));
-}
-
 .bo-page-head,
 .bo-section-head {
   display: flex;
@@ -275,9 +271,7 @@
 }
 
 .bo-login-form,
-.bo-form-grid,
-.bo-nested-stack,
-.bo-offer-grid {
+.bo-form-grid {
   display: grid;
   gap: 0.85rem;
 }
@@ -296,8 +290,7 @@
   min-width: 0;
 }
 
-.bo-form-field span,
-.bo-offer-card legend {
+.bo-form-field span {
   color: rgba(37, 35, 29, 0.64);
   font-size: 0.72rem;
   font-weight: 600;
@@ -365,41 +358,6 @@
   accent-color: #2f3a2d;
 }
 
-.bo-nested-panel,
-.bo-offer-card {
-  border: 1px solid rgba(37, 35, 29, 0.1);
-  border-radius: 8px;
-  background: rgba(247, 243, 232, 0.58);
-}
-
-.bo-nested-panel {
-  display: grid;
-  gap: 1rem;
-  padding: 1rem;
-}
-
-.bo-offer-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.bo-offer-card {
-  display: grid;
-  gap: 0.8rem;
-  min-width: 0;
-  padding: 0.9rem;
-}
-
-.bo-offer-card legend {
-  padding: 0 0.35rem;
-}
-
-.bo-inline-fields {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 0.8rem;
-}
-
 .bo-table {
   display: grid;
 }
@@ -413,10 +371,6 @@
   padding: 0.7rem 0.9rem;
   border-bottom: 1px solid rgba(37, 35, 29, 0.09);
   font-size: 0.86rem;
-}
-
-.bo-brochure-row {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(160px, 0.6fr) 160px minmax(220px, auto);
 }
 
 .bo-table-row:last-child {
@@ -448,19 +402,6 @@
   text-transform: uppercase;
 }
 
-.bo-media-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-}
-
-.bo-media-card {
-  overflow: hidden;
-  border: 1px solid rgba(37, 35, 29, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 252, 244, 0.74);
-}
-
 .bo-media-preview {
   position: relative;
   display: grid;
@@ -473,20 +414,6 @@
 
 .bo-media-preview img {
   object-fit: cover;
-}
-
-.bo-media-body {
-  display: grid;
-  gap: 0.75rem;
-  padding: 0.85rem;
-}
-
-.bo-media-body small {
-  overflow: hidden;
-  color: rgba(37, 35, 29, 0.5);
-  font-size: 0.72rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .bo-media-actions {
@@ -583,109 +510,9 @@
   color: #902f2f;
 }
 
-.bo-cms-layout {
-  display: grid;
-  grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
-  gap: 1rem;
-  align-items: start;
-}
-
-.bo-cms-sidebar,
-.bo-cms-frame-card {
-  padding: 1rem;
-}
-
-.bo-cms-sidebar {
-  position: sticky;
-  top: 96px;
-  display: grid;
-  gap: 1rem;
-}
-
-.bo-cms-sidebar h2,
-.bo-cms-frame-head h2 {
-  font-family: var(--font-cormorant), serif;
-  font-size: clamp(1.55rem, 3vw, 2.2rem);
-  font-weight: 500;
-  line-height: 1;
-}
-
-.bo-cms-links {
-  display: grid;
-  gap: 0.55rem;
-}
-
-.bo-cms-link {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.7rem;
-  align-items: start;
-  min-width: 0;
-  border: 1px solid rgba(37, 35, 29, 0.1);
-  border-radius: 8px;
-  padding: 0.75rem;
-  background: rgba(247, 243, 232, 0.52);
-  color: inherit;
-  text-decoration: none;
-}
-
-.bo-cms-link:hover {
-  border-color: rgba(137, 103, 57, 0.32);
-  background: rgba(137, 103, 57, 0.08);
-}
-
-.bo-cms-link svg {
-  margin-top: 0.08rem;
-  color: #896739;
-}
-
-.bo-cms-link strong,
-.bo-cms-link small {
-  display: block;
-}
-
-.bo-cms-link strong {
-  font-size: 0.84rem;
-}
-
-.bo-cms-link small {
-  margin-top: 0.22rem;
-  color: rgba(37, 35, 29, 0.56);
-  font-size: 0.72rem;
-  line-height: 1.45;
-}
-
-.bo-cms-frame-card {
-  display: grid;
-  gap: 1rem;
-  min-width: 0;
-}
-
-.bo-cms-frame-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: flex-start;
-}
-
-.bo-cms-frame {
-  width: 100%;
-  min-height: min(920px, calc(100vh - 210px));
-  border: 1px solid rgba(37, 35, 29, 0.1);
-  border-radius: 8px;
-  background: #fffdf7;
-}
-
 @media (max-width: 980px) {
-  .bo-dashboard-grid,
-  .bo-media-grid,
-  .bo-offer-grid,
-  .bo-cms-layout {
+  .bo-dashboard-grid {
     grid-template-columns: 1fr;
-  }
-
-  .bo-cms-sidebar {
-    position: static;
   }
 }
 
@@ -700,9 +527,7 @@
   }
 
   .bo-page-head,
-  .bo-section-head,
-  .bo-inline-fields,
-  .bo-cms-frame-head {
+  .bo-section-head {
     display: grid;
   }
 
@@ -764,7 +589,4 @@
     max-width: 80px;
   }
 
-  .bo-cms-frame {
-    min-height: 680px;
-  }
 }
