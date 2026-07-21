@@ -28,6 +28,8 @@ describe("ServiceBrochures collection", () => {
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     ]);
     assert.equal(ServiceBrochures.access?.read?.({} as never), true);
+    assert.equal(ServiceBrochures.hooks?.afterChange?.length, 1);
+    assert.equal(ServiceBrochures.hooks?.afterDelete?.length, 1);
   });
 
   test("allows only authenticated users to mutate brochures", () => {

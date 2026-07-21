@@ -1,5 +1,11 @@
 import type { CollectionConfig } from "payload";
 
+import { revalidatePublishedResource } from "@/lib/published-resource-cache";
+
+const revalidateMedia = () => {
+  revalidatePublishedResource("media");
+};
+
 export const Media: CollectionConfig = {
   slug: "media",
   access: {
@@ -7,6 +13,10 @@ export const Media: CollectionConfig = {
     create: ({ req }) => Boolean(req.user),
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
+  },
+  hooks: {
+    afterChange: [revalidateMedia],
+    afterDelete: [revalidateMedia],
   },
   admin: {
     defaultColumns: ["filename", "alt", "updatedAt"],

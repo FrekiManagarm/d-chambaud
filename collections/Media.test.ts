@@ -18,4 +18,9 @@ describe("Media collection", () => {
       assert.equal(mutation?.({ req: { user: {} } } as never), true);
     }
   });
+
+  test("revalidates published media after changes and deletions", () => {
+    assert.equal(Media.hooks?.afterChange?.length, 1);
+    assert.equal(Media.hooks?.afterDelete?.length, 1);
+  });
 });

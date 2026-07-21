@@ -476,8 +476,6 @@ export const updateMediaAltAction = async (id: number, formData: FormData) => {
     },
   });
 
-  revalidatePath("/");
-  revalidatePath("/backoffice/images");
   redirect("/backoffice/images?saved=1");
 };
 
@@ -492,8 +490,6 @@ export const deleteMediaAction = async (id: number) => {
     overrideAccess: true,
   });
 
-  revalidatePath("/");
-  revalidatePath("/backoffice/images");
   redirect("/backoffice/images?deleted=1");
 };
 
@@ -516,7 +512,6 @@ export const updateServiceBrochureAction = async (
     },
   });
 
-  revalidatePath("/backoffice/plaquettes");
   redirect("/backoffice/plaquettes?saved=1");
 };
 
@@ -531,6 +526,5 @@ export const deleteServiceBrochureAction = async (id: number) => {
     overrideAccess: true,
   });
 
-  revalidatePath("/backoffice/plaquettes");
   redirect("/backoffice/plaquettes?deleted=1");
 };
