@@ -28,6 +28,21 @@ const slugify = (value: string) =>
 const toIsoDate = (value: string) =>
   value ? new Date(value).toISOString() : new Date().toISOString();
 
+export const nextAvailableSlug = (base: string, takenSlugs: Iterable<string>) => {
+  const taken = new Set(takenSlugs);
+
+  if (!taken.has(base)) {
+    return base;
+  }
+
+  let suffix = 2;
+  while (taken.has(`${base}-${suffix}`)) {
+    suffix += 1;
+  }
+
+  return `${base}-${suffix}`;
+};
+
 export const buildPostData = (
   fields: PostFields,
   existing?: Pick<Post, "slug">,

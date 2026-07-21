@@ -23,7 +23,11 @@ import {
   updatePricingCategory,
   updatePricingYear,
 } from "@/lib/backoffice/pricing";
-import { buildPostData, type PostFields } from "@/lib/backoffice/post-data";
+import {
+  buildPostData,
+  nextAvailableSlug,
+  type PostFields,
+} from "@/lib/backoffice/post-data";
 import {
   serviceBrochureCategoryOptions,
   type ServiceBrochureCategory,
@@ -357,13 +361,46 @@ export const createPostAction = async (formData: FormData) => {
   await requireBackofficeUser();
 
   const payload = await getPayloadClient();
+  const postData = buildPostData(postFieldsFromForm(formData));
+  const takenSlugs: string[] = [];
+  let availableSlug: string | undefined;
+
+  for (let attempt = 0; attempt < 100; attempt += 1) {
+    const slug = nextAvailableSlug(postData.slug, takenSlugs);
+    const existing = await payload.find({
+      collection: "posts",
+      draft: true,
+      locale: "fr",
+      depth: 0,
+      limit: 1,
+      overrideAccess: true,
+      where: {
+        slug: {
+          equals: slug,
+        },
+      },
+    });
+
+    if (existing.docs.length === 0) {
+      availableSlug = slug;
+      break;
+    }
+
+    takenSlugs.push(slug);
+  }
+
+  if (!availableSlug) {
+    throw new Error("Impossible de générer un slug unique pour cet article.");
+  }
+
+  postData.slug = availableSlug;
 
   await payload.create({
     collection: "posts",
     draft: true,
     locale: "fr",
     overrideAccess: true,
-    data: buildPostData(postFieldsFromForm(formData)),
+    data: postData,
   });
 
   revalidatePath("/blog");

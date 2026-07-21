@@ -1,9 +1,24 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import { buildPostData } from "./post-data";
+import { buildPostData, nextAvailableSlug } from "./post-data";
 
 describe("buildPostData", () => {
+  test("keeps a free slug unchanged", () => {
+    assert.equal(nextAvailableSlug("repas-de-mariage", []), "repas-de-mariage");
+  });
+
+  test("increments a slug suffix until it is available", () => {
+    assert.equal(
+      nextAvailableSlug("repas-de-mariage", [
+        "repas-de-mariage",
+        "repas-de-mariage-2",
+        "repas-de-mariage-3",
+      ]),
+      "repas-de-mariage-4",
+    );
+  });
+
   test("builds automatic post data when creating an article", () => {
     const data = buildPostData({
       title: "Été 2026 : l’art de recevoir !",

@@ -75,7 +75,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
                         )
                       : "-"}
                   </span>
-                  <span className="bo-media-actions">
+                  <div className="bo-media-actions">
                     <Link
                       className="bo-icon-button"
                       href={`/backoffice/articles/${post.id}`}
@@ -95,7 +95,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
                         <span className="sr-only">Supprimer</span>
                       </ConfirmSubmitButton>
                     </form>
-                  </span>
+                  </div>
                 </div>
               );
             })}
