@@ -1,5 +1,3 @@
-import { Download, Trash2 } from "lucide-react";
-
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 import { serviceBrochureCategoryOptions } from "@/lib/service-brochures";
@@ -8,6 +6,7 @@ import {
   deleteServiceBrochureAction,
   updateServiceBrochureAction,
 } from "../actions";
+import { ConfirmSubmitButton } from "../ConfirmSubmitButton";
 import { BackofficeHeader } from "../Header";
 import { ServiceBrochureUploadForm } from "./ServiceBrochureUploadForm";
 
@@ -62,15 +61,10 @@ export default async function ServiceBrochuresPage({
         <div className="bo-form-stack">
           <ServiceBrochureUploadForm />
 
-          <section className="bo-card bo-table">
-            <div className="bo-table-row bo-table-head bo-brochure-row">
-              <span>Titre</span>
-              <span>Fichier</span>
-              <span>Catégorie</span>
-              <span>Mise à jour</span>
-              <span>Actions</span>
-            </div>
-
+          <section
+            aria-label="Plaquettes enregistrées"
+            className="bo-resource-list"
+          >
             {brochures.docs.map((brochure) => {
               const updateAction = updateServiceBrochureAction.bind(
                 null,
@@ -83,65 +77,66 @@ export default async function ServiceBrochuresPage({
               const downloadHref = `/api/plaquettes-prestation/${brochure.id}/download`;
 
               return (
-                <form
-                  action={updateAction}
-                  className="bo-table-row bo-brochure-row"
-                  key={brochure.id}
-                >
-                  <label className="bo-form-field">
-                    <span>Titre</span>
-                    <input defaultValue={brochure.title} name="title" required />
-                  </label>
-                  <label className="bo-form-field">
-                    <span>Description</span>
-                    <textarea
-                      defaultValue={brochure.description ?? ""}
-                      name="description"
-                      rows={2}
-                    />
-                    <small>{brochure.filename}</small>
-                  </label>
-                  <label className="bo-form-field">
-                    <span>Catégorie</span>
-                    <select
-                      defaultValue={brochure.category ?? ""}
-                      name="category"
-                      required
-                    >
-                      {serviceBrochureCategoryOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <span>
-                    <strong>{formatDate(brochure.updatedAt)}</strong>
-                    <small>{brochure.mimeType}</small>
-                  </span>
-                  <span className="bo-media-actions">
-                    <a
-                      className="bo-icon-button"
-                      href={downloadHref}
-                      title="Télécharger"
-                    >
-                      <Download aria-hidden="true" size={17} />
-                      <span className="sr-only">Télécharger</span>
-                    </a>
-                    <button className="bo-button" type="submit">
-                      Enregistrer
-                    </button>
-                    <button
-                      className="bo-icon-button bo-danger-button"
-                      formAction={deleteAction}
-                      title="Supprimer"
-                      type="submit"
-                    >
-                      <Trash2 aria-hidden="true" size={17} />
-                      <span className="sr-only">Supprimer</span>
-                    </button>
-                  </span>
-                </form>
+                <article className="bo-resource-item" key={brochure.id}>
+                  <div className="bo-resource-content">
+                    <div>
+                      <p className="bo-resource-title">{brochure.title}</p>
+                      <p className="bo-resource-detail">{brochure.filename}</p>
+                      <p className="bo-resource-date">
+                        Mise à jour le {formatDate(brochure.updatedAt)}
+                      </p>
+                    </div>
+
+                    <div className="bo-resource-actions">
+                      <details className="bo-resource-edit">
+                        <summary className="bo-button">Modifier</summary>
+                        <form action={updateAction} className="bo-resource-edit-form">
+                          <label className="bo-form-field">
+                            <span>Titre</span>
+                            <input defaultValue={brochure.title} name="title" required />
+                          </label>
+                          <label className="bo-form-field">
+                            <span>Catégorie</span>
+                            <select
+                              defaultValue={brochure.category ?? ""}
+                              name="category"
+                              required
+                            >
+                              {serviceBrochureCategoryOptions.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+                          <label className="bo-form-field">
+                            <span>Description</span>
+                            <textarea
+                              defaultValue={brochure.description ?? ""}
+                              name="description"
+                              rows={3}
+                            />
+                          </label>
+                          <button className="bo-button bo-button-primary" type="submit">
+                            Enregistrer les modifications
+                          </button>
+                        </form>
+                      </details>
+                      <a className="bo-button" href={downloadHref}>
+                        Télécharger
+                      </a>
+                      <form action={deleteAction}>
+                        <ConfirmSubmitButton
+                          className="bo-button bo-danger-button"
+                          confirmation={`Supprimer définitivement la plaquette « ${brochure.title} » ?`}
+                          type="submit"
+                        >
+                          Supprimer
+                        </ConfirmSubmitButton>
+                      </form>
+                    </div>
+                  </div>
+                </article>
               );
             })}
 

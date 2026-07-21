@@ -1,4 +1,3 @@
-import { Trash2 } from "lucide-react";
 import Image from "next/image";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
@@ -9,6 +8,7 @@ import {
   deleteMediaAction,
   updateMediaAltAction,
 } from "../actions";
+import { ConfirmSubmitButton } from "../ConfirmSubmitButton";
 import { BackofficeHeader } from "../Header";
 import { MediaUploadForm } from "./MediaUploadForm";
 
@@ -20,6 +20,13 @@ type ImagesPageProps = {
     saved?: string;
   }>;
 };
+
+const formatDate = (value?: string | null) =>
+  value
+    ? new Intl.DateTimeFormat("fr-FR", {
+        dateStyle: "medium",
+      }).format(new Date(value))
+    : "Date inconnue";
 
 export default async function ImagesPage({ searchParams }: ImagesPageProps) {
   const user = await requireBackofficeUser();
@@ -55,14 +62,14 @@ export default async function ImagesPage({ searchParams }: ImagesPageProps) {
         <div className="bo-form-stack">
           <MediaUploadForm />
 
-          <section className="bo-media-grid">
+          <section aria-label="Images enregistrées" className="bo-resource-list">
             {media.docs.map((image) => {
               const updateAction = updateMediaAltAction.bind(null, image.id);
               const deleteAction = deleteMediaAction.bind(null, image.id);
               const previewUrl = resolveMediaURL(image);
 
               return (
-                <article className="bo-media-card" key={image.id}>
+                <article className="bo-resource-item bo-media-item" key={image.id}>
                   <div className="bo-media-preview">
                     {previewUrl ? (
                       <Image
@@ -75,30 +82,53 @@ export default async function ImagesPage({ searchParams }: ImagesPageProps) {
                       <span>Aperçu indisponible</span>
                     )}
                   </div>
-                  <form action={updateAction} className="bo-media-body">
-                    <label className="bo-form-field">
-                      <span>Texte alternatif</span>
-                      <input defaultValue={image.alt} name="alt" required />
-                    </label>
-                    <small>{image.filename}</small>
-                    <div className="bo-media-actions">
-                      <button className="bo-button" type="submit">
-                        Enregistrer
-                      </button>
-                      <button
-                        className="bo-icon-button bo-danger-button"
-                        formAction={deleteAction}
-                        title="Supprimer"
-                        type="submit"
-                      >
-                        <Trash2 aria-hidden="true" size={17} />
-                        <span className="sr-only">Supprimer</span>
-                      </button>
+                  <div className="bo-resource-content">
+                    <div>
+                      <p className="bo-resource-title">{image.filename}</p>
+                      <p className="bo-resource-detail">
+                        Texte alternatif : {image.alt}
+                      </p>
+                      <p className="bo-resource-date">
+                        Mise à jour le {formatDate(image.updatedAt)}
+                      </p>
                     </div>
-                  </form>
+
+                    <div className="bo-resource-actions">
+                      <details className="bo-resource-edit">
+                        <summary className="bo-button">Modifier</summary>
+                        <form action={updateAction} className="bo-resource-edit-form">
+                          <label className="bo-form-field">
+                            <span>Texte alternatif</span>
+                            <input defaultValue={image.alt} name="alt" required />
+                          </label>
+                          <button className="bo-button bo-button-primary" type="submit">
+                            Enregistrer les modifications
+                          </button>
+                        </form>
+                      </details>
+                      {previewUrl ? (
+                        <a className="bo-button" download={image.filename} href={previewUrl}>
+                          Télécharger
+                        </a>
+                      ) : null}
+                      <form action={deleteAction}>
+                        <ConfirmSubmitButton
+                          className="bo-button bo-danger-button"
+                          confirmation={`Supprimer définitivement l’image « ${image.filename} » ?`}
+                          type="submit"
+                        >
+                          Supprimer
+                        </ConfirmSubmitButton>
+                      </form>
+                    </div>
+                  </div>
                 </article>
               );
             })}
+
+            {media.docs.length === 0 ? (
+              <p className="bo-empty-state">Aucune image pour le moment.</p>
+            ) : null}
           </section>
         </div>
       </main>
