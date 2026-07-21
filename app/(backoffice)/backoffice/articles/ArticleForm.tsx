@@ -19,8 +19,6 @@ const toDateTimeLocal = (date?: string | null) => {
 
 export function ArticleForm({ post }: ArticleFormProps) {
   const action = post ? updatePostAction.bind(null, post.id) : createPostAction;
-  const categories =
-    post?.categories?.map((category) => category.label).join(", ") ?? "";
 
   return (
     <form action={action} className="bo-card bo-form-section">
@@ -41,14 +39,6 @@ export function ArticleForm({ post }: ArticleFormProps) {
           <input defaultValue={post?.title ?? ""} name="title" required />
         </label>
         <label className="bo-form-field">
-          <span>Slug</span>
-          <input
-            defaultValue={post?.slug ?? ""}
-            name="slug"
-            placeholder="laissez vide pour générer"
-          />
-        </label>
-        <label className="bo-form-field">
           <span>Date de publication</span>
           <input
             defaultValue={toDateTimeLocal(post?.publishedAt)}
@@ -62,21 +52,6 @@ export function ArticleForm({ post }: ArticleFormProps) {
             <option value="draft">Brouillon</option>
             <option value="published">Publié</option>
           </select>
-        </label>
-      </div>
-
-      <div className="bo-form-grid">
-        <label className="bo-form-field">
-          <span>Auteur</span>
-          <input defaultValue={post?.author ?? "David Chambaud"} name="author" />
-        </label>
-        <label className="bo-form-field">
-          <span>Catégories</span>
-          <input
-            defaultValue={categories}
-            name="categories"
-            placeholder="Saison, Mariage, Réception"
-          />
         </label>
       </div>
 
@@ -94,21 +69,6 @@ export function ArticleForm({ post }: ArticleFormProps) {
           rows={14}
         />
       </label>
-
-      <div className="bo-form-grid">
-        <label className="bo-form-field">
-          <span>Titre SEO</span>
-          <input defaultValue={post?.seo?.title ?? ""} name="seoTitle" />
-        </label>
-        <label className="bo-form-field">
-          <span>Description SEO</span>
-          <textarea
-            defaultValue={post?.seo?.description ?? ""}
-            name="seoDescription"
-            rows={3}
-          />
-        </label>
-      </div>
     </form>
   );
 }

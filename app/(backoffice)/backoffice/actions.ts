@@ -23,19 +23,12 @@ import {
   updatePricingCategory,
   updatePricingYear,
 } from "@/lib/backoffice/pricing";
-import { plainTextToLexical } from "@/lib/backoffice/rich-text";
+import { buildPostData, type PostFields } from "@/lib/backoffice/post-data";
 import {
   serviceBrochureCategoryOptions,
   type ServiceBrochureCategory,
 } from "@/lib/service-brochures";
-import type { HomePage, Post } from "@/payload-types";
-
-type PostWriteData = Partial<Post> & {
-  content: Post["content"];
-  excerpt: string;
-  title: string;
-  _status: "draft" | "published";
-};
+import type { HomePage } from "@/payload-types";
 
 const text = (formData: FormData, key: string) => {
   const value = formData.get(key);
@@ -58,14 +51,6 @@ const serviceBrochureCategory = (
   return serviceBrochureCategoryValues.has(value as ServiceBrochureCategory)
     ? (value as ServiceBrochureCategory)
     : "traiteur";
-};
-
-const toIsoDate = (value: string) => {
-  if (!value) {
-    return new Date().toISOString();
-  }
-
-  return new Date(value).toISOString();
 };
 
 const parseAbout = (formData: FormData): NonNullable<HomePage["about"]> => ({
@@ -360,32 +345,13 @@ export const savePricingSectionAction = async (formData: FormData) =>
     pricingErrorRedirectTo(formData, "/backoffice/tarifs/settings"),
   );
 
-const postDataFromForm = (formData: FormData): PostWriteData => {
-  const title = text(formData, "title");
-  const slug = text(formData, "slug");
-  const status: "published" | "draft" =
-    text(formData, "status") === "published" ? "published" : "draft";
-  const categoryLabels = text(formData, "categories")
-    .split(",")
-    .map((category) => category.trim())
-    .filter(Boolean)
-    .map((label) => ({ label }));
-
-  return {
-    title,
-    slug,
-    publishedAt: toIsoDate(text(formData, "publishedAt")),
-    author: text(formData, "author") || "David Chambaud",
-    categories: categoryLabels,
-    excerpt: text(formData, "excerpt"),
-    content: plainTextToLexical(text(formData, "content")),
-    seo: {
-      title: text(formData, "seoTitle"),
-      description: text(formData, "seoDescription"),
-    },
-    _status: status,
-  };
-};
+const postFieldsFromForm = (formData: FormData): PostFields => ({
+  title: text(formData, "title"),
+  publishedAt: text(formData, "publishedAt"),
+  status: text(formData, "status"),
+  excerpt: text(formData, "excerpt"),
+  content: text(formData, "content"),
+});
 
 export const createPostAction = async (formData: FormData) => {
   await requireBackofficeUser();
@@ -397,7 +363,7 @@ export const createPostAction = async (formData: FormData) => {
     draft: true,
     locale: "fr",
     overrideAccess: true,
-    data: postDataFromForm(formData),
+    data: buildPostData(postFieldsFromForm(formData)),
   });
 
   revalidatePath("/blog");
@@ -409,6 +375,13 @@ export const updatePostAction = async (id: number, formData: FormData) => {
   await requireBackofficeUser();
 
   const payload = await getPayloadClient();
+  const current = await payload.findByID({
+    collection: "posts",
+    id,
+    locale: "fr",
+    depth: 0,
+    overrideAccess: true,
+  });
 
   await payload.update({
     collection: "posts",
@@ -416,13 +389,29 @@ export const updatePostAction = async (id: number, formData: FormData) => {
     id,
     locale: "fr",
     overrideAccess: true,
-    data: postDataFromForm(formData),
+    data: buildPostData(postFieldsFromForm(formData), current),
   });
 
   revalidatePath("/blog");
-  revalidatePath(`/blog/${text(formData, "slug")}`);
+  revalidatePath(`/blog/${current.slug}`);
   revalidatePath("/backoffice/articles");
   redirect("/backoffice/articles?saved=1");
+};
+
+export const deletePostAction = async (id: number) => {
+  await requireBackofficeUser();
+
+  const payload = await getPayloadClient();
+
+  await payload.delete({
+    collection: "posts",
+    id,
+    overrideAccess: true,
+  });
+
+  revalidatePath("/blog");
+  revalidatePath("/backoffice/articles");
+  redirect("/backoffice/articles?deleted=1");
 };
 
 export const updateMediaAltAction = async (id: number, formData: FormData) => {
