@@ -1,99 +1,63 @@
-import {
-  Download,
-  FileText,
-  Images,
-  PiggyBank,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
-import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { BackofficeHeader } from "./Header";
 
 export const dynamic = "force-dynamic";
 
+const actions = [
+  {
+    href: "/backoffice/tarifs",
+    label: "Tarifs",
+    description: "Saisons, catégories et offres",
+  },
+  {
+    href: "/backoffice/a-propos",
+    label: "Présentation",
+    description: "Titre, textes, citation et bouton",
+  },
+  {
+    href: "/backoffice/articles",
+    label: "Articles",
+    description: "Créer, modifier ou publier",
+  },
+  {
+    href: "/backoffice/images",
+    label: "Images",
+    description: "Photos et descriptions",
+  },
+  {
+    href: "/backoffice/plaquettes",
+    label: "Plaquettes",
+    description: "Fichiers à télécharger",
+  },
+];
+
 export default async function BackofficePage() {
   const user = await requireBackofficeUser();
-  const payload = await getPayloadClient();
-
-  const [homePage, posts, serviceBrochures] = await Promise.all([
-    payload.findGlobal({
-      slug: "home-page",
-      locale: "fr",
-      depth: 0,
-      overrideAccess: true,
-    }),
-    payload.find({
-      collection: "posts",
-      locale: "fr",
-      depth: 0,
-      limit: 1,
-      overrideAccess: true,
-      pagination: true,
-    }),
-    payload.find({
-      collection: "service-brochures",
-      depth: 0,
-      limit: 1,
-      overrideAccess: true,
-      pagination: true,
-    }),
-  ]);
-
-  const activeYear =
-    homePage.pricing?.years?.find((year) => year.isActive)?.label ??
-    homePage.pricing?.years?.[0]?.label ??
-    "Aucune saison";
-  const aboutTitle = homePage.about?.titleLineOne || "Présentation";
 
   return (
     <div className="bo-page">
       <BackofficeHeader userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
-          <div>
-            <p className="bo-kicker">Tableau de bord</p>
-            <h1>Contenu du site</h1>
-          </div>
+          <h1>Que voulez-vous faire ?</h1>
         </section>
 
         <section className="bo-dashboard-grid">
-          <Link className="bo-dashboard-card" href="/backoffice/a-propos">
-            <UserRound aria-hidden="true" size={22} />
-            <span>À propos</span>
-            <strong>{aboutTitle}</strong>
-            <small>Titre, paragraphes, citation et libellé du lien.</small>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/tarifs">
-            <PiggyBank aria-hidden="true" size={22} />
-            <span>Tarifs</span>
-            <strong>{activeYear}</strong>
-            <small>Offres, prix, mentions et saison affichée.</small>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/articles">
-            <FileText aria-hidden="true" size={22} />
-            <span>Articles</span>
-            <strong>{posts.totalDocs}</strong>
-            <small>Brouillons, articles publiés et contenu SEO.</small>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/images">
-            <Images aria-hidden="true" size={22} />
-            <span>Images</span>
-            <strong>Médiathèque</strong>
-            <small>Upload, aperçu et texte alternatif des visuels.</small>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/plaquettes">
-            <Download aria-hidden="true" size={22} />
-            <span>Plaquettes</span>
-            <strong>{serviceBrochures.totalDocs}</strong>
-            <small>PowerPoint de prestation, upload et téléchargement.</small>
-          </Link>
+          {actions.map((action) => (
+            <Link
+              className="bo-dashboard-card"
+              href={action.href}
+              key={action.href}
+            >
+              <span>{action.label}</span>
+              <strong>{action.description}</strong>
+              <ArrowRight aria-hidden="true" size={22} />
+            </Link>
+          ))}
         </section>
       </main>
     </div>
