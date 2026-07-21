@@ -204,7 +204,13 @@ export const addOffer = (
   pricing: Pricing,
   yearId: string,
   categoryId: string,
-  values: Pick<PricingOffer, "name" | "price">,
+  values: Pick<PricingOffer, "name" | "price"> &
+    Partial<
+      Pick<
+        PricingOffer,
+        "unit" | "detail" | "features" | "highlight"
+      >
+    >,
 ): Pricing => {
   const yearIndex = findYearIndex(pricing, yearId);
   const year = pricingYears(pricing)[yearIndex]!;
@@ -219,12 +225,12 @@ export const addOffer = (
         id: crypto.randomUUID(),
         name: values.name,
         price: values.price,
-        unit: "€ / pers.",
+        unit: values.unit ?? "€ / pers.",
         sub: "",
         tone: "",
-        detail: "",
-        features: [],
-        highlight: false,
+        detail: values.detail ?? "",
+        features: values.features ?? [],
+        highlight: values.highlight ?? false,
       },
     ],
   });
@@ -249,6 +255,43 @@ export const updateOffer = (
   offers[offerIndex] = { ...offers[offerIndex]!, ...updates };
 
   return replaceCategory(pricing, yearId, categoryId, { ...category, offers });
+};
+
+export const moveOffer = (
+  pricing: Pricing,
+  yearId: string,
+  sourceCategoryId: string,
+  targetCategoryId: string,
+  offerId: string,
+  updates: Pick<
+    PricingOffer,
+    "name" | "price" | "unit" | "detail" | "features" | "highlight"
+  >,
+): Pricing => {
+  if (sourceCategoryId === targetCategoryId) {
+    return updateOffer(pricing, yearId, sourceCategoryId, offerId, updates);
+  }
+
+  const yearIndex = findYearIndex(pricing, yearId);
+  const year = pricingYears(pricing)[yearIndex]!;
+  const sourceCategoryIndex = findCategoryIndex(year, sourceCategoryId);
+  const targetCategoryIndex = findCategoryIndex(year, targetCategoryId);
+  const sourceCategory = pricingCategories(year)[sourceCategoryIndex]!;
+  const offerIndex = findOfferIndex(sourceCategory, offerId);
+  const offer = pricingOffers(sourceCategory)[offerIndex]!;
+  const categories = [...pricingCategories(year)];
+
+  categories[sourceCategoryIndex] = {
+    ...sourceCategory,
+    offers: pricingOffers(sourceCategory).filter((_, index) => index !== offerIndex),
+  };
+  const targetCategory = categories[targetCategoryIndex]!;
+  categories[targetCategoryIndex] = {
+    ...targetCategory,
+    offers: [...pricingOffers(targetCategory), { ...offer, ...updates }],
+  };
+
+  return replaceYear(pricing, yearIndex, { ...year, categories });
 };
 
 export const deleteOffer = (

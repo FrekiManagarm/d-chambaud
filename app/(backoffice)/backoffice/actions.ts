@@ -13,9 +13,9 @@ import {
   deletePricingCategory,
   deletePricingYear,
   emptyPricing,
+  moveOffer,
   setActivePricingYear,
   type Pricing,
-  updateOffer,
   updatePricingCategory,
   updatePricingYear,
 } from "@/lib/backoffice/pricing";
@@ -157,45 +157,55 @@ export const createPricingYearAction = async (formData: FormData) =>
     "/backoffice/tarifs",
   );
 
-export const updatePricingYearAction = async (formData: FormData) =>
+export const updatePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) =>
-      updatePricingYear(pricing, text(formData, "yearId"), {
+      updatePricingYear(pricing, yearId, {
         label: requiredText(formData, "label", "La saison est obligatoire."),
       }),
     "/backoffice/tarifs",
   );
 
-export const deletePricingYearAction = async (formData: FormData) =>
+export const deletePricingYearAction = async (yearId: string) =>
   updatePricingGlobal(
-    (pricing) => deletePricingYear(pricing, text(formData, "yearId")),
+    (pricing) => deletePricingYear(pricing, yearId),
     "/backoffice/tarifs",
   );
 
-export const setActivePricingYearAction = async (formData: FormData) =>
+export const setActivePricingYearAction = async (yearId: string) =>
   updatePricingGlobal(
-    (pricing) => setActivePricingYear(pricing, text(formData, "yearId")),
+    (pricing) => setActivePricingYear(pricing, yearId),
     "/backoffice/tarifs",
   );
 
-export const createPricingCategoryAction = async (formData: FormData) =>
+export const createPricingCategoryAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) =>
       addPricingCategory(
         pricing,
-        text(formData, "yearId"),
+        yearId,
         requiredText(formData, "label", "La catégorie est obligatoire."),
       ),
     "/backoffice/tarifs",
   );
 
-export const updatePricingCategoryAction = async (formData: FormData) =>
+export const updatePricingCategoryAction = async (
+  yearId: string,
+  categoryId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) =>
       updatePricingCategory(
         pricing,
-        text(formData, "yearId"),
-        text(formData, "categoryId"),
+        yearId,
+        categoryId,
         {
           label: requiredText(formData, "label", "La catégorie est obligatoire."),
           summaryLabel: text(formData, "summaryLabel"),
@@ -204,40 +214,26 @@ export const updatePricingCategoryAction = async (formData: FormData) =>
     "/backoffice/tarifs",
   );
 
-export const deletePricingCategoryAction = async (formData: FormData) =>
+export const deletePricingCategoryAction = async (
+  yearId: string,
+  categoryId: string,
+) =>
   updatePricingGlobal(
     (pricing) =>
-      deletePricingCategory(
-        pricing,
-        text(formData, "yearId"),
-        text(formData, "categoryId"),
-      ),
+      deletePricingCategory(pricing, yearId, categoryId),
     "/backoffice/tarifs",
   );
 
-export const createPricingOfferAction = async (formData: FormData) =>
+export const createPricingOfferAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) =>
       addOffer(
         pricing,
-        text(formData, "yearId"),
-        text(formData, "categoryId"),
-        {
-          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
-          price: requiredText(formData, "price", "Le prix est obligatoire."),
-        },
-      ),
-    "/backoffice/tarifs",
-  );
-
-export const updatePricingOfferAction = async (formData: FormData) =>
-  updatePricingGlobal(
-    (pricing) =>
-      updateOffer(
-        pricing,
-        text(formData, "yearId"),
-        text(formData, "categoryId"),
-        text(formData, "offerId"),
+        yearId,
+        requiredText(formData, "categoryId", "La catégorie est obligatoire."),
         {
           name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
           price: requiredText(formData, "price", "Le prix est obligatoire."),
@@ -250,16 +246,54 @@ export const updatePricingOfferAction = async (formData: FormData) =>
     "/backoffice/tarifs",
   );
 
-export const deletePricingOfferAction = async (formData: FormData) =>
+export const updatePricingOfferAction = async (
+  yearId: string,
+  categoryId: string,
+  offerId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) =>
-      deleteOffer(
+      moveOffer(
         pricing,
-        text(formData, "yearId"),
-        text(formData, "categoryId"),
-        text(formData, "offerId"),
+        yearId,
+        categoryId,
+        requiredText(formData, "categoryId", "La catégorie est obligatoire."),
+        offerId,
+        {
+          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
+          price: requiredText(formData, "price", "Le prix est obligatoire."),
+          unit: text(formData, "unit"),
+          detail: text(formData, "detail"),
+          features: pricingFeatures(formData),
+          highlight: checked(formData, "highlight"),
+        },
       ),
     "/backoffice/tarifs",
+  );
+
+export const deletePricingOfferAction = async (
+  yearId: string,
+  categoryId: string,
+  offerId: string,
+) =>
+  updatePricingGlobal(
+    (pricing) => deleteOffer(pricing, yearId, categoryId, offerId),
+    "/backoffice/tarifs",
+  );
+
+export const savePricingSectionAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) => ({
+      ...pricing,
+      eyebrow: text(formData, "eyebrow"),
+      titleLineOne: text(formData, "titleLineOne"),
+      titleLineTwo: text(formData, "titleLineTwo"),
+      intro: text(formData, "intro"),
+      footerNote: text(formData, "footerNote"),
+      ctaLabel: text(formData, "ctaLabel"),
+    }),
+    "/backoffice/tarifs/settings",
   );
 
 const postDataFromForm = (formData: FormData): PostWriteData => {
