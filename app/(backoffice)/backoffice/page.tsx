@@ -1,9 +1,7 @@
 import {
-  ArrowUpRight,
   Download,
   FileText,
   Images,
-  PanelsTopLeft,
   PiggyBank,
   UserRound,
 } from "lucide-react";
@@ -59,10 +57,6 @@ export default async function BackofficePage() {
             <p className="bo-kicker">Tableau de bord</p>
             <h1>Contenu du site</h1>
           </div>
-          <Link className="bo-button" href="/admin" target="_blank">
-            <ArrowUpRight aria-hidden="true" size={17} />
-            <span>Mode avancé</span>
-          </Link>
         </section>
 
         <section className="bo-dashboard-grid">
@@ -99,16 +93,6 @@ export default async function BackofficePage() {
             <span>Plaquettes</span>
             <strong>{serviceBrochures.totalDocs}</strong>
             <small>PowerPoint de prestation, upload et téléchargement.</small>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/cms">
-            <PanelsTopLeft aria-hidden="true" size={22} />
-            <span>Studio CMS</span>
-            <strong>Payload</strong>
-            <small>
-              Interfaces complètes, manipulation d&apos;image, globals et accès
-              avancés.
-            </small>
           </Link>
         </section>
       </main>

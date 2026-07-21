@@ -5,7 +5,6 @@ import {
   Home,
   Images,
   LayoutDashboard,
-  PanelsTopLeft,
   UserRound,
 } from "lucide-react";
 import Link from "next/link";
@@ -31,11 +30,6 @@ const navigation = [
     href: "/backoffice/a-propos",
     label: "À propos",
     icon: UserRound,
-  },
-  {
-    href: "/backoffice/cms",
-    label: "Studio CMS",
-    icon: PanelsTopLeft,
   },
   {
     href: "/backoffice/articles",
