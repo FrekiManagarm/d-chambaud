@@ -5,6 +5,20 @@ import { redirect } from "next/navigation";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
+import {
+  addOffer,
+  addPricingCategory,
+  addPricingYear,
+  deleteOffer,
+  deletePricingCategory,
+  deletePricingYear,
+  emptyPricing,
+  setActivePricingYear,
+  type Pricing,
+  updateOffer,
+  updatePricingCategory,
+  updatePricingYear,
+} from "@/lib/backoffice/pricing";
 import { plainTextToLexical } from "@/lib/backoffice/rich-text";
 import {
   serviceBrochureCategoryOptions,
@@ -61,128 +75,6 @@ const parseAbout = (formData: FormData): NonNullable<HomePage["about"]> => ({
   titleLineTwo: text(formData, "titleLineTwo"),
 });
 
-const parsePricing = (formData: FormData): NonNullable<HomePage["pricing"]> => {
-  const years = [];
-  const yearCount = Number(text(formData, "yearCount")) || 0;
-
-  for (let yearIndex = 0; yearIndex < yearCount; yearIndex += 1) {
-    const label = text(formData, `year.${yearIndex}.label`);
-
-    if (!label) {
-      continue;
-    }
-
-    const categories = [];
-    const categoryCount =
-      Number(text(formData, `year.${yearIndex}.categoryCount`)) || 0;
-
-    for (
-      let categoryIndex = 0;
-      categoryIndex < categoryCount;
-      categoryIndex += 1
-    ) {
-      const categoryLabel = text(
-        formData,
-        `year.${yearIndex}.category.${categoryIndex}.label`,
-      );
-      const summaryLabel = text(
-        formData,
-        `year.${yearIndex}.category.${categoryIndex}.summaryLabel`,
-      );
-
-      if (!categoryLabel && !summaryLabel) {
-        continue;
-      }
-
-      const offers = [];
-      const offerCount =
-        Number(
-          text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offerCount`,
-          ),
-        ) || 0;
-
-      for (let offerIndex = 0; offerIndex < offerCount; offerIndex += 1) {
-        const name = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.name`,
-        );
-        const price = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.price`,
-        );
-
-        if (!name && !price) {
-          continue;
-        }
-
-        const features = text(
-          formData,
-          `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.features`,
-        )
-          .split("\n")
-          .map((feature) => feature.trim())
-          .filter(Boolean)
-          .map((feature) => ({ text: feature }));
-
-        offers.push({
-          name: name || "Nouvelle offre",
-          price: price || "Sur devis",
-          unit: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.unit`,
-          ),
-          sub: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.sub`,
-          ),
-          tone: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.tone`,
-          ),
-          detail: text(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.detail`,
-          ),
-          features,
-          highlight: checked(
-            formData,
-            `year.${yearIndex}.category.${categoryIndex}.offer.${offerIndex}.highlight`,
-          ),
-        });
-      }
-
-      categories.push({
-        label: categoryLabel || "Nouvelle categorie",
-        summaryLabel,
-        offers,
-      });
-    }
-
-    years.push({
-      label,
-      isActive: checked(formData, `year.${yearIndex}.isActive`),
-      categories,
-    });
-  }
-
-  const hasActiveYear = years.some((year) => year.isActive);
-
-  return {
-    eyebrow: text(formData, "eyebrow"),
-    titleLineOne: text(formData, "titleLineOne"),
-    titleLineTwo: text(formData, "titleLineTwo"),
-    intro: text(formData, "intro"),
-    footerNote: text(formData, "footerNote"),
-    ctaLabel: text(formData, "ctaLabel"),
-    years: years.map((year, index) => ({
-      ...year,
-      isActive: hasActiveYear ? year.isActive : index === 0,
-    })),
-  };
-};
-
 export const saveAboutAction = async (formData: FormData) => {
   await requireBackofficeUser();
 
@@ -209,7 +101,10 @@ export const saveAboutAction = async (formData: FormData) => {
   redirect("/backoffice/a-propos?saved=1");
 };
 
-export const savePricingAction = async (formData: FormData) => {
+const updatePricingGlobal = async (
+  mutate: (pricing: Pricing) => Pricing,
+  redirectTo: string,
+) => {
   await requireBackofficeUser();
 
   const payload = await getPayloadClient();
@@ -226,14 +121,146 @@ export const savePricingAction = async (formData: FormData) => {
     overrideAccess: true,
     data: {
       ...current,
-      pricing: parsePricing(formData),
+      pricing: mutate(current.pricing ?? emptyPricing()),
     },
   });
 
   revalidatePath("/");
   revalidatePath("/backoffice/tarifs");
-  redirect("/backoffice/tarifs?saved=1");
+  redirect(`${redirectTo}?saved=1`);
 };
+
+const requiredText = (formData: FormData, key: string, message: string) => {
+  const value = text(formData, key);
+
+  if (!value) {
+    throw new Error(message);
+  }
+
+  return value;
+};
+
+const pricingFeatures = (formData: FormData) =>
+  text(formData, "features")
+    .split("\n")
+    .map((feature) => feature.trim())
+    .filter(Boolean)
+    .map((feature) => ({ text: feature }));
+
+export const createPricingYearAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addPricingYear(
+        pricing,
+        requiredText(formData, "label", "La saison est obligatoire."),
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const updatePricingYearAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      updatePricingYear(pricing, text(formData, "yearId"), {
+        label: requiredText(formData, "label", "La saison est obligatoire."),
+      }),
+    "/backoffice/tarifs",
+  );
+
+export const deletePricingYearAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) => deletePricingYear(pricing, text(formData, "yearId")),
+    "/backoffice/tarifs",
+  );
+
+export const setActivePricingYearAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) => setActivePricingYear(pricing, text(formData, "yearId")),
+    "/backoffice/tarifs",
+  );
+
+export const createPricingCategoryAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addPricingCategory(
+        pricing,
+        text(formData, "yearId"),
+        requiredText(formData, "label", "La catégorie est obligatoire."),
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const updatePricingCategoryAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      updatePricingCategory(
+        pricing,
+        text(formData, "yearId"),
+        text(formData, "categoryId"),
+        {
+          label: requiredText(formData, "label", "La catégorie est obligatoire."),
+          summaryLabel: text(formData, "summaryLabel"),
+        },
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const deletePricingCategoryAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      deletePricingCategory(
+        pricing,
+        text(formData, "yearId"),
+        text(formData, "categoryId"),
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const createPricingOfferAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      addOffer(
+        pricing,
+        text(formData, "yearId"),
+        text(formData, "categoryId"),
+        {
+          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
+          price: requiredText(formData, "price", "Le prix est obligatoire."),
+        },
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const updatePricingOfferAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      updateOffer(
+        pricing,
+        text(formData, "yearId"),
+        text(formData, "categoryId"),
+        text(formData, "offerId"),
+        {
+          name: requiredText(formData, "name", "Le nom de l’offre est obligatoire."),
+          price: requiredText(formData, "price", "Le prix est obligatoire."),
+          unit: text(formData, "unit"),
+          detail: text(formData, "detail"),
+          features: pricingFeatures(formData),
+          highlight: checked(formData, "highlight"),
+        },
+      ),
+    "/backoffice/tarifs",
+  );
+
+export const deletePricingOfferAction = async (formData: FormData) =>
+  updatePricingGlobal(
+    (pricing) =>
+      deleteOffer(
+        pricing,
+        text(formData, "yearId"),
+        text(formData, "categoryId"),
+        text(formData, "offerId"),
+      ),
+    "/backoffice/tarifs",
+  );
 
 const postDataFromForm = (formData: FormData): PostWriteData => {
   const title = text(formData, "title");
