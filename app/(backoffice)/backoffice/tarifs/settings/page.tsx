@@ -4,17 +4,18 @@ import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { BackofficeHeader } from "../../Header";
+import { PricingFormError } from "../PricingFormError";
 import { PricingSectionForm } from "../PricingSectionForm";
 
 export const dynamic = "force-dynamic";
 
 type PricingSettingsPageProps = {
-  searchParams: Promise<{ saved?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 };
 
 export default async function PricingSettingsPage({ searchParams }: PricingSettingsPageProps) {
   const user = await requireBackofficeUser();
-  const { saved } = await searchParams;
+  const { error, saved } = await searchParams;
   const payload = await getPayloadClient();
   const homePage = await payload.findGlobal({
     slug: "home-page",
@@ -35,6 +36,7 @@ export default async function PricingSettingsPage({ searchParams }: PricingSetti
           <Link className="bo-button" href="/backoffice/tarifs">Retour</Link>
         </section>
         {saved ? <p className="bo-success">Texte de la section enregistré.</p> : null}
+        <PricingFormError error={error} />
         <PricingSectionForm pricing={homePage.pricing} />
       </main>
     </div>

@@ -5,16 +5,18 @@ import type { PricingYear } from "@/lib/backoffice/pricing";
 import { createPricingYearAction, updatePricingYearAction } from "../actions";
 
 type PricingYearFormProps = {
+  redirectTo: string;
   year?: PricingYear;
 };
 
-export function PricingYearForm({ year }: PricingYearFormProps) {
+export function PricingYearForm({ redirectTo, year }: PricingYearFormProps) {
   const action = year?.id
     ? updatePricingYearAction.bind(null, year.id)
     : createPricingYearAction;
 
   return (
     <form action={action} className="bo-card bo-form-section">
+      <input name="redirectTo" type="hidden" value={redirectTo} />
       <div className="bo-section-head">
         <div>
           <p className="bo-kicker">{year ? "Saison" : "Nouvelle saison"}</p>

@@ -5,6 +5,7 @@ import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { BackofficeHeader } from "../Header";
+import { PricingFormError } from "./PricingFormError";
 import {
   deletePricingYearAction,
   setActivePricingYearAction,
@@ -15,13 +16,14 @@ export const dynamic = "force-dynamic";
 
 type PricingPageProps = {
   searchParams: Promise<{
+    error?: string;
     saved?: string;
   }>;
 };
 
 export default async function PricingPage({ searchParams }: PricingPageProps) {
   const user = await requireBackofficeUser();
-  const { saved } = await searchParams;
+  const { error, saved } = await searchParams;
   const payload = await getPayloadClient();
   const homePage = await payload.findGlobal({
     slug: "home-page",
@@ -47,6 +49,7 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
         </section>
 
         {saved ? <p className="bo-success">Tarifs enregistrés.</p> : null}
+        <PricingFormError error={error} />
 
         <p className="bo-muted">
           <Link href="/backoffice/tarifs/settings">Modifier le texte visible sur le site</Link>
@@ -77,6 +80,7 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
                 </div>
                 <div className="bo-form-grid">
                   <form action={updateAction} className="bo-form-field">
+                    <input name="redirectTo" type="hidden" value="/backoffice/tarifs" />
                     <label htmlFor={`year-${year.id}`}>Nom de la saison</label>
                     <input defaultValue={year.label} id={`year-${year.id}`} name="label" required />
                     <button className="bo-button" type="submit">Modifier le nom</button>
@@ -84,11 +88,13 @@ export default async function PricingPage({ searchParams }: PricingPageProps) {
                   <div className="bo-form-field">
                     <span>Publication</span>
                     <form action={activateAction}>
+                      <input name="redirectTo" type="hidden" value="/backoffice/tarifs" />
                       <button className="bo-button" disabled={Boolean(year.isActive)} type="submit">
                         Afficher sur le site
                       </button>
                     </form>
                     <form action={deleteAction}>
+                      <input name="redirectTo" type="hidden" value="/backoffice/tarifs" />
                       <button className="bo-button bo-danger-button" type="submit">Supprimer</button>
                     </form>
                   </div>

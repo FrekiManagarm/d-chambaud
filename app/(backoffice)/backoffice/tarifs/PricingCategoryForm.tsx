@@ -9,11 +9,13 @@ import {
 
 type PricingCategoryFormProps = {
   category?: PricingCategory;
+  redirectTo: string;
   yearId: string;
 };
 
 export function PricingCategoryForm({
   category,
+  redirectTo,
   yearId,
 }: PricingCategoryFormProps) {
   const action = category?.id
@@ -22,6 +24,7 @@ export function PricingCategoryForm({
 
   return (
     <form action={action} className="bo-card bo-form-section">
+      <input name="redirectTo" type="hidden" value={redirectTo} />
       <div className="bo-section-head">
         <div>
           <p className="bo-kicker">{category ? "Catégorie" : "Nouvelle catégorie"}</p>

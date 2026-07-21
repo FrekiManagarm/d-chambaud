@@ -11,6 +11,7 @@ type PricingSectionFormProps = {
 export function PricingSectionForm({ pricing }: PricingSectionFormProps) {
   return (
     <form action={savePricingSectionAction} className="bo-card bo-form-section">
+      <input name="redirectTo" type="hidden" value="/backoffice/tarifs/settings" />
       <div className="bo-section-head">
         <div>
           <p className="bo-kicker">Section publique</p>

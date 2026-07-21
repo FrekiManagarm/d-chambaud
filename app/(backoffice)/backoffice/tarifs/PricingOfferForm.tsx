@@ -11,6 +11,7 @@ type PricingOfferFormProps = {
   categories: PricingCategory[];
   categoryId?: string;
   offer?: PricingOffer;
+  redirectTo: string;
   yearId: string;
 };
 
@@ -21,6 +22,7 @@ export function PricingOfferForm({
   categories,
   categoryId,
   offer,
+  redirectTo,
   yearId,
 }: PricingOfferFormProps) {
   const action = offer?.id && categoryId
@@ -29,6 +31,7 @@ export function PricingOfferForm({
 
   return (
     <form action={action} className="bo-card bo-form-section">
+      <input name="redirectTo" type="hidden" value={redirectTo} />
       <div className="bo-section-head">
         <div>
           <p className="bo-kicker">{offer ? "Offre" : "Nouvelle offre"}</p>

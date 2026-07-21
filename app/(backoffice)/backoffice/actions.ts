@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
+import { formatPricingError } from "@/lib/backoffice/pricing-errors";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 import {
   addOffer,
@@ -104,26 +105,37 @@ export const saveAboutAction = async (formData: FormData) => {
 const updatePricingGlobal = async (
   mutate: (pricing: Pricing) => Pricing,
   redirectTo: string,
+  errorRedirectTo = redirectTo,
 ) => {
-  await requireBackofficeUser();
+  let errorMessage: string | undefined;
 
-  const payload = await getPayloadClient();
-  const current = await payload.findGlobal({
-    slug: "home-page",
-    locale: "fr",
-    depth: 0,
-    overrideAccess: true,
-  });
+  try {
+    await requireBackofficeUser();
 
-  await payload.updateGlobal({
-    slug: "home-page",
-    locale: "fr",
-    overrideAccess: true,
-    data: {
-      ...current,
-      pricing: mutate(current.pricing ?? emptyPricing()),
-    },
-  });
+    const payload = await getPayloadClient();
+    const current = await payload.findGlobal({
+      slug: "home-page",
+      locale: "fr",
+      depth: 0,
+      overrideAccess: true,
+    });
+
+    await payload.updateGlobal({
+      slug: "home-page",
+      locale: "fr",
+      overrideAccess: true,
+      data: {
+        ...current,
+        pricing: mutate(current.pricing ?? emptyPricing()),
+      },
+    });
+  } catch (error) {
+    errorMessage = formatPricingError(error);
+  }
+
+  if (errorMessage) {
+    redirect(`${errorRedirectTo}?error=${encodeURIComponent(errorMessage)}`);
+  }
 
   revalidatePath("/");
   revalidatePath("/backoffice/tarifs");
@@ -147,6 +159,15 @@ const pricingFeatures = (formData: FormData) =>
     .filter(Boolean)
     .map((feature) => ({ text: feature }));
 
+const pricingErrorRedirectTo = (formData: FormData, fallback: string) => {
+  const redirectTo = text(formData, "redirectTo");
+
+  return redirectTo === "/backoffice/tarifs" ||
+    redirectTo.startsWith("/backoffice/tarifs/")
+    ? redirectTo
+    : fallback;
+};
+
 export const createPricingYearAction = async (formData: FormData) =>
   updatePricingGlobal(
     (pricing) =>
@@ -155,6 +176,7 @@ export const createPricingYearAction = async (formData: FormData) =>
         requiredText(formData, "label", "La saison est obligatoire."),
       ),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs/new"),
   );
 
 export const updatePricingYearAction = async (
@@ -167,18 +189,27 @@ export const updatePricingYearAction = async (
         label: requiredText(formData, "label", "La saison est obligatoire."),
       }),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, `/backoffice/tarifs/${yearId}`),
   );
 
-export const deletePricingYearAction = async (yearId: string) =>
+export const deletePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) => deletePricingYear(pricing, yearId),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs"),
   );
 
-export const setActivePricingYearAction = async (yearId: string) =>
+export const setActivePricingYearAction = async (
+  yearId: string,
+  formData: FormData,
+) =>
   updatePricingGlobal(
     (pricing) => setActivePricingYear(pricing, yearId),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs"),
   );
 
 export const createPricingCategoryAction = async (
@@ -193,6 +224,10 @@ export const createPricingCategoryAction = async (
         requiredText(formData, "label", "La catégorie est obligatoire."),
       ),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/new`,
+    ),
   );
 
 export const updatePricingCategoryAction = async (
@@ -212,16 +247,25 @@ export const updatePricingCategoryAction = async (
         },
       ),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/${categoryId}`,
+    ),
   );
 
 export const deletePricingCategoryAction = async (
   yearId: string,
   categoryId: string,
+  formData: FormData,
 ) =>
   updatePricingGlobal(
     (pricing) =>
       deletePricingCategory(pricing, yearId, categoryId),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/categories/${categoryId}`,
+    ),
   );
 
 export const createPricingOfferAction = async (
@@ -244,6 +288,7 @@ export const createPricingOfferAction = async (
         },
       ),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(formData, `/backoffice/tarifs/${yearId}/offers/new`),
   );
 
 export const updatePricingOfferAction = async (
@@ -270,16 +315,25 @@ export const updatePricingOfferAction = async (
         },
       ),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/offers/${offerId}`,
+    ),
   );
 
 export const deletePricingOfferAction = async (
   yearId: string,
   categoryId: string,
   offerId: string,
+  formData: FormData,
 ) =>
   updatePricingGlobal(
     (pricing) => deleteOffer(pricing, yearId, categoryId, offerId),
     "/backoffice/tarifs",
+    pricingErrorRedirectTo(
+      formData,
+      `/backoffice/tarifs/${yearId}/offers/${offerId}`,
+    ),
   );
 
 export const savePricingSectionAction = async (formData: FormData) =>
@@ -294,6 +348,7 @@ export const savePricingSectionAction = async (formData: FormData) =>
       ctaLabel: text(formData, "ctaLabel"),
     }),
     "/backoffice/tarifs/settings",
+    pricingErrorRedirectTo(formData, "/backoffice/tarifs/settings"),
   );
 
 const postDataFromForm = (formData: FormData): PostWriteData => {

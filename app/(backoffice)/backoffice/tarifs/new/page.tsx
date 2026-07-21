@@ -4,12 +4,20 @@ import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
 import { BackofficeHeader } from "../../Header";
+import { PricingFormError } from "../PricingFormError";
 import { PricingYearForm } from "../PricingYearForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function NewPricingYearPage() {
+type NewPricingYearPageProps = {
+  searchParams: Promise<{ error?: string }>;
+};
+
+export default async function NewPricingYearPage({
+  searchParams,
+}: NewPricingYearPageProps) {
   const user = await requireBackofficeUser();
+  const { error } = await searchParams;
   const payload = await getPayloadClient();
   await payload.findGlobal({
     slug: "home-page",
@@ -29,7 +37,8 @@ export default async function NewPricingYearPage() {
           </div>
           <Link className="bo-button" href="/backoffice/tarifs">Retour</Link>
         </section>
-        <PricingYearForm />
+        <PricingFormError error={error} />
+        <PricingYearForm redirectTo="/backoffice/tarifs/new" />
       </main>
     </div>
   );
