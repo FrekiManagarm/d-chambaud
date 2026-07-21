@@ -20,6 +20,20 @@ const pricingCategories = (year: PricingYear) => year.categories ?? [];
 
 const pricingOffers = (category: PricingCategory) => category.offers ?? [];
 
+const normalizePricingYears = (years: PricingYear[]) => {
+  if (years.length === 0) {
+    return years;
+  }
+
+  const firstActiveIndex = years.findIndex((year) => year.isActive);
+  const activeIndex = firstActiveIndex === -1 ? 0 : firstActiveIndex;
+
+  return years.map((year, index) => ({
+    ...year,
+    isActive: index === activeIndex,
+  }));
+};
+
 const findYearIndex = (pricing: Pricing, yearId: string) => {
   const index = pricingYears(pricing).findIndex((year) => year.id === yearId);
 
@@ -60,7 +74,7 @@ const replaceYear = (
   const years = [...pricingYears(pricing)];
   years[yearIndex] = year;
 
-  return { ...pricing, years };
+  return { ...pricing, years: normalizePricingYears(years) };
 };
 
 const replaceCategory = (
@@ -93,15 +107,15 @@ export const addPricingYear = (pricing: Pricing, label: string): Pricing => {
 
   return {
     ...pricing,
-    years: [
+    years: normalizePricingYears([
       ...years,
       {
         id: crypto.randomUUID(),
         label,
-        isActive: !years.some((year) => year.isActive),
+        isActive: false,
         categories: [],
       },
-    ],
+    ]),
   };
 };
 
@@ -121,16 +135,16 @@ export const deletePricingYear = (pricing: Pricing, yearId: string): Pricing => 
   const year = pricingYears(pricing)[yearIndex]!;
   const years = pricingYears(pricing).filter((_, index) => index !== yearIndex);
 
-  if (!year.isActive) {
-    return { ...pricing, years };
-  }
-
   return {
     ...pricing,
-    years: years.map((remainingYear, index) => ({
-      ...remainingYear,
-      isActive: index === 0,
-    })),
+    years: normalizePricingYears(
+      year.isActive
+        ? years.map((remainingYear) => ({
+            ...remainingYear,
+            isActive: false,
+          }))
+        : years,
+    ),
   };
 };
 
@@ -142,10 +156,12 @@ export const setActivePricingYear = (
 
   return {
     ...pricing,
-    years: pricingYears(pricing).map((year) => ({
-      ...year,
-      isActive: year.id === yearId,
-    })),
+    years: normalizePricingYears(
+      pricingYears(pricing).map((year) => ({
+        ...year,
+        isActive: year.id === yearId,
+      })),
+    ),
   };
 };
 
