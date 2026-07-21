@@ -4,7 +4,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
-import { formatPricingError } from "@/lib/backoffice/pricing-errors";
+import {
+  formatPricingError,
+  isMissingPricingItemError,
+} from "@/lib/backoffice/pricing-errors";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 import {
   addOffer,
@@ -108,6 +111,7 @@ const updatePricingGlobal = async (
   errorRedirectTo = redirectTo,
 ) => {
   let errorMessage: string | undefined;
+  let missingPricingItem = false;
 
   try {
     await requireBackofficeUser();
@@ -131,10 +135,15 @@ const updatePricingGlobal = async (
     });
   } catch (error) {
     errorMessage = formatPricingError(error);
+    missingPricingItem = isMissingPricingItemError(error);
   }
 
   if (errorMessage) {
-    redirect(`${errorRedirectTo}?error=${encodeURIComponent(errorMessage)}`);
+    const errorRedirect = missingPricingItem
+      ? "/backoffice/tarifs"
+      : errorRedirectTo;
+
+    redirect(`${errorRedirect}?error=${encodeURIComponent(errorMessage)}`);
   }
 
   revalidatePath("/");

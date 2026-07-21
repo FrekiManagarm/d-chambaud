@@ -6,6 +6,11 @@ const knownPricingErrors = new Set([
   "Élément tarifaire introuvable.",
 ]);
 
+const missingPricingItemError = "Élément tarifaire introuvable.";
+
+export const isMissingPricingItemError = (error: unknown) =>
+  error instanceof Error && error.message === missingPricingItemError;
+
 export const formatPricingError = (error: unknown) => {
   if (error instanceof Error && knownPricingErrors.has(error.message)) {
     return error.message;

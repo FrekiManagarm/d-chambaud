@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import { formatPricingError } from "./pricing-errors";
+import { formatPricingError, isMissingPricingItemError } from "./pricing-errors";
 
 describe("pricing error messages", () => {
   test("keeps known French validation messages", () => {
@@ -16,5 +16,13 @@ describe("pricing error messages", () => {
       formatPricingError(new Error("Payload validation failed")),
       "Impossible d’enregistrer les tarifs. Réessayez.",
     );
+  });
+
+  test("recognizes an obsolete pricing item", () => {
+    assert.equal(
+      isMissingPricingItemError(new Error("Élément tarifaire introuvable.")),
+      true,
+    );
+    assert.equal(isMissingPricingItemError(new Error("La saison est obligatoire.")), false);
   });
 });
