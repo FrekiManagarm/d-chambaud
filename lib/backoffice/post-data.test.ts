@@ -44,6 +44,9 @@ describe("buildPostData", () => {
       description: "Un nouvel extrait.",
     });
     assert.equal(data._status, "draft");
-    assert.match(data.publishedAt, /^\d{4}-\d{2}-\d{2}T/);
+    assert.equal(typeof data.publishedAt, "string");
+    if (typeof data.publishedAt === "string") {
+      assert.match(data.publishedAt, /^\d{4}-\d{2}-\d{2}T/);
+    }
   });
 });
