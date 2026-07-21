@@ -43,3 +43,4 @@ next-env.d.ts
 .qa-screenshots
 .gstack/
 .superpowers/
+.worktrees/
