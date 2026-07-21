@@ -43,6 +43,52 @@ export const nextAvailableSlug = (base: string, takenSlugs: Iterable<string>) =>
   return `${base}-${suffix}`;
 };
 
+export const isDuplicateSlugError = (error: unknown) => {
+  const values: unknown[] = [error];
+  const seen = new Set<object>();
+  const messages: string[] = [];
+
+  while (values.length > 0) {
+    const value = values.pop();
+
+    if (typeof value === "string") {
+      messages.push(value.toLowerCase());
+      continue;
+    }
+
+    if (!value || typeof value !== "object" || seen.has(value)) {
+      continue;
+    }
+
+    seen.add(value);
+    const metadata = value as {
+      cause?: unknown;
+      code?: unknown;
+      data?: unknown;
+      errors?: unknown;
+      message?: unknown;
+    };
+
+    if (metadata.code === "23505" || metadata.code === 23505) {
+      return true;
+    }
+
+    values.push(
+      metadata.cause,
+      metadata.data,
+      metadata.errors,
+      metadata.message,
+    );
+  }
+
+  const message = messages.join(" ");
+
+  return (
+    message.includes("slug") &&
+    (message.includes("duplicate") || message.includes("unique"))
+  );
+};
+
 export const buildPostData = (
   fields: PostFields,
   existing?: Pick<Post, "slug">,

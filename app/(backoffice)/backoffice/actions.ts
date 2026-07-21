@@ -25,6 +25,7 @@ import {
 } from "@/lib/backoffice/pricing";
 import {
   buildPostData,
+  isDuplicateSlugError,
   nextAvailableSlug,
   type PostFields,
 } from "@/lib/backoffice/post-data";
@@ -362,11 +363,12 @@ export const createPostAction = async (formData: FormData) => {
 
   const payload = await getPayloadClient();
   const postData = buildPostData(postFieldsFromForm(formData));
+  const baseSlug = postData.slug;
   const takenSlugs: string[] = [];
-  let availableSlug: string | undefined;
+  let created = false;
 
   for (let attempt = 0; attempt < 100; attempt += 1) {
-    const slug = nextAvailableSlug(postData.slug, takenSlugs);
+    const slug = nextAvailableSlug(baseSlug, takenSlugs);
     const existing = await payload.find({
       collection: "posts",
       draft: true,
@@ -382,26 +384,34 @@ export const createPostAction = async (formData: FormData) => {
     });
 
     if (existing.docs.length === 0) {
-      availableSlug = slug;
-      break;
+      postData.slug = slug;
+
+      try {
+        await payload.create({
+          collection: "posts",
+          draft: true,
+          locale: "fr",
+          overrideAccess: true,
+          data: postData,
+        });
+        created = true;
+      } catch (error) {
+        if (!isDuplicateSlugError(error)) {
+          throw error;
+        }
+      }
+
+      if (created) {
+        break;
+      }
     }
 
     takenSlugs.push(slug);
   }
 
-  if (!availableSlug) {
+  if (!created) {
     throw new Error("Impossible de générer un slug unique pour cet article.");
   }
-
-  postData.slug = availableSlug;
-
-  await payload.create({
-    collection: "posts",
-    draft: true,
-    locale: "fr",
-    overrideAccess: true,
-    data: postData,
-  });
 
   revalidatePath("/blog");
   revalidatePath("/backoffice/articles");

@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, test } from "node:test";
 
-import { buildPostData, nextAvailableSlug } from "./post-data";
+import {
+  buildPostData,
+  isDuplicateSlugError,
+  nextAvailableSlug,
+} from "./post-data";
 
 describe("buildPostData", () => {
   test("keeps a free slug unchanged", () => {
@@ -17,6 +21,17 @@ describe("buildPostData", () => {
       ]),
       "repas-de-mariage-4",
     );
+  });
+
+  test("recognizes duplicate slug errors that can be retried", () => {
+    assert.equal(
+      isDuplicateSlugError({
+        cause: { code: "23505" },
+        message: "duplicate key value violates unique constraint posts_slug_key",
+      }),
+      true,
+    );
+    assert.equal(isDuplicateSlugError(new Error("Validation failed")), false);
   });
 
   test("builds automatic post data when creating an article", () => {
