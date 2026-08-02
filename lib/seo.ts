@@ -5,13 +5,15 @@ export const siteConfig = {
   email: "contact@david-chambaud.fr",
   phone: "+33650754406",
   instagram: "https://www.instagram.com/chambauddavid",
-  foundingDate: "2008",
+  foundingDate: "2016",
   image: "/20260212_DSC2953.jpg",
   logo: "/favicon.ico",
   locale: "fr_FR",
   language: "fr",
-  primaryArea: "Bordeaux",
   region: "Nouvelle-Aquitaine",
+  streetAddress: "3 Rue de Lincent",
+  postalCode: "33570",
+  addressLocality: "Lussac",
   serviceAreas: [
     "Bordeaux",
     "Gironde",
@@ -36,13 +38,13 @@ export type LocalSeoPage = {
   intro: string;
   serviceType: string;
   area: string;
-  intent: string;
   image: string;
   highlights: string[];
   sections: {
     title: string;
     body: string;
   }[];
+  closingNote: string;
   related: string[];
 };
 
@@ -59,7 +61,6 @@ export const localSeoPages: LocalSeoPage[] = [
       "David Chambaud accompagne les événements bordelais avec une cuisine de saison, une organisation discrète et un service pensé pour tenir le rythme de la réception.",
     serviceType: "Traiteur événementiel",
     area: "Bordeaux",
-    intent: "traiteur Bordeaux",
     image: "/20260212_DSC2967.jpg",
     highlights: [
       "Cocktails, buffets et repas assis",
@@ -76,6 +77,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "Le cadrage porte sur le rythme de la journée, les contraintes du site, les régimes alimentaires et la fluidité du service afin que les invités profitent sans voir la mécanique.",
       },
     ],
+    closingNote:
+      "Pour une demande de traiteur à Bordeaux, précisez la date, le lieu, le nombre d'invités et le format souhaité: cocktail, buffet ou repas assis.",
     related: [
       "traiteur-mariage-bordeaux",
       "chef-a-domicile-bordeaux",
@@ -94,7 +97,6 @@ export const localSeoPages: LocalSeoPage[] = [
       "Pour un mariage à Bordeaux ou dans ses environs, la prestation est pensée comme une journée complète: accueil, cocktail, dîner, dessert, retour de soirée et lendemain si besoin.",
     serviceType: "Traiteur mariage",
     area: "Bordeaux",
-    intent: "traiteur mariage Bordeaux",
     image: "/AdobeStock_522340892.jpeg",
     highlights: [
       "Vin d'honneur, dîner et brunch",
@@ -111,6 +113,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "L'objectif est de garder une cuisine mémorable, élégante et lisible, avec des propositions adaptées aux enfants, intolérances et régimes particuliers.",
       },
     ],
+    closingNote:
+      "Pour organiser le repas de votre mariage à Bordeaux, indiquez la date, le lieu de réception, le nombre d'invités et les temps forts de la journée: vin d'honneur, dîner, brunch du lendemain.",
     related: [
       "traiteur-bordeaux",
       "traiteur-gironde",
@@ -129,7 +133,6 @@ export const localSeoPages: LocalSeoPage[] = [
       "David Chambaud transforme un dîner à domicile en table soignée, avec une cuisine de saison, un service précis et une organisation légère pour les hôtes.",
     serviceType: "Chef à domicile",
     area: "Bordeaux",
-    intent: "chef à domicile Bordeaux",
     image: "/AdobeStock_54050217.jpeg",
     highlights: [
       "Dîners privés et anniversaires",
@@ -146,6 +149,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "L'équipe prend en charge la partie culinaire pour que les hôtes restent avec leurs invités, du premier échange jusqu'à la fin du service.",
       },
     ],
+    closingNote:
+      "Pour réserver un chef à domicile à Bordeaux, précisez la date, le nombre de convives, les éventuelles allergies ou régimes, et l'occasion du dîner.",
     related: [
       "traiteur-bordeaux",
       "traiteur-mariage-bordeaux",
@@ -164,7 +169,6 @@ export const localSeoPages: LocalSeoPage[] = [
       "En Gironde, David Chambaud intervient auprès de domaines, châteaux, entreprises et particuliers avec une prestation ajustée au lieu et à l'ambiance.",
     serviceType: "Traiteur événementiel",
     area: "Gironde",
-    intent: "traiteur Gironde",
     image: "/AdobeStock_418339639.jpeg",
     highlights: [
       "Domaines viticoles et châteaux",
@@ -181,6 +185,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "La connaissance des rythmes de réception en Gironde permet d'anticiper les accès, les offices, les extérieurs et les besoins de coordination.",
       },
     ],
+    closingNote:
+      "Pour une prestation en Gironde, indiquez le lieu exact (domaine, château, salle ou domicile), la date, le nombre d'invités et le format attendu.",
     related: [
       "traiteur-bordeaux",
       "traiteur-mariage-bordeaux",
@@ -199,7 +205,6 @@ export const localSeoPages: LocalSeoPage[] = [
       "Autour de Saint-Émilion, David Chambaud accompagne les événements privés et professionnels dans les domaines, maisons de caractère et lieux de réception.",
     serviceType: "Traiteur événementiel",
     area: "Saint-Émilion",
-    intent: "traiteur Saint-Émilion",
     image: "/Pavillon-70.jpg",
     highlights: [
       "Réceptions en domaines et châteaux",
@@ -216,6 +221,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "Le format peut rester très événementiel ou devenir plus intime, avec un dîner servi, une table d'hôtes ou une réception sur plusieurs temps.",
       },
     ],
+    closingNote:
+      "Pour une réception à Saint-Émilion ou dans ses environs, précisez le domaine ou lieu de réception, la date, le nombre d'invités et le style souhaité: cocktail, dîner assis ou table d'hôtes.",
     related: [
       "traiteur-gironde",
       "traiteur-mariage-bordeaux",
@@ -231,10 +238,9 @@ export const localSeoPages: LocalSeoPage[] = [
     eyebrow: "Nouvelle-Aquitaine",
     h1: "Traiteur en Nouvelle-Aquitaine pour événements sur mesure.",
     intro:
-      "Depuis 2008, David Chambaud imagine des prestations culinaires en Nouvelle-Aquitaine pour les mariages, événements professionnels et moments privés.",
+      "Depuis 2016, David Chambaud imagine des prestations culinaires en Nouvelle-Aquitaine pour les mariages, événements professionnels et moments privés.",
     serviceType: "Traiteur événementiel",
     area: "Nouvelle-Aquitaine",
-    intent: "traiteur Nouvelle-Aquitaine",
     image: "/20260212_DSC3037.jpg",
     highlights: [
       "Prestations privées et professionnelles",
@@ -251,6 +257,8 @@ export const localSeoPages: LocalSeoPage[] = [
         body: "Mariage, dîner à domicile, lancement, baptême ou séminaire: le format est adapté sans perdre la signature culinaire ni la rigueur du service.",
       },
     ],
+    closingNote:
+      "Pour un événement ailleurs en Nouvelle-Aquitaine, indiquez la ville ou le lieu de réception, la date, le nombre d'invités et le format attendu afin d'évaluer la faisabilité du déplacement.",
     related: [
       "traiteur-bordeaux",
       "traiteur-gironde",
@@ -314,7 +322,9 @@ export const businessJsonLd = {
       foundingDate: siteConfig.foundingDate,
       address: {
         "@type": "PostalAddress",
-        addressLocality: siteConfig.primaryArea,
+        streetAddress: siteConfig.streetAddress,
+        postalCode: siteConfig.postalCode,
+        addressLocality: siteConfig.addressLocality,
         addressRegion: siteConfig.region,
         addressCountry: "FR",
       },

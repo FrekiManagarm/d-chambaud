@@ -25,23 +25,33 @@ const formatDate = (date?: string | null) => {
   }).format(new Date(date));
 };
 
-export const metadata: Metadata = {
-  title: "Journal",
-  description:
-    "Articles, inspirations culinaires et notes de saison de David Chambaud.",
-  alternates: {
-    canonical: absoluteUrl("/blog"),
-  },
-  openGraph: {
-    title: "Journal | David Chambaud",
+export async function generateMetadata(): Promise<Metadata> {
+  const posts = await getBlogPosts();
+
+  return {
+    title: "Journal",
     description:
       "Articles, inspirations culinaires et notes de saison de David Chambaud.",
-    url: absoluteUrl("/blog"),
-    type: "website",
-    locale: siteConfig.locale,
-    siteName: siteConfig.name,
-  },
-};
+    alternates: {
+      canonical: absoluteUrl("/blog"),
+    },
+    // No articles published yet: keep the page out of the index until it has
+    // real content, but keep following it so new /blog/[slug] posts are found.
+    robots: {
+      index: posts.length > 0,
+      follow: true,
+    },
+    openGraph: {
+      title: "Journal | David Chambaud",
+      description:
+        "Articles, inspirations culinaires et notes de saison de David Chambaud.",
+      url: absoluteUrl("/blog"),
+      type: "website",
+      locale: siteConfig.locale,
+      siteName: siteConfig.name,
+    },
+  };
+}
 
 export default async function BlogPage() {
   const posts = await getBlogPosts();

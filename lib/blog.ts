@@ -1,11 +1,12 @@
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
+import { cache } from "react";
 
 import type { Post } from "@/payload-types";
 
 const locale = "fr" as const;
 
-export async function getBlogPosts() {
+export const getBlogPosts = cache(async () => {
   try {
     const payload = await getPayload({ config: configPromise });
 
@@ -28,7 +29,7 @@ export async function getBlogPosts() {
   } catch {
     return [];
   }
-}
+});
 
 export async function getBlogPostBySlug(slug: string): Promise<Post | null> {
   try {
