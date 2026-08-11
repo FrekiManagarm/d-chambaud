@@ -1,12 +1,17 @@
-import { Edit3, Plus } from "lucide-react";
+import { CheckCircle2, Edit3, Plus } from "lucide-react";
 import Link from "next/link";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
-import { BackofficeHeader } from "../Header";
+import { BackofficeSidebar } from "../Sidebar";
 
 export const dynamic = "force-dynamic";
+
+const statusLabels: Record<string, string> = {
+  draft: "Brouillon",
+  published: "Publié",
+};
 
 type ArticlesPageProps = {
   searchParams: Promise<{
@@ -29,7 +34,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
@@ -42,7 +47,12 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
           </Link>
         </section>
 
-        {saved ? <p className="bo-success">Article enregistré.</p> : null}
+        {saved ? (
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Article enregistré.
+          </p>
+        ) : null}
 
         <section className="bo-card">
           <div className="bo-table">
@@ -58,7 +68,9 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
                   <strong>{post.title}</strong>
                   <small>{post.slug}</small>
                 </span>
-                <span className="bo-status">{post._status ?? "draft"}</span>
+                <span className="bo-status">
+                  {statusLabels[post._status ?? "draft"] ?? "Brouillon"}
+                </span>
                 <span>
                   {post.publishedAt
                     ? new Intl.DateTimeFormat("fr-FR").format(
@@ -76,6 +88,13 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
                 </Link>
               </div>
             ))}
+
+            {posts.docs.length === 0 ? (
+              <p className="bo-empty-state">
+                Aucun article pour le moment. Cliquez sur « Nouvel article »
+                pour commencer.
+              </p>
+            ) : null}
           </div>
         </section>
       </main>

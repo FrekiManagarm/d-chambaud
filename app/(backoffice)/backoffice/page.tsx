@@ -1,5 +1,5 @@
 import {
-  ArrowUpRight,
+  ArrowRight,
   Download,
   FileText,
   Images,
@@ -12,7 +12,7 @@ import Link from "next/link";
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
-import { BackofficeHeader } from "./Header";
+import { BackofficeSidebar } from "./Sidebar";
 
 export const dynamic = "force-dynamic";
 
@@ -52,64 +52,105 @@ export default async function BackofficePage() {
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
-            <p className="bo-kicker">Tableau de bord</p>
-            <h1>Contenu du site</h1>
+            <p className="bo-kicker">Bienvenue</p>
+            <h1>Que souhaitez-vous modifier ?</h1>
+            <p className="bo-muted">
+              Choisissez une carte ci-dessous. Chaque page se sauvegarde
+              indépendamment, vous ne pouvez rien casser en cliquant.
+            </p>
           </div>
-          <Link className="bo-button" href="/admin" target="_blank">
-            <ArrowUpRight aria-hidden="true" size={17} />
-            <span>Mode avancé</span>
-          </Link>
         </section>
 
         <section className="bo-dashboard-grid">
           <Link className="bo-dashboard-card" href="/backoffice/a-propos">
-            <UserRound aria-hidden="true" size={22} />
+            <span className="bo-dashboard-card-icon">
+              <UserRound aria-hidden="true" size={22} />
+            </span>
             <span>À propos</span>
             <strong>{aboutTitle}</strong>
-            <small>Titre, paragraphes, citation et libellé du lien.</small>
+            <small>Le texte de présentation affiché sur la page d&apos;accueil.</small>
+            <span className="bo-dashboard-card-arrow">
+              Modifier <ArrowRight aria-hidden="true" size={15} />
+            </span>
           </Link>
 
           <Link className="bo-dashboard-card" href="/backoffice/tarifs">
-            <PiggyBank aria-hidden="true" size={22} />
+            <span className="bo-dashboard-card-icon">
+              <PiggyBank aria-hidden="true" size={22} />
+            </span>
             <span>Tarifs</span>
             <strong>{activeYear}</strong>
-            <small>Offres, prix, mentions et saison affichée.</small>
+            <small>Les offres, les prix et la saison affichée sur le site.</small>
+            <span className="bo-dashboard-card-arrow">
+              Modifier <ArrowRight aria-hidden="true" size={15} />
+            </span>
           </Link>
 
           <Link className="bo-dashboard-card" href="/backoffice/articles">
-            <FileText aria-hidden="true" size={22} />
+            <span className="bo-dashboard-card-icon">
+              <FileText aria-hidden="true" size={22} />
+            </span>
             <span>Articles</span>
-            <strong>{posts.totalDocs}</strong>
-            <small>Brouillons, articles publiés et contenu SEO.</small>
+            <strong>{posts.totalDocs} article{posts.totalDocs > 1 ? "s" : ""}</strong>
+            <small>Les articles du blog, publiés ou en brouillon.</small>
+            <span className="bo-dashboard-card-arrow">
+              Modifier <ArrowRight aria-hidden="true" size={15} />
+            </span>
           </Link>
 
           <Link className="bo-dashboard-card" href="/backoffice/images">
-            <Images aria-hidden="true" size={22} />
+            <span className="bo-dashboard-card-icon">
+              <Images aria-hidden="true" size={22} />
+            </span>
             <span>Images</span>
             <strong>Médiathèque</strong>
-            <small>Upload, aperçu et texte alternatif des visuels.</small>
+            <small>Ajoutez ou supprimez les photos utilisées sur le site.</small>
+            <span className="bo-dashboard-card-arrow">
+              Modifier <ArrowRight aria-hidden="true" size={15} />
+            </span>
           </Link>
 
           <Link className="bo-dashboard-card" href="/backoffice/plaquettes">
-            <Download aria-hidden="true" size={22} />
+            <span className="bo-dashboard-card-icon">
+              <Download aria-hidden="true" size={22} />
+            </span>
             <span>Plaquettes</span>
-            <strong>{serviceBrochures.totalDocs}</strong>
-            <small>PowerPoint de prestation, upload et téléchargement.</small>
+            <strong>
+              {serviceBrochures.totalDocs} document
+              {serviceBrochures.totalDocs > 1 ? "s" : ""}
+            </strong>
+            <small>Les documents PowerPoint à télécharger par vos clients.</small>
+            <span className="bo-dashboard-card-arrow">
+              Modifier <ArrowRight aria-hidden="true" size={15} />
+            </span>
           </Link>
+        </section>
 
-          <Link className="bo-dashboard-card" href="/backoffice/cms">
-            <PanelsTopLeft aria-hidden="true" size={22} />
-            <span>Studio CMS</span>
-            <strong>Payload</strong>
-            <small>
-              Interfaces complètes, manipulation d&apos;image, globals et accès
-              avancés.
-            </small>
-          </Link>
+        <section className="bo-dashboard-secondary">
+          <p className="bo-kicker">Pour aller plus loin</p>
+          <div className="bo-dashboard-grid">
+            <Link
+              className="bo-dashboard-card bo-dashboard-card-muted"
+              href="/backoffice/cms"
+            >
+              <span className="bo-dashboard-card-icon">
+                <PanelsTopLeft aria-hidden="true" size={22} />
+              </span>
+              <span>Réglages avancés</span>
+              <strong>Studio Payload</strong>
+              <small>
+                Réservé aux réglages techniques : recadrage d&apos;image,
+                champs avancés. À utiliser avec précaution.
+              </small>
+              <span className="bo-dashboard-card-arrow">
+                Ouvrir <ArrowRight aria-hidden="true" size={15} />
+              </span>
+            </Link>
+          </div>
         </section>
       </main>
     </div>

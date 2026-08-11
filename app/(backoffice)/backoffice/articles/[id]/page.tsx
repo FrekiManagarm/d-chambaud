@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
-import { BackofficeHeader } from "../../Header";
+import { BackofficeSidebar } from "../../Sidebar";
 import { ArticleForm } from "../ArticleForm";
 
 export const dynamic = "force-dynamic";
@@ -39,7 +39,7 @@ export default async function EditArticlePage({ params }: EditArticlePageProps) 
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>

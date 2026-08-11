@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { AlertCircle, ArrowRight, LockKeyhole } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -30,7 +30,7 @@ export function LoginForm() {
     setIsLoading(false);
 
     if (!response.ok) {
-      setError("Identifiants incorrects ou accès refusé.");
+      setError("Email ou mot de passe incorrect. Réessayez.");
       return;
     }
 
@@ -63,7 +63,12 @@ export function LoginForm() {
         />
       </div>
 
-      {error ? <p className="bo-form-error">{error}</p> : null}
+      {error ? (
+        <p className="bo-form-error">
+          <AlertCircle aria-hidden="true" size={17} />
+          {error}
+        </p>
+      ) : null}
 
       <button className="bo-button bo-button-primary" disabled={isLoading} type="submit">
         <LockKeyhole aria-hidden="true" size={17} />

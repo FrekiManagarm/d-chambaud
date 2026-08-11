@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 
 import "../(frontend)/globals.css";
 import "./backoffice/backoffice.css";
-
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -34,7 +26,7 @@ export default function BackofficeRootLayout({
 }>) {
   return (
     <html
-      className={`${cormorant.variable} ${montserrat.variable}`}
+      className={montserrat.variable}
       lang="fr"
       suppressHydrationWarning
     >

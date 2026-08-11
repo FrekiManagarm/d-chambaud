@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 
-import { BackofficeHeader } from "../Header";
+import { BackofficeSidebar } from "../Sidebar";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +59,7 @@ export default async function CMSStudioPage() {
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell bo-shell-wide">
         <section className="bo-page-head">
           <div>

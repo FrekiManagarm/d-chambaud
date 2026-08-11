@@ -1,6 +1,6 @@
 "use client";
 
-import { Upload } from "lucide-react";
+import { AlertCircle, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -111,7 +111,12 @@ export function ServiceBrochureUploadForm() {
         </label>
       </div>
 
-      {error ? <p className="bo-form-error">{error}</p> : null}
+      {error ? (
+        <p className="bo-form-error">
+          <AlertCircle aria-hidden="true" size={17} />
+          {error}
+        </p>
+      ) : null}
     </form>
   );
 }

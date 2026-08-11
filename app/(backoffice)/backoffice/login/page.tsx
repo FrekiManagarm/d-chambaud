@@ -17,11 +17,11 @@ export default async function BackofficeLoginPage() {
     <main className="bo-login-page">
       <section className="bo-login-panel">
         <div>
-          <p className="bo-kicker">Accès privé</p>
-          <h1>Back office</h1>
+          <p className="bo-kicker">Espace privé</p>
+          <h1>Bonjour</h1>
           <p className="bo-muted">
-            Connectez-vous pour modifier les tarifs, les offres et les articles
-            du site.
+            Connectez-vous pour modifier les textes, les tarifs, les images et
+            les articles du site.
           </p>
         </div>
         <LoginForm />

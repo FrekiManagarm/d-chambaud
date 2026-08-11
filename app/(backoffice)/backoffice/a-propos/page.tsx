@@ -1,9 +1,10 @@
+import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
 
-import { BackofficeHeader } from "../Header";
+import { BackofficeSidebar } from "../Sidebar";
 import { AboutForm } from "./AboutForm";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +28,7 @@ export default async function AboutPage({ searchParams }: AboutPageProps) {
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
@@ -44,7 +45,10 @@ export default async function AboutPage({ searchParams }: AboutPageProps) {
         </section>
 
         {saved ? (
-          <p className="bo-success">Section à propos enregistrée.</p>
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Section à propos enregistrée.
+          </p>
         ) : null}
 
         <AboutForm about={homePage.about} />

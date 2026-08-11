@@ -1,4 +1,4 @@
-import { Trash2 } from "lucide-react";
+import { CheckCircle2, Info, Trash2 } from "lucide-react";
 import Image from "next/image";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
@@ -9,7 +9,8 @@ import {
   deleteMediaAction,
   updateMediaAltAction,
 } from "../actions";
-import { BackofficeHeader } from "../Header";
+import { ConfirmSubmitButton } from "../ConfirmSubmitButton";
+import { BackofficeSidebar } from "../Sidebar";
 import { MediaUploadForm } from "./MediaUploadForm";
 
 export const dynamic = "force-dynamic";
@@ -36,21 +37,40 @@ export default async function ImagesPage({ searchParams }: ImagesPageProps) {
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
             <p className="bo-kicker">Médiathèque</p>
             <h1>Images</h1>
             <p className="bo-muted">
-              Ajoutez les visuels du site et gardez leurs textes alternatifs à
-              jour.
+              Ajoutez les photos utilisées sur le site et décrivez chacune
+              d&apos;elles en quelques mots.
             </p>
           </div>
         </section>
 
-        {saved ? <p className="bo-success">Image mise à jour.</p> : null}
-        {deleted ? <p className="bo-success">Image supprimée.</p> : null}
+        {saved ? (
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Image mise à jour.
+          </p>
+        ) : null}
+        {deleted ? (
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Image supprimée.
+          </p>
+        ) : null}
+
+        <div className="bo-callout">
+          <Info aria-hidden="true" size={18} />
+          <span>
+            Le texte alternatif décrit l&apos;image pour les personnes
+            malvoyantes et pour Google : soyez simple et précis, par exemple
+            « Buffet dressé dans une salle de réception ».
+          </span>
+        </div>
 
         <div className="bo-form-stack">
           <MediaUploadForm />
@@ -85,15 +105,16 @@ export default async function ImagesPage({ searchParams }: ImagesPageProps) {
                       <button className="bo-button" type="submit">
                         Enregistrer
                       </button>
-                      <button
+                      <ConfirmSubmitButton
                         className="bo-icon-button bo-danger-button"
+                        confirmMessage="Supprimer définitivement cette image ? Cette action est irréversible."
                         formAction={deleteAction}
                         title="Supprimer"
                         type="submit"
                       >
                         <Trash2 aria-hidden="true" size={17} />
                         <span className="sr-only">Supprimer</span>
-                      </button>
+                      </ConfirmSubmitButton>
                     </div>
                   </form>
                 </article>

@@ -209,6 +209,128 @@ export const saveAboutAction = async (formData: FormData) => {
   redirect("/backoffice/a-propos?saved=1");
 };
 
+const ensureActiveYear = (
+  years: NonNullable<HomePage["pricing"]>["years"],
+) => {
+  const list = years ?? [];
+  const hasActive = list.some((year) => year.isActive);
+
+  return list.map((year, index) => ({
+    ...year,
+    isActive: hasActive ? year.isActive : index === 0,
+  }));
+};
+
+export const addPricingYearAction = async (formData: FormData) => {
+  await requireBackofficeUser();
+
+  const label = text(formData, "label");
+
+  if (!label) {
+    redirect("/backoffice/tarifs");
+  }
+
+  const payload = await getPayloadClient();
+  const current = await payload.findGlobal({
+    slug: "home-page",
+    locale: "fr",
+    depth: 0,
+    overrideAccess: true,
+  });
+
+  const existingYears = current.pricing?.years ?? [];
+  const newYearIndex = existingYears.length;
+  const years = ensureActiveYear([
+    ...existingYears,
+    { label, isActive: false, categories: [] },
+  ]);
+
+  await payload.updateGlobal({
+    slug: "home-page",
+    locale: "fr",
+    overrideAccess: true,
+    data: {
+      ...current,
+      pricing: {
+        ...current.pricing,
+        years,
+      },
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/backoffice/tarifs");
+  redirect(`/backoffice/tarifs?seasonAdded=1&openYear=${newYearIndex}`);
+};
+
+export const addPricingOfferAction = async (
+  yearIndex: number,
+  categoryIndex: number,
+  formData: FormData,
+) => {
+  await requireBackofficeUser();
+
+  const payload = await getPayloadClient();
+  const current = await payload.findGlobal({
+    slug: "home-page",
+    locale: "fr",
+    depth: 0,
+    overrideAccess: true,
+  });
+
+  const years = [...(current.pricing?.years ?? [])];
+  const year = years[yearIndex];
+  const category = year?.categories?.[categoryIndex];
+
+  if (!year || !category) {
+    redirect("/backoffice/tarifs");
+  }
+
+  const name = text(formData, "name");
+  const price = text(formData, "price");
+  const features = text(formData, "features")
+    .split("\n")
+    .map((feature) => feature.trim())
+    .filter(Boolean)
+    .map((feature) => ({ text: feature }));
+
+  const categories = [...(year.categories ?? [])];
+  categories[categoryIndex] = {
+    ...category,
+    offers: [
+      ...(category.offers ?? []),
+      {
+        name: name || "Nouvelle offre",
+        price: price || "Sur devis",
+        unit: text(formData, "unit"),
+        sub: text(formData, "sub"),
+        tone: text(formData, "tone"),
+        detail: text(formData, "detail"),
+        features,
+        highlight: checked(formData, "highlight"),
+      },
+    ],
+  };
+  years[yearIndex] = { ...year, categories };
+
+  await payload.updateGlobal({
+    slug: "home-page",
+    locale: "fr",
+    overrideAccess: true,
+    data: {
+      ...current,
+      pricing: {
+        ...current.pricing,
+        years,
+      },
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath("/backoffice/tarifs");
+  redirect(`/backoffice/tarifs?offerAdded=1&openYear=${yearIndex}`);
+};
+
 export const savePricingAction = async (formData: FormData) => {
   await requireBackofficeUser();
 

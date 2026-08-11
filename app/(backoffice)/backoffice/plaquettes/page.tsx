@@ -1,4 +1,4 @@
-import { Download, Trash2 } from "lucide-react";
+import { CheckCircle2, Download, Trash2 } from "lucide-react";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 import { getPayloadClient } from "@/lib/backoffice/payload";
@@ -8,7 +8,8 @@ import {
   deleteServiceBrochureAction,
   updateServiceBrochureAction,
 } from "../actions";
-import { BackofficeHeader } from "../Header";
+import { ConfirmSubmitButton } from "../ConfirmSubmitButton";
+import { BackofficeSidebar } from "../Sidebar";
 import { ServiceBrochureUploadForm } from "./ServiceBrochureUploadForm";
 
 export const dynamic = "force-dynamic";
@@ -43,7 +44,7 @@ export default async function ServiceBrochuresPage({
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
@@ -56,8 +57,18 @@ export default async function ServiceBrochuresPage({
           </div>
         </section>
 
-        {saved ? <p className="bo-success">Plaquette mise à jour.</p> : null}
-        {deleted ? <p className="bo-success">Plaquette supprimée.</p> : null}
+        {saved ? (
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Plaquette mise à jour.
+          </p>
+        ) : null}
+        {deleted ? (
+          <p className="bo-success">
+            <CheckCircle2 aria-hidden="true" size={17} />
+            Plaquette supprimée.
+          </p>
+        ) : null}
 
         <div className="bo-form-stack">
           <ServiceBrochureUploadForm />
@@ -131,15 +142,16 @@ export default async function ServiceBrochuresPage({
                     <button className="bo-button" type="submit">
                       Enregistrer
                     </button>
-                    <button
+                    <ConfirmSubmitButton
                       className="bo-icon-button bo-danger-button"
+                      confirmMessage="Supprimer définitivement cette plaquette ? Cette action est irréversible."
                       formAction={deleteAction}
                       title="Supprimer"
                       type="submit"
                     >
                       <Trash2 aria-hidden="true" size={17} />
                       <span className="sr-only">Supprimer</span>
-                    </button>
+                    </ConfirmSubmitButton>
                   </span>
                 </form>
               );

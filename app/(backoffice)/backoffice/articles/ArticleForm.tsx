@@ -1,4 +1,4 @@
-import { Save } from "lucide-react";
+import { Info, Save } from "lucide-react";
 
 import { lexicalToPlainText } from "@/lib/backoffice/rich-text";
 import type { Post } from "@/payload-types";
@@ -41,12 +41,19 @@ export function ArticleForm({ post }: ArticleFormProps) {
           <input defaultValue={post?.title ?? ""} name="title" required />
         </label>
         <label className="bo-form-field">
-          <span>Slug</span>
+          <span>Adresse de la page</span>
           <input
             defaultValue={post?.slug ?? ""}
             name="slug"
             placeholder="laissez vide pour générer"
           />
+          <p className="bo-help">
+            <Info aria-hidden="true" size={14} />
+            <span>
+              La fin de l&apos;adresse internet de l&apos;article. Laissez
+              vide, elle sera créée automatiquement à partir du titre.
+            </span>
+          </p>
         </label>
         <label className="bo-form-field">
           <span>Date de publication</span>
@@ -93,15 +100,28 @@ export function ArticleForm({ post }: ArticleFormProps) {
           required
           rows={14}
         />
+        <p className="bo-help">
+          <Info aria-hidden="true" size={14} />
+          <span>Texte simple uniquement. Laissez une ligne vide entre deux paragraphes.</span>
+        </p>
       </label>
+
+      <div className="bo-callout">
+        <Info aria-hidden="true" size={18} />
+        <span>
+          Les deux champs ci-dessous contrôlent ce qui s&apos;affiche dans
+          les résultats Google. Vous pouvez les laisser vides : le titre et
+          l&apos;extrait de l&apos;article seront utilisés à la place.
+        </span>
+      </div>
 
       <div className="bo-form-grid">
         <label className="bo-form-field">
-          <span>Titre SEO</span>
+          <span>Titre pour Google</span>
           <input defaultValue={post?.seo?.title ?? ""} name="seoTitle" />
         </label>
         <label className="bo-form-field">
-          <span>Description SEO</span>
+          <span>Description pour Google</span>
           <textarea
             defaultValue={post?.seo?.description ?? ""}
             name="seoDescription"

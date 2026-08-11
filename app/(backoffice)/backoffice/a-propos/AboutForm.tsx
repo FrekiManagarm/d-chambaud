@@ -1,4 +1,4 @@
-import { Save } from "lucide-react";
+import { Info, Save } from "lucide-react";
 
 import type { HomePage } from "@/payload-types";
 
@@ -31,6 +31,10 @@ export function AboutForm({ about }: AboutFormProps) {
           <label className="bo-form-field">
             <span>Libellé du lien</span>
             <input defaultValue={about?.ctaLabel ?? ""} name="ctaLabel" />
+            <p className="bo-help">
+              <Info aria-hidden="true" size={14} />
+              <span>Le texte affiché sur le bouton de cette section.</span>
+            </p>
           </label>
           <label className="bo-form-field">
             <span>Titre ligne 1</span>
@@ -70,6 +74,10 @@ export function AboutForm({ about }: AboutFormProps) {
           <label className="bo-form-field">
             <span>Citation</span>
             <textarea defaultValue={about?.quote ?? ""} name="quote" rows={4} />
+            <p className="bo-help">
+              <Info aria-hidden="true" size={14} />
+              <span>Une phrase mise en avant, affichée en grand sur le site.</span>
+            </p>
           </label>
           <label className="bo-form-field">
             <span>Auteur de la citation</span>

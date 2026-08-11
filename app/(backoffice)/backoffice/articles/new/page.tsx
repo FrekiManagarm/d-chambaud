@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { requireBackofficeUser } from "@/lib/backoffice/auth";
 
-import { BackofficeHeader } from "../../Header";
+import { BackofficeSidebar } from "../../Sidebar";
 import { ArticleForm } from "../ArticleForm";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export default async function NewArticlePage() {
 
   return (
     <div className="bo-page">
-      <BackofficeHeader userEmail={user.email} />
+      <BackofficeSidebar userEmail={user.email} />
       <main className="bo-shell">
         <section className="bo-page-head">
           <div>
