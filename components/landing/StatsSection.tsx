@@ -1,5 +1,6 @@
 "use client";
 
+import type { StatsContent } from "./types";
 import {
   CountUpStat,
   Eyebrow,
@@ -11,7 +12,7 @@ import {
 /* ════════════════════════════════════════════════════════════
    STATS — theatrical numbers, borderless
 ════════════════════════════════════════════════════════════ */
-export function StatsSection() {
+export function StatsSection({ content }: { content: StatsContent }) {
   return (
     <section
       className="grain-overlay"
@@ -58,7 +59,7 @@ export function StatsSection() {
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow light>Ce que vous achetez vraiment</Eyebrow>
+              <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
               <h3
@@ -71,9 +72,9 @@ export function StatsSection() {
                   color: "var(--cream)",
                 }}
               >
-                Du calme
+                {content.titleLineOne}
                 <br />
-                pendant l&apos;intense.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
           </div>
@@ -87,9 +88,7 @@ export function StatsSection() {
                 maxWidth: 430,
               }}
             >
-              Le jour d&apos;un mariage, tout bouge. La valeur d&apos;un
-              traiteur, c&apos;est de rendre la cuisine invisible dans
-              l&apos;effort et évidente dans le plaisir.
+              {content.intro}
             </p>
           </RevealOnScroll>
         </div>
@@ -103,38 +102,17 @@ export function StatsSection() {
           }}
           className="stats-grid"
         >
-          <CountUpStat
-            value={25}
-            suffix=" ans"
-            label="d'expérience"
-            detail=""
-            delay={0}
-            border
-          />
-          <CountUpStat
-            value={500}
-            suffix="+"
-            label="Prestations servies"
-            detail="Mariages, domaines, séminaires"
-            delay={0.12}
-            border
-          />
-          <CountUpStat
-            value={48}
-            suffix="h"
-            label="Premier retour"
-            detail="Pour cadrer votre demande"
-            delay={0.24}
-            border
-          />
-          <CountUpStat
-            value={99}
-            suffix="%"
-            label="Clients satisfaits"
-            detail="Recommandation & fidélité"
-            delay={0.48}
-            border={false}
-          />
+          {content.items.map((item, index) => (
+            <CountUpStat
+              key={item.label}
+              value={item.value}
+              suffix={item.suffix}
+              label={item.label}
+              detail={item.detail}
+              delay={index * 0.12}
+              border={index < content.items.length - 1}
+            />
+          ))}
         </div>
       </div>
       <style>{`

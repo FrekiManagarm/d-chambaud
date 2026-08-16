@@ -4,79 +4,17 @@ import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 
+import type { TestimonialItem, TestimonialsContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    TESTIMONIALS — masonry grid with real reviews
 ════════════════════════════════════════════════════════════ */
-const testimonials = [
-  {
-    quote:
-      "Nous avons eu le plaisir de faire appel à David pour le cocktail, le dîner et le brunch de notre mariage et la surprise fut juste magnifique ! Le raffinement, le goût, le service, le professionnalisme… tout était au rendez-vous.",
-    author: "Fatima-zahra H.",
-    occasion: "Mariage · Cocktail, dîner & brunch",
-    source: "site",
-  },
-  {
-    quote:
-      "David and his team did an incredible job for our wedding at Chateau Soulac. Every piece of food served was out of this world. I cannot recommend him highly enough.",
-    author: "Erika D.",
-    occasion: "Mariage · Château Soulac",
-    source: "site",
-  },
-  {
-    quote: "A unique experience and exceptional welcoming.",
-    author: "Jeremy Enaud",
-    occasion: "Pavillon des Millésimes · Août 2025",
-    source: "tripadvisor",
-  },
-  {
-    quote:
-      "Tout simplement parfait. Équipe agréable à notre service qui a fait preuve de souplesse sur les menus particuliers (végétarien, intolérance, allergie). Nos invités étaient ravis.",
-    author: "Anne-Laure B.",
-    occasion: "Baptême · Chef à domicile",
-    source: "site",
-  },
-  {
-    quote:
-      "We oscillate between luxury and voluptuousness with this feeling of being at home !",
-    author: "Isa",
-    occasion: "Pavillon des Millésimes · Mai 2025",
-    source: "tripadvisor",
-  },
-  {
-    quote:
-      "Évènement organisé sur l'Aerocampus avec l'équipe de David. Une équipe hyper pro et dévouée ! Une prestation qui a ravi les papilles et qui nous a permis de vivre un moment convivial et gourmand.",
-    author: "Yannick R.",
-    occasion: "Séminaire · Aerocampus",
-    source: "site",
-  },
-  {
-    quote:
-      "Beautiful home with a charming decor in a relaxing setting with very attentive hosts.",
-    author: "Jean-luc S.",
-    occasion: "Pavillon des Millésimes · Avril 2026",
-    source: "tripadvisor",
-  },
-  {
-    quote: "What a wonderful time we had. Thank you to Nathalie and David.",
-    author: "Isabelle I.",
-    occasion: "Pavillon des Millésimes · Août 2025",
-    source: "tripadvisor",
-  },
-  {
-    quote: "I couldn't recommend Pavillon more highly.",
-    author: "James M.",
-    occasion: "Pavillon des Millésimes · Mars 2025",
-    source: "tripadvisor",
-  },
-];
-
 function TestimonialCard({
   t,
   index,
 }: {
-  t: (typeof testimonials)[0];
+  t: TestimonialItem;
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -191,7 +129,13 @@ function TestimonialCard({
   );
 }
 
-function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
+function FeaturedTestimonial({
+  t,
+  featuredNote,
+}: {
+  t: TestimonialItem;
+  featuredNote: string;
+}) {
   return (
     <RevealOnScroll variant={fadeUp}>
       <article
@@ -278,8 +222,7 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
               maxWidth: 320,
             }}
           >
-            Le type de retour qui compte: pas seulement “bon”, mais fluide,
-            généreux, rassurant et mémorable pour les invités.
+            {featuredNote}
           </p>
         </div>
       </article>
@@ -287,7 +230,13 @@ function FeaturedTestimonial({ t }: { t: (typeof testimonials)[0] }) {
   );
 }
 
-export function TestimonialsSection() {
+export function TestimonialsSection({
+  content,
+}: {
+  content: TestimonialsContent;
+}) {
+  const [featured, ...rest] = content.items;
+
   return (
     <section
       id="temoignages"
@@ -316,7 +265,7 @@ export function TestimonialsSection() {
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow light>Ils nous font confiance</Eyebrow>
+              <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
               <h3
@@ -330,9 +279,9 @@ export function TestimonialsSection() {
                   letterSpacing: 0,
                 }}
               >
-                Quelques mots
+                {content.titleLineOne}
                 <br />
-                après le service.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
           </div>
@@ -347,16 +296,17 @@ export function TestimonialsSection() {
                 maxWidth: 360,
               }}
             >
-              Mariages, séjours, baptêmes ou séminaires : des retours sobres,
-              directs, et souvent très généreux.
+              {content.intro}
             </p>
           </RevealOnScroll>
         </div>
 
-        <FeaturedTestimonial t={testimonials[0]} />
+        {featured ? (
+          <FeaturedTestimonial t={featured} featuredNote={content.featuredNote} />
+        ) : null}
 
         <div className="testimonials-grid">
-          {testimonials.slice(1).map((t, i) => (
+          {rest.map((t, i) => (
             <TestimonialCard key={i} t={t} index={i} />
           ))}
         </div>
@@ -383,7 +333,7 @@ export function TestimonialsSection() {
                 color: "rgba(var(--cream-rgb),0.66)",
               }}
             >
-              Avis collectés sur Google, Tripadvisor &amp; site officiel
+              {content.footerNote}
             </p>
             <motion.a
               href="/contact"
@@ -403,7 +353,7 @@ export function TestimonialsSection() {
                 whiteSpace: "nowrap",
               }}
             >
-              <span>Échanger avec nous</span>
+              <span>{content.ctaLabel}</span>
               <ArrowRight size={13} />
             </motion.a>
           </div>

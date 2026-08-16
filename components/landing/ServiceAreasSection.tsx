@@ -4,7 +4,12 @@ import Link from "next/link";
 
 import { localSeoPages } from "@/lib/seo";
 
+import { getHomeServiceAreasText, useHomePageCMS } from "./cms";
+
 export function ServiceAreasSection() {
+  const cms = useHomePageCMS();
+  const content = getHomeServiceAreasText(cms);
+
   return (
     <section
       id="zones"
@@ -38,7 +43,7 @@ export function ServiceAreasSection() {
               marginBottom: "1.25rem",
             }}
           >
-            Zones d&apos;intervention
+            {content.eyebrow}
           </p>
           <h2
             style={{
@@ -51,7 +56,7 @@ export function ServiceAreasSection() {
               letterSpacing: 0,
             }}
           >
-            Une table ancrée à Bordeaux, mobile en Gironde.
+            {content.title}
           </h2>
         </div>
 

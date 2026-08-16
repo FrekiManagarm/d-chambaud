@@ -247,6 +247,37 @@
   text-transform: uppercase;
 }
 
+.bo-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(37, 35, 29, 0.12);
+}
+
+.bo-tab {
+  padding: 0.55rem 0.95rem;
+  border-radius: 999px;
+  color: rgba(37, 35, 29, 0.68);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bo-tab:hover {
+  background: rgba(47, 58, 45, 0.08);
+  color: #25231d;
+}
+
+.bo-tab-active,
+.bo-tab-active:hover {
+  background: #2f3a2d;
+  color: #fffaf0;
+}
+
 .bo-muted {
   max-width: 640px;
   margin-top: 0.55rem;

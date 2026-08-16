@@ -515,11 +515,60 @@ export interface HomePage {
   valuesPrimaryImage?: (number | null) | Media;
   valuesSecondaryImage?: (number | null) | Media;
   valuesBridgeImage?: (number | null) | Media;
+  hero?: {
+    locationLine?: string | null;
+    titleWords?: string | null;
+    titleAccent?: string | null;
+    subtitle?: string | null;
+    tagline?: string | null;
+    primaryCtaLabel?: string | null;
+    secondaryCtaLabel?: string | null;
+  };
+  marquee?: {
+    items?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   serviceImages?: {
     traiteur?: (number | null) | Media;
     mariages?: (number | null) | Media;
     chefADomicile?: (number | null) | Media;
     receptions?: (number | null) | Media;
+  };
+  servicesText?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    traiteur?: {
+      title?: string | null;
+      sub?: string | null;
+      desc?: string | null;
+    };
+    mariages?: {
+      title?: string | null;
+      sub?: string | null;
+      desc?: string | null;
+    };
+    chefADomicile?: {
+      title?: string | null;
+      sub?: string | null;
+      desc?: string | null;
+    };
+    receptions?: {
+      title?: string | null;
+      sub?: string | null;
+      desc?: string | null;
+    };
+  };
+  galleryText?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
   };
   gallery?:
     | {
@@ -538,6 +587,120 @@ export interface HomePage {
     stripOne?: (number | null) | Media;
     stripTwo?: (number | null) | Media;
     stripThree?: (number | null) | Media;
+  };
+  pavillonText?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    badgeKicker?: string | null;
+    badgeQuote?: string | null;
+    points?:
+      | {
+          label: string;
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    linkUrl?: string | null;
+    linkLabel?: string | null;
+    linkNote?: string | null;
+    stripKicker?: string | null;
+    stripTitle?: string | null;
+  };
+  values?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    signatureKicker?: string | null;
+    signatureQuote?: string | null;
+    bands?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  stats?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    items?:
+      | {
+          value: number;
+          suffix?: string | null;
+          label: string;
+          detail?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  testimonials?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    featuredNote?: string | null;
+    footerNote?: string | null;
+    ctaLabel?: string | null;
+    /**
+     * Le premier avis de la liste est mis en avant en haut de la section.
+     */
+    items?:
+      | {
+          quote: string;
+          author: string;
+          occasion?: string | null;
+          source?: ('site' | 'tripadvisor') | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  clients?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    /**
+     * Laissez vide pour garder les logos par défaut du site.
+     */
+    logos?:
+      | {
+          image?: (number | null) | Media;
+          alt?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  serviceAreasText?: {
+    eyebrow?: string | null;
+    title?: string | null;
+  };
+  contact?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    intro?: string | null;
+    responseNote?: string | null;
+    briefItems?:
+      | {
+          title: string;
+          desc: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  finalCta?: {
+    eyebrow?: string | null;
+    titleLineOne?: string | null;
+    titleLineTwo?: string | null;
+    ctaLabel?: string | null;
+  };
+  footer?: {
+    tagline?: string | null;
   };
   about?: {
     eyebrow?: string | null;
@@ -605,6 +768,27 @@ export interface HomePageSelect<T extends boolean = true> {
   valuesPrimaryImage?: T;
   valuesSecondaryImage?: T;
   valuesBridgeImage?: T;
+  hero?:
+    | T
+    | {
+        locationLine?: T;
+        titleWords?: T;
+        titleAccent?: T;
+        subtitle?: T;
+        tagline?: T;
+        primaryCtaLabel?: T;
+        secondaryCtaLabel?: T;
+      };
+  marquee?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+      };
   serviceImages?:
     | T
     | {
@@ -612,6 +796,50 @@ export interface HomePageSelect<T extends boolean = true> {
         mariages?: T;
         chefADomicile?: T;
         receptions?: T;
+      };
+  servicesText?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        traiteur?:
+          | T
+          | {
+              title?: T;
+              sub?: T;
+              desc?: T;
+            };
+        mariages?:
+          | T
+          | {
+              title?: T;
+              sub?: T;
+              desc?: T;
+            };
+        chefADomicile?:
+          | T
+          | {
+              title?: T;
+              sub?: T;
+              desc?: T;
+            };
+        receptions?:
+          | T
+          | {
+              title?: T;
+              sub?: T;
+              desc?: T;
+            };
+      };
+  galleryText?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
       };
   gallery?:
     | T
@@ -632,6 +860,132 @@ export interface HomePageSelect<T extends boolean = true> {
         stripOne?: T;
         stripTwo?: T;
         stripThree?: T;
+      };
+  pavillonText?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        badgeKicker?: T;
+        badgeQuote?: T;
+        points?:
+          | T
+          | {
+              label?: T;
+              text?: T;
+              id?: T;
+            };
+        linkUrl?: T;
+        linkLabel?: T;
+        linkNote?: T;
+        stripKicker?: T;
+        stripTitle?: T;
+      };
+  values?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        signatureKicker?: T;
+        signatureQuote?: T;
+        bands?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  stats?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        items?:
+          | T
+          | {
+              value?: T;
+              suffix?: T;
+              label?: T;
+              detail?: T;
+              id?: T;
+            };
+      };
+  testimonials?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        featuredNote?: T;
+        footerNote?: T;
+        ctaLabel?: T;
+        items?:
+          | T
+          | {
+              quote?: T;
+              author?: T;
+              occasion?: T;
+              source?: T;
+              id?: T;
+            };
+      };
+  clients?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        logos?:
+          | T
+          | {
+              image?: T;
+              alt?: T;
+              id?: T;
+            };
+      };
+  serviceAreasText?:
+    | T
+    | {
+        eyebrow?: T;
+        title?: T;
+      };
+  contact?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        intro?: T;
+        responseNote?: T;
+        briefItems?:
+          | T
+          | {
+              title?: T;
+              desc?: T;
+              id?: T;
+            };
+      };
+  finalCta?:
+    | T
+    | {
+        eyebrow?: T;
+        titleLineOne?: T;
+        titleLineTwo?: T;
+        ctaLabel?: T;
+      };
+  footer?:
+    | T
+    | {
+        tagline?: T;
       };
   about?:
     | T

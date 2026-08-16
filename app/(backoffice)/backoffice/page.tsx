@@ -3,9 +3,8 @@ import {
   Download,
   FileText,
   Images,
+  LayoutTemplate,
   PanelsTopLeft,
-  PiggyBank,
-  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -20,13 +19,7 @@ export default async function BackofficePage() {
   const user = await requireBackofficeUser();
   const payload = await getPayloadClient();
 
-  const [homePage, posts, serviceBrochures] = await Promise.all([
-    payload.findGlobal({
-      slug: "home-page",
-      locale: "fr",
-      depth: 0,
-      overrideAccess: true,
-    }),
+  const [posts, serviceBrochures] = await Promise.all([
     payload.find({
       collection: "posts",
       locale: "fr",
@@ -44,12 +37,6 @@ export default async function BackofficePage() {
     }),
   ]);
 
-  const activeYear =
-    homePage.pricing?.years?.find((year) => year.isActive)?.label ??
-    homePage.pricing?.years?.[0]?.label ??
-    "Aucune saison";
-  const aboutTitle = homePage.about?.titleLineOne || "Présentation";
-
   return (
     <div className="bo-page">
       <BackofficeSidebar userEmail={user.email} />
@@ -59,32 +46,24 @@ export default async function BackofficePage() {
             <p className="bo-kicker">Bienvenue</p>
             <h1>Que souhaitez-vous modifier ?</h1>
             <p className="bo-muted">
-              Choisissez une carte ci-dessous. Chaque page se sauvegarde
+              Choisissez une carte ci-dessous. Chaque section se sauvegarde
               indépendamment, vous ne pouvez rien casser en cliquant.
             </p>
           </div>
         </section>
 
         <section className="bo-dashboard-grid">
-          <Link className="bo-dashboard-card" href="/backoffice/a-propos">
+          <Link className="bo-dashboard-card" href="/backoffice/page-accueil">
             <span className="bo-dashboard-card-icon">
-              <UserRound aria-hidden="true" size={22} />
+              <LayoutTemplate aria-hidden="true" size={22} />
             </span>
-            <span>À propos</span>
-            <strong>{aboutTitle}</strong>
-            <small>Le texte de présentation affiché sur la page d&apos;accueil.</small>
-            <span className="bo-dashboard-card-arrow">
-              Modifier <ArrowRight aria-hidden="true" size={15} />
-            </span>
-          </Link>
-
-          <Link className="bo-dashboard-card" href="/backoffice/tarifs">
-            <span className="bo-dashboard-card-icon">
-              <PiggyBank aria-hidden="true" size={22} />
-            </span>
-            <span>Tarifs</span>
-            <strong>{activeYear}</strong>
-            <small>Les offres, les prix et la saison affichée sur le site.</small>
+            <span>Page d&apos;accueil</span>
+            <strong>Tous les textes et images</strong>
+            <small>
+              Hero, prestations, galerie, valeurs, tarifs, pavillon,
+              témoignages, clients, contact : tout se modifie au même
+              endroit, par onglet.
+            </small>
             <span className="bo-dashboard-card-arrow">
               Modifier <ArrowRight aria-hidden="true" size={15} />
             </span>

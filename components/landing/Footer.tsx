@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { localSeoPages, siteConfig } from "@/lib/seo";
 
+import { getHomeFooter, useHomePageCMS } from "./cms";
 import { IconInstagram } from "./shared";
 
 const mainLinks = [
@@ -16,6 +17,8 @@ const mainLinks = [
 ];
 
 export function Footer() {
+  const cms = useHomePageCMS();
+  const content = getHomeFooter(cms);
   const footerMuted = "rgba(var(--cream-rgb),0.76)";
   const footerText = "rgba(var(--cream-rgb),0.9)";
   const footerSoft = "rgba(var(--cream-rgb),0.56)";
@@ -41,11 +44,7 @@ export function Footer() {
             <Link href="/" className="footer-logo">
               DC Restauration
             </Link>
-            <p>
-              Cuisine de réception, chef à domicile et accompagnement
-              événementiel pour les tables privées et professionnelles en
-              Nouvelle-Aquitaine.
-            </p>
+            <p>{content.tagline}</p>
 
             <div className="footer-contact-stack">
               <a href={`tel:${siteConfig.phone}`}>

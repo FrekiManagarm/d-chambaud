@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone } from "lucide-react";
 
+import { getHomeContact, useHomePageCMS } from "./cms";
 import {
   ContactField,
   Eyebrow,
@@ -17,6 +18,8 @@ import {
    CONTACT — split layout with animated form
 ════════════════════════════════════════════════════════════ */
 export function ContactSection() {
+  const cms = useHomePageCMS();
+  const content = getHomeContact(cms);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState("");
@@ -130,7 +133,7 @@ export function ContactSection() {
         >
           <div className="contact-intro">
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow>Contact</Eyebrow>
+              <Eyebrow>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
               <h3
@@ -145,9 +148,9 @@ export function ContactSection() {
                   marginTop: "1rem",
                 }}
               >
-                Une date,
+                {content.titleLineOne}
                 <br />
-                un lieu, une envie.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
 
@@ -163,9 +166,7 @@ export function ContactSection() {
                   marginTop: "1.5rem",
                 }}
               >
-                Racontez-nous l&apos;ambiance, le nombre d&apos;invités, vos
-                goûts et ce qui compte le plus pour vous. David vous aide
-                ensuite à transformer l&apos;idée en réception concrète.
+                {content.intro}
               </p>
             </RevealOnScroll>
 
@@ -284,8 +285,7 @@ export function ContactSection() {
                     maxWidth: 430,
                   }}
                 >
-                  Réponse sous 24 à 48 h ouvrées. Pour un mariage ou une demande
-                  proche, le téléphone reste le plus direct.
+                  {content.responseNote}
                 </p>
               </div>
             </RevealOnScroll>
@@ -300,15 +300,7 @@ export function ContactSection() {
                   gap: "0.75rem",
                 }}
               >
-                {[
-                  ["Le lieu", "Domaine, maison, salle ou lieu à confirmer."],
-                  ["Le rythme", "Cocktail, dîner, brunch, retour de soirée."],
-                  ["Les invités", "Nombre approximatif, enfants, régimes."],
-                  [
-                    "L'envie",
-                    "Champêtre, gastronomique, familial, très festif.",
-                  ],
-                ].map(([title, desc]) => (
+                {content.briefItems.map(({ title, desc }) => (
                   <div
                     key={title}
                     style={{

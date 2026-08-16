@@ -5,13 +5,20 @@ import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion
 import { useRef } from "react";
 import { ChevronDown } from "lucide-react";
 
-import type { HomeImages } from "./types";
+import type { HeroContent, HomeImages } from "./types";
 import { CharReveal, MagneticButton, ease } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    HERO — Immersive full-screen with char-by-char reveal
 ════════════════════════════════════════════════════════════ */
-export function HeroSection({ images }: { images: HomeImages }) {
+export function HeroSection({
+  content,
+  images,
+}: {
+  content: HeroContent;
+  images: HomeImages;
+}) {
+  const titleWords = content.titleWords.split(" ").filter(Boolean);
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -200,7 +207,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             marginBottom: "2.5rem",
           }}
         >
-          Nouvelle‑Aquitaine · Bordeaux · Saint‑Émilion
+          {content.locationLine}
         </motion.p>
 
         <h1 className="sr-only">
@@ -223,8 +230,8 @@ export function HeroSection({ images }: { images: HomeImages }) {
             color: "var(--cream)",
           }}
         >
-          {["L'Art", "de", "la"].map((word, wi) => (
-            <span key={word} style={{ display: "inline-flex" }}>
+          {titleWords.map((word, wi) => (
+            <span key={`${word}-${wi}`} style={{ display: "inline-flex" }}>
               <CharReveal text={word} delay={0.55 + wi * 0.18} />
             </span>
           ))}
@@ -243,7 +250,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             color: "var(--gold)",
           }}
         >
-          <CharReveal text="Gastronomie" delay={1.1} />
+          <CharReveal text={content.titleAccent} delay={1.1} />
         </div>
 
         <motion.div
@@ -299,7 +306,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             letterSpacing: "0.02em",
           }}
         >
-          L&apos;histoire d&apos;une cuisine gourmande
+          {content.subtitle}
         </motion.p>
 
         <motion.p
@@ -316,7 +323,7 @@ export function HeroSection({ images }: { images: HomeImages }) {
             marginBottom: "3.5rem",
           }}
         >
-          Traiteur · Chef à Domicile · Réceptions · Mariages
+          {content.tagline}
         </motion.p>
 
         <motion.div
@@ -331,10 +338,10 @@ export function HeroSection({ images }: { images: HomeImages }) {
           }}
         >
           <MagneticButton href="/contact" variant="gold">
-            Demander un Devis
+            {content.primaryCtaLabel}
           </MagneticButton>
           <MagneticButton href="#services" variant="outline">
-            Découvrir
+            {content.secondaryCtaLabel}
           </MagneticButton>
         </motion.div>
       </motion.div>

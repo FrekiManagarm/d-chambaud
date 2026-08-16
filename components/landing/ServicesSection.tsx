@@ -19,7 +19,7 @@ import {
   type ServiceBrochureCategory,
   type ServiceBrochureSummary,
 } from "@/lib/service-brochures";
-import type { HomeImages } from "./types";
+import type { HomeImages, ServicesTextContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeIn, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
@@ -35,44 +35,55 @@ type ServiceItem = {
   title: string;
 };
 
-export const services: ServiceItem[] = [
+const serviceMeta: {
+  Icon: LucideIcon;
+  brochureCategory: ServiceBrochureCategory;
+  contentKey: keyof Pick<
+    ServicesTextContent,
+    "traiteur" | "mariages" | "chefADomicile" | "receptions"
+  >;
+  img: string;
+  num: string;
+}[] = [
   {
     num: "01",
     Icon: UtensilsCrossed,
-    title: "Traiteur",
+    contentKey: "traiteur",
     brochureCategory: "traiteur",
-    sub: "Réceptions",
-    desc: "Cocktails dinatoires, buffets dessinés pour circuler, repas assis et formats hybrides pour donner du relief à vos invités.",
     img: "/AdobeStock_418339639.jpeg",
   },
   {
     num: "02",
     Icon: Heart,
-    title: "Mariages",
+    contentKey: "mariages",
     brochureCategory: "mariages",
-    sub: "Célébrations",
-    desc: "Du vin d'honneur au dîner puis au brunch, une prestation pensée pour tenir la journée sans perdre la gourmandise.",
     img: "/AdobeStock_522340892.jpeg",
   },
   {
     num: "03",
     Icon: Home,
-    title: "Chef à Domicile",
+    contentKey: "chefADomicile",
     brochureCategory: "chef-a-domicile",
-    sub: "Service Privé",
-    desc: "Une expérience à la maison, en petit comité, avec le confort d'un service précis et l'intensité d'une vraie table.",
     img: "/AdobeStock_54050217.jpeg",
   },
   {
     num: "04",
     Icon: TreePine,
-    title: "Réceptions",
+    contentKey: "receptions",
     brochureCategory: "receptions",
-    sub: "Tous Événements",
-    desc: "Séminaires, baptêmes, anniversaires, lancements: une cuisine qui rassemble sans faire perdre le fil de l'événement.",
     img: "/AdobeStock_555480279.jpeg",
   },
 ];
+
+export function buildServices(content: ServicesTextContent): ServiceItem[] {
+  return serviceMeta.map((meta) => ({
+    ...content[meta.contentKey],
+    Icon: meta.Icon,
+    brochureCategory: meta.brochureCategory,
+    img: meta.img,
+    num: meta.num,
+  }));
+}
 
 /* ─── ServicePanel — accordion slot ─── */
 function ServicePanel({
@@ -382,9 +393,11 @@ function ServicePanel({
 }
 
 export function ServicesSection({
+  content,
   images,
   serviceBrochures,
 }: {
+  content: ServicesTextContent;
   images: HomeImages;
   serviceBrochures: ServiceBrochureSummary[];
 }) {
@@ -393,6 +406,7 @@ export function ServicesSection({
   const isInView = useInView(ref, { once: true, margin: "-80px 0px" });
   const reduce = useReducedMotion();
   const brochuresByCategory = groupServiceBrochuresByCategory(serviceBrochures);
+  const services = buildServices(content);
 
   return (
     <section
@@ -415,7 +429,7 @@ export function ServicesSection({
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow>Nos Prestations</Eyebrow>
+              <Eyebrow>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
               <h3
@@ -428,9 +442,9 @@ export function ServicesSection({
                   color: "var(--charcoal)",
                 }}
               >
-                Le bon format
+                {content.titleLineOne}
                 <br />
-                pour votre évènement.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
           </div>
@@ -445,8 +459,7 @@ export function ServicesSection({
                 lineHeight: 1.8,
               }}
             >
-              Pas de formule plaquée: le service, les quantités et le rythme
-              s&apos;adaptent au lieu, à la météo et au style de vos invités.
+              {content.intro}
             </p>
           </RevealOnScroll>
         </div>

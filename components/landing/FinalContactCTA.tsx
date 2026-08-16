@@ -5,9 +5,10 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+import type { FinalCtaContent } from "./types";
 import { RevealOnScroll, fadeUp } from "./shared";
 
-export function FinalContactCTA() {
+export function FinalContactCTA({ content }: { content: FinalCtaContent }) {
   return (
     <section
       className="grain-overlay final-contact-cta"
@@ -66,7 +67,7 @@ export function FinalContactCTA() {
                 marginBottom: "1.25rem",
               }}
             >
-              Demande de devis
+              {content.eyebrow}
             </p>
             <h2
               style={{
@@ -80,9 +81,9 @@ export function FinalContactCTA() {
                 maxWidth: 820,
               }}
             >
-              Une date à poser,
+              {content.titleLineOne}
               <br />
-              une réception à imaginer.
+              {content.titleLineTwo}
             </h2>
           </div>
         </RevealOnScroll>
@@ -109,7 +110,7 @@ export function FinalContactCTA() {
                 textDecoration: "none",
               }}
             >
-              <span>Accéder au formulaire</span>
+              <span>{content.ctaLabel}</span>
               <ArrowRight size={14} strokeWidth={1.7} />
             </Link>
           </motion.div>

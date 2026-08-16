@@ -5,7 +5,7 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import type { GalleryItem, HomeImages } from "./types";
+import type { GalleryItem, HomeImages, SectionHeading } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeIn, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
@@ -95,7 +95,13 @@ export const galleryItems: GalleryItem[] = [
   },
 ];
 
-export function GallerySection({ images }: { images: HomeImages }) {
+export function GallerySection({
+  content,
+  images,
+}: {
+  content: SectionHeading;
+  images: HomeImages;
+}) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const reduce = useReducedMotion();
@@ -191,7 +197,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow light>Nos Réalisations</Eyebrow>
+              <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
               <h3
@@ -205,9 +211,9 @@ export function GallerySection({ images }: { images: HomeImages }) {
                   letterSpacing: 0,
                 }}
               >
-                Des images qui
+                {content.titleLineOne}
                 <br />
-                donnent faim.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
           </div>
@@ -222,8 +228,7 @@ export function GallerySection({ images }: { images: HomeImages }) {
                 lineHeight: 1.85,
               }}
             >
-              Une galerie vivante, entre gestes de service, dressages nets et
-              tables prêtes à recevoir.
+              {content.intro}
             </p>
           </RevealOnScroll>
         </div>

@@ -3,42 +3,12 @@
 /* ════════════════════════════════════════════════════════════
    MARQUEE STRIP — edge-faded
 ════════════════════════════════════════════════════════════ */
-const MARQUEE_ITEMS = [
-  "Mariages qui ont du goût",
-  "·",
-  "Cocktails nets",
-  "·",
-  "Dîners privés",
-  "·",
-  "Service précis",
-  "·",
-  "Tables gourmandes",
-  "·",
-  "Produits de saison",
-  "·",
-  "Pavillon des Millésimes",
-  "·",
-  "Nouvelle‑Aquitaine",
-  "·",
-  "Mariages qui ont du goût",
-  "·",
-  "Cocktails nets",
-  "·",
-  "Dîners privés",
-  "·",
-  "Service précis",
-  "·",
-  "Tables gourmandes",
-  "·",
-  "Produits de saison",
-  "·",
-  "Pavillon des Millésimes",
-  "·",
-  "Nouvelle‑Aquitaine",
-  "·",
-];
+export function MarqueeStrip({ items }: { items: string[] }) {
+  const doubled = [...items, ...items];
+  const marqueeItems = doubled.flatMap((item, i) =>
+    i === doubled.length - 1 ? [item] : [item, "·"],
+  );
 
-export function MarqueeStrip() {
   return (
     <div
       style={{
@@ -86,7 +56,7 @@ export function MarqueeStrip() {
           width: "max-content",
         }}
       >
-        {MARQUEE_ITEMS.map((item, i) => (
+        {marqueeItems.map((item, i) => (
           <span
             key={i}
             style={{

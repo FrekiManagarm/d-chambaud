@@ -6,9 +6,8 @@ import {
   FileText,
   Images,
   LayoutDashboard,
-  PiggyBank,
+  LayoutTemplate,
   Settings,
-  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -26,14 +25,9 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
-    href: "/backoffice/tarifs",
-    label: "Tarifs",
-    icon: PiggyBank,
-  },
-  {
-    href: "/backoffice/a-propos",
-    label: "À propos",
-    icon: UserRound,
+    href: "/backoffice/page-accueil",
+    label: "Page d'accueil",
+    icon: LayoutTemplate,
   },
   {
     href: "/backoffice/articles",

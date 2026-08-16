@@ -15,8 +15,18 @@ export { TestimonialsSection } from "./TestimonialsSection";
 export { ValuesSection } from "./ValuesSection";
 export {
   getHomeAbout,
+  getHomeClients,
+  getHomeFinalCta,
+  getHomeGalleryText,
+  getHomeHero,
   getHomeImages,
+  getHomeMarquee,
+  getHomePavillonText,
   getHomePricing,
+  getHomeServicesText,
+  getHomeStats,
+  getHomeTestimonials,
+  getHomeValues,
   useHomePageCMS,
   useServiceBrochures,
 } from "./cms";

@@ -1,40 +1,13 @@
 "use client";
 
+import type { ClientsContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    CLIENTS — infinite logo carousel
 ════════════════════════════════════════════════════════════ */
-const clientLogos = [
-  { src: "/Chateau-le-Puy-Logo.webp", alt: "Château Le Puy" },
-  {
-    src: "/logo-carmes-haut-brion.jpg",
-    alt: "Château Les Carmes Haut-Brion",
-  },
-  { src: "/chateau-faugeres-1998.jpg", alt: "Château Faugères" },
-  {
-    src: "/creation-de-logo-chateau-grand-arnaud-webmaster-graphiste-bordeaux_Plan-de-travail-3.jpg",
-    alt: "Château Grand Arnaud",
-  },
-  { src: "/logo-chateau-de-seguin.jpg", alt: "Château de Seguin" },
-  { src: "/francmayne_logo_cmjn.png", alt: "Franc Mayne" },
-  { src: "/logo-montlabert-big.png", alt: "Château Montlabert" },
-  { src: "/logo-laces-bordeaux.jpg", alt: "LACES Bordeaux" },
-  {
-    src: "/logo-societe-generale-seminaire-congres-incentive-inauguration-lancement-de-produit-agence-evenementielle-pays-basque-biarritz-saint-sebastien-bordeaux-pyrenees-erronda-800x800.png",
-    alt: "Société Générale",
-  },
-  { src: "/Logo-Vinci-Energies-1.png", alt: "Vinci Energies" },
-  { src: "/logo_societe_682268ef6b2a18e22.jpg", alt: "Partenaire" },
-  { src: "/logo_societe_filiale_2506931484f8b947.png", alt: "Partenaire" },
-  { src: "/Ville_de_Bordeaux_(logo).svg.png", alt: "Ville de Bordeaux" },
-  { src: "/partenaires-entreprise-bordeaux25-png.webp", alt: "Bordeaux 2025" },
-  { src: "/pape-clement.webp", alt: "Château Pape Clément" },
-  { src: "/Logo-OK-1.png", alt: "Partenaire" },
-];
-
-export function ClientsSection() {
-  const doubled = [...clientLogos, ...clientLogos];
+export function ClientsSection({ content }: { content: ClientsContent }) {
+  const doubled = [...content.logos, ...content.logos];
 
   return (
     <section
@@ -62,7 +35,7 @@ export function ClientsSection() {
       >
         <div>
           <RevealOnScroll variant={fadeUp}>
-            <Eyebrow>Références</Eyebrow>
+            <Eyebrow>{content.eyebrow}</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.06}>
             <h3
@@ -75,9 +48,9 @@ export function ClientsSection() {
                 color: "var(--charcoal)",
               }}
             >
-              Des lieux exigeants,
+              {content.titleLineOne}
               <br />
-              des repas remarqués.
+              {content.titleLineTwo}
             </h3>
           </HeadingReveal>
         </div>
@@ -91,8 +64,7 @@ export function ClientsSection() {
               maxWidth: 460,
             }}
           >
-            Châteaux, domaines viticoles, entreprises et institutions: le décor
-            change, l&apos;exigence reste la même.
+            {content.intro}
           </p>
         </RevealOnScroll>
       </div>

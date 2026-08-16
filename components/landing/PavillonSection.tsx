@@ -4,13 +4,19 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-import type { HomeImages } from "./types";
+import type { HomeImages, PavillonTextContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, fadeIn, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
    PAVILLON — atmospheric full-bleed with background text
 ════════════════════════════════════════════════════════════ */
-export function PavillonSection({ images }: { images: HomeImages }) {
+export function PavillonSection({
+  content,
+  images,
+}: {
+  content: PavillonTextContent;
+  images: HomeImages;
+}) {
   return (
     <section
       id="pavillon"
@@ -174,7 +180,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                     marginBottom: "0.5rem",
                   }}
                 >
-                  Maison confidentielle
+                  {content.badgeKicker}
                 </p>
                 <p
                   style={{
@@ -185,7 +191,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                     color: "var(--cream)",
                   }}
                 >
-                  Dormir sur place, dîner juste, repartir lentement.
+                  {content.badgeQuote}
                 </p>
               </div>
             </div>
@@ -201,7 +207,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
             }}
           >
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow light>Le lieu de David &amp; Nathalie</Eyebrow>
+              <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
 
             <HeadingReveal delay={0.08}>
@@ -216,9 +222,9 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   letterSpacing: 0,
                 }}
               >
-                Une parenthèse
+                {content.titleLineOne}
                 <br />
-                où l&apos;on reste.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
 
@@ -233,9 +239,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   maxWidth: 620,
                 }}
               >
-                Le Pavillon des Millésimes n&apos;est pas seulement une adresse
-                à visiter. C&apos;est une maison où le repas, la chambre et le
-                lendemain se répondent avec la même attention.
+                {content.intro}
               </p>
             </RevealOnScroll>
 
@@ -249,22 +253,9 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   borderBottom: "1px solid rgba(var(--cream-rgb),0.14)",
                 }}
               >
-                {[
-                  [
-                    "Table d'hôtes",
-                    "Une cuisine bistronomique en quatre temps, pensée comme un dîner de maison très soigné.",
-                  ],
-                  [
-                    "Chambres",
-                    "Des espaces calmes pour prolonger un mariage, une escapade ou un week-end gourmand.",
-                  ],
-                  [
-                    "Adresse",
-                    "Une maison de caractère en Nouvelle-Aquitaine, entre intimité, vin et art de recevoir.",
-                  ],
-                ].map(([label, value]) => (
+                {content.points.map((point, index) => (
                   <div
-                    key={label}
+                    key={point.label}
                     className="pavillon-point"
                     style={{
                       display: "grid",
@@ -273,7 +264,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                       gap: "1.4rem",
                       padding: "1.2rem 0",
                       borderBottom:
-                        label === "Adresse"
+                        index === content.points.length - 1
                           ? "none"
                           : "1px solid rgba(var(--cream-rgb),0.1)",
                       alignItems: "baseline",
@@ -288,7 +279,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                         color: "var(--gold)",
                       }}
                     >
-                      {label}
+                      {point.label}
                     </p>
                     <p
                       style={{
@@ -298,7 +289,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                         lineHeight: 1.75,
                       }}
                     >
-                      {value}
+                      {point.text}
                     </p>
                   </div>
                 ))}
@@ -316,7 +307,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                 }}
               >
                 <motion.a
-                  href="https://www.pavillon-des-millesimes.com"
+                  href={content.linkUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{ gap: "1rem" }}
@@ -337,7 +328,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                     backgroundColor: "rgba(var(--bronze-rgb),0.08)",
                   }}
                 >
-                  <span>Découvrir le lieu</span>
+                  <span>{content.linkLabel}</span>
                   <ArrowRight size={13} />
                 </motion.a>
                 <p
@@ -349,8 +340,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                     maxWidth: 260,
                   }}
                 >
-                  Table d&apos;hôtes sur réservation, séjour et cuisine de
-                  saison au même endroit.
+                  {content.linkNote}
                 </p>
               </div>
             </RevealOnScroll>
@@ -387,7 +377,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   color: "var(--gold)",
                 }}
               >
-                Séjour gourmand
+                {content.stripKicker}
               </p>
               <p
                 style={{
@@ -399,7 +389,7 @@ export function PavillonSection({ images }: { images: HomeImages }) {
                   maxWidth: 420,
                 }}
               >
-                Quand le dîner devient le centre d&apos;un week-end.
+                {content.stripTitle}
               </p>
             </div>
             <div

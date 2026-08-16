@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 
-import type { HomeImages } from "./types";
+import type { HomeImages, ValuesContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, ease, easeOut, fadeIn, fadeUp } from "./shared";
 
 /* ════════════════════════════════════════════════════════════
@@ -140,7 +140,13 @@ function ValueBand({
   );
 }
 
-export function ValuesSection({ images }: { images: HomeImages }) {
+export function ValuesSection({
+  content,
+  images,
+}: {
+  content: ValuesContent;
+  images: HomeImages;
+}) {
   return (
     <section
       aria-label="Architecture d'un événement"
@@ -169,7 +175,7 @@ export function ValuesSection({ images }: { images: HomeImages }) {
         >
           <div>
             <RevealOnScroll variant={fadeUp}>
-              <Eyebrow>Scénographie culinaire</Eyebrow>
+              <Eyebrow>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
               <h3
@@ -182,9 +188,9 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                   color: "var(--charcoal)",
                 }}
               >
-                Un repas ne se pose pas
+                {content.titleLineOne}
                 <br />
-                sur une table.
+                {content.titleLineTwo}
               </h3>
             </HeadingReveal>
             <RevealOnScroll variant={fadeUp} custom={2}>
@@ -198,9 +204,7 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                   marginTop: "1.6rem",
                 }}
               >
-                Il se construit comme une progression: l&apos;arrivée, la
-                première bouchée, le plat que l&apos;on attend, le dessert qui
-                signe la soirée. C&apos;est cette montée que David dessine.
+                {content.intro}
               </p>
             </RevealOnScroll>
           </div>
@@ -272,7 +276,7 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                     marginBottom: "0.5rem",
                   }}
                 >
-                  Signature
+                  {content.signatureKicker}
                 </p>
                 <p
                   style={{
@@ -283,31 +287,22 @@ export function ValuesSection({ images }: { images: HomeImages }) {
                     color: "var(--charcoal)",
                   }}
                 >
-                  Gourmandise, élégance, précision ...
+                  {content.signatureQuote}
                 </p>
               </div>
             </div>
           </RevealOnScroll>
         </div>
         <div style={{ borderTop: "1px solid rgba(var(--bronze-rgb),0.18)" }}>
-          <ValueBand
-            num="01"
-            title="L'arrivée donne le ton"
-            desc="Un cocktail qui se lit vite, circule bien et installe l'énergie de la fête sans bloquer les invités autour d'un buffet."
-            index={0}
-          />
-          <ValueBand
-            num="02"
-            title="Le dîner tient la salle"
-            desc="Cuissons, envois, dressages et transitions sont pensés pour garder le repas vivant, même avec une grande tablée."
-            index={1}
-          />
-          <ValueBand
-            num="03"
-            title="La fin reste en bouche"
-            desc="Desserts, fromages, brunch ou retour de soirée: les derniers moments gardent la même attention que la première coupe."
-            index={2}
-          />
+          {content.bands.map((band, index) => (
+            <ValueBand
+              key={band.title}
+              num={`0${index + 1}`}
+              title={band.title}
+              desc={band.desc}
+              index={index}
+            />
+          ))}
         </div>
       </div>
 
