@@ -178,7 +178,7 @@ export function ValuesSection({
               <Eyebrow>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.45rem, 5vw, 4.8rem)",
@@ -191,7 +191,7 @@ export function ValuesSection({
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
             <RevealOnScroll variant={fadeUp} custom={2}>
               <p

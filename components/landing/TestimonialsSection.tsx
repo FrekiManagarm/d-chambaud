@@ -268,7 +268,7 @@ export function TestimonialsSection({
               <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.45rem, 4.6vw, 4.35rem)",
@@ -282,7 +282,7 @@ export function TestimonialsSection({
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeUp} custom={2}>

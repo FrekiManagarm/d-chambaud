@@ -84,7 +84,6 @@ export function AboutSection({
                 fill
                 style={{ objectFit: "cover", objectPosition: "center 20%" }}
                 sizes="(max-width: 768px) 100vw, 45vw"
-                priority
               />
               <div
                 style={{
@@ -153,7 +152,7 @@ export function AboutSection({
             <Eyebrow>{about.eyebrow}</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.05}>
-            <h3
+            <h2
               style={{
                 fontFamily: "var(--font-cormorant), serif",
                 fontSize: "clamp(2.15rem, 4vw, 3.55rem)",
@@ -166,7 +165,7 @@ export function AboutSection({
             >
               {about.titleLineOne} <br />
               {about.titleLineTwo}
-            </h3>
+            </h2>
           </HeadingReveal>
           <RevealOnScroll variant={lineGrow}>
             <div

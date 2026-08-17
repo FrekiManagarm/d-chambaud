@@ -301,7 +301,11 @@ export function CountUpStat({
   );
 }
 
-/* ─── Eyebrow ─── */
+/* ─── Eyebrow ───
+   Purely a kicker label ("À Propos", "Références"). It is NOT the section
+   heading: the section title that follows carries the keywords, so it owns the
+   <h2>. Rendering the kicker as a heading buried every real title one level
+   deeper and wasted the strongest structural signal on the page. */
 export const Eyebrow = ({
   children,
   light = false,
@@ -309,7 +313,7 @@ export const Eyebrow = ({
   children: React.ReactNode;
   light?: boolean;
 }) => (
-  <h2
+  <p
     style={{
       fontFamily: "var(--font-montserrat), sans-serif",
       fontSize: "clamp(0.92rem, 1.25vw, 1.12rem)",
@@ -322,7 +326,7 @@ export const Eyebrow = ({
     }}
   >
     {children}
-  </h2>
+  </p>
 );
 
 /* ─── ContactField ─── */

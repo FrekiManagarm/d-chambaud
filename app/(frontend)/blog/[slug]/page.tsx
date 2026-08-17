@@ -103,7 +103,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   src={imageURL}
                   alt={heroImage?.alt || post.title}
                   fill
-                  priority
+                  preload
                   sizes="(max-width: 900px) 100vw, 42vw"
                   style={{ objectFit: "cover" }}
                 />

@@ -200,7 +200,7 @@ export function GallerySection({
               <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.55rem, 5.2vw, 5.1rem)",
@@ -214,7 +214,7 @@ export function GallerySection({
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeIn} custom={2}>
@@ -518,7 +518,6 @@ export function GallerySection({
                     pointerEvents: "none",
                   }}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 76vw, 920px"
-                  priority={current === 0}
                 />
                 <div
                   aria-hidden

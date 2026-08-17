@@ -125,11 +125,17 @@ export function HeroSection({
           zIndex: 2,
         }}
       >
+        {/* Left on the default lazy strategy on purpose. This image is purely
+            atmospheric (it sits under two gradient overlays) and is display:none
+            below 1280px — see the media query at the end of this file. Any
+            eager/preload hint is emitted for every visitor, so phones would pay
+            for pixels they never render. Desktop loses nothing: the element is
+            inside the initial viewport, and browsers fetch in-viewport lazy
+            images straight away. */}
         <Image
           src={images.hero}
           alt=""
           fill
-          priority
           sizes="36vw"
           style={{ objectFit: "cover", objectPosition: "center" }}
         />

@@ -62,7 +62,7 @@ export function StatsSection({ content }: { content: StatsContent }) {
               <Eyebrow light>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.06}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.35rem, 4.5vw, 4.25rem)",
@@ -75,7 +75,7 @@ export function StatsSection({ content }: { content: StatsContent }) {
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeUp} custom={2}>

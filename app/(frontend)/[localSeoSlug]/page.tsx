@@ -91,7 +91,7 @@ export default async function LocalSeoPage({ params }: LocalSeoPageProps) {
           src={page.image}
           alt=""
           fill
-          priority
+          preload
           sizes="100vw"
           className="local-hero-image"
         />

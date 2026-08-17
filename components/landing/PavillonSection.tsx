@@ -211,7 +211,7 @@ export function PavillonSection({
             </RevealOnScroll>
 
             <HeadingReveal delay={0.08}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.55rem, 4.9vw, 4.7rem)",
@@ -225,7 +225,7 @@ export function PavillonSection({
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
 
             <RevealOnScroll variant={fadeUp} custom={2}>

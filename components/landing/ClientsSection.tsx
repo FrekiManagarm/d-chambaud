@@ -1,7 +1,15 @@
 "use client";
 
+import Image from "next/image";
+
 import type { ClientsContent } from "./types";
 import { Eyebrow, HeadingReveal, RevealOnScroll, fadeUp } from "./shared";
+
+/* Logos render inside a 96px-tall track and never exceed 220px wide. Declaring
+   that box lets next/image ship a ~220w asset instead of the full-resolution
+   source (some are 100 KB+ PNGs), and the marquee doubles every logo, so each
+   byte saved is paid twice. */
+const LOGO_BOX = { height: 96, width: 220 } as const;
 
 /* ════════════════════════════════════════════════════════════
    CLIENTS — infinite logo carousel
@@ -38,7 +46,7 @@ export function ClientsSection({ content }: { content: ClientsContent }) {
             <Eyebrow>{content.eyebrow}</Eyebrow>
           </RevealOnScroll>
           <HeadingReveal delay={0.06}>
-            <h3
+            <h2
               style={{
                 fontFamily: "var(--font-cormorant), serif",
                 fontSize: "clamp(2.2rem, 4vw, 3.7rem)",
@@ -51,7 +59,7 @@ export function ClientsSection({ content }: { content: ClientsContent }) {
               {content.titleLineOne}
               <br />
               {content.titleLineTwo}
-            </h3>
+            </h2>
           </HeadingReveal>
         </div>
         <RevealOnScroll variant={fadeUp} custom={2}>
@@ -107,7 +115,13 @@ export function ClientsSection({ content }: { content: ClientsContent }) {
             padding: "1rem 0",
           }}
         >
-          {doubled.map((logo, i) => (
+          {doubled.map((logo, i) => {
+            /* The second half of `doubled` is the same list repeated to make the
+               marquee loop seamlessly. It carries no information, so it stays
+               out of the accessibility tree and out of the alt text. */
+            const isLoopCopy = i >= content.logos.length;
+
+            return (
             <div
               key={i}
               style={{
@@ -117,10 +131,12 @@ export function ClientsSection({ content }: { content: ClientsContent }) {
                 flexShrink: 0,
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={logo.src}
-                alt={logo.alt}
+                alt={isLoopCopy ? "" : logo.alt}
+                width={LOGO_BOX.width}
+                height={LOGO_BOX.height}
+                aria-hidden={isLoopCopy || undefined}
                 style={{
                   height: "100%",
                   width: "auto",
@@ -139,7 +155,8 @@ export function ClientsSection({ content }: { content: ClientsContent }) {
                 }}
               />
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <style>{`

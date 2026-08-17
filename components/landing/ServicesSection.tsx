@@ -432,7 +432,7 @@ export function ServicesSection({
               <Eyebrow>{content.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.05rem, 3.8vw, 3.35rem)",
@@ -445,7 +445,7 @@ export function ServicesSection({
                 {content.titleLineOne}
                 <br />
                 {content.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
           </div>
           <RevealOnScroll variant={fadeIn} custom={2}>

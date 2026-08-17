@@ -30,6 +30,13 @@ export const siteConfig = {
 
 export type LocalSeoPage = {
   slug: string;
+  /**
+   * Date the copy below was last meaningfully rewritten, as `YYYY-MM-DD`.
+   * Feeds `<lastmod>` in the sitemap. Bump it when you change this page's
+   * wording — not when you touch layout or styling. A `lastmod` that moves on
+   * every deploy teaches crawlers to ignore it, which is worse than none.
+   */
+  contentUpdatedAt: string;
   title: string;
   metaTitle: string;
   description: string;
@@ -51,6 +58,7 @@ export type LocalSeoPage = {
 export const localSeoPages: LocalSeoPage[] = [
   {
     slug: "traiteur-bordeaux",
+    contentUpdatedAt: "2026-08-02",
     title: "Traiteur à Bordeaux",
     metaTitle: "Traiteur Bordeaux | David Chambaud",
     description:
@@ -87,6 +95,7 @@ export const localSeoPages: LocalSeoPage[] = [
   },
   {
     slug: "traiteur-mariage-bordeaux",
+    contentUpdatedAt: "2026-08-02",
     title: "Traiteur mariage à Bordeaux",
     metaTitle: "Traiteur mariage Bordeaux | David Chambaud",
     description:
@@ -123,6 +132,7 @@ export const localSeoPages: LocalSeoPage[] = [
   },
   {
     slug: "chef-a-domicile-bordeaux",
+    contentUpdatedAt: "2026-08-02",
     title: "Chef à domicile à Bordeaux",
     metaTitle: "Chef à domicile Bordeaux | David Chambaud",
     description:
@@ -159,6 +169,7 @@ export const localSeoPages: LocalSeoPage[] = [
   },
   {
     slug: "traiteur-gironde",
+    contentUpdatedAt: "2026-08-02",
     title: "Traiteur en Gironde",
     metaTitle: "Traiteur Gironde | David Chambaud",
     description:
@@ -195,6 +206,7 @@ export const localSeoPages: LocalSeoPage[] = [
   },
   {
     slug: "traiteur-saint-emilion",
+    contentUpdatedAt: "2026-08-02",
     title: "Traiteur à Saint-Émilion",
     metaTitle: "Traiteur Saint-Émilion | David Chambaud",
     description:
@@ -231,6 +243,7 @@ export const localSeoPages: LocalSeoPage[] = [
   },
   {
     slug: "traiteur-nouvelle-aquitaine",
+    contentUpdatedAt: "2026-08-02",
     title: "Traiteur en Nouvelle-Aquitaine",
     metaTitle: "Traiteur Nouvelle-Aquitaine | David Chambaud",
     description:

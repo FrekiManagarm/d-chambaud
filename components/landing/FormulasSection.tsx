@@ -385,7 +385,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
               <Eyebrow>{pricing.eyebrow}</Eyebrow>
             </RevealOnScroll>
             <HeadingReveal delay={0.08}>
-              <h3
+              <h2
                 style={{
                   fontFamily: "var(--font-cormorant), serif",
                   fontSize: "clamp(2.35rem, 4vw, 3.75rem)",
@@ -400,7 +400,7 @@ export function FormulasSection({ pricing }: { pricing: PricingContent }) {
                 {pricing.titleLineOne}
                 <br />
                 {pricing.titleLineTwo}
-              </h3>
+              </h2>
             </HeadingReveal>
 
             <RevealOnScroll variant={fadeUp} custom={2}>

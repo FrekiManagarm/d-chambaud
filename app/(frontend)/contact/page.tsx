@@ -42,7 +42,7 @@ export default function ContactPage() {
           src="/20260212_DSC2967.jpg"
           alt=""
           fill
-          priority
+          preload
           sizes="100vw"
           style={{
             objectFit: "cover",
