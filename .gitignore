@@ -44,3 +44,8 @@ next-env.d.ts
 .gstack/
 .superpowers/
 .worktrees/
+
+# impeccable (per-developer / runtime state)
+.impeccable/config.local.json
+.impeccable/live/sessions/
+.impeccable/live/roots.json
