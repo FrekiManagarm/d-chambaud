@@ -85,6 +85,12 @@ export function buildServices(content: ServicesTextContent): ServiceItem[] {
   }));
 }
 
+/* Mobile accordion geometry. Kept here rather than inline so the container
+   height stays derived from the panel sizes: the two must agree or the fixed
+   container height below stops matching its contents. */
+const MOBILE_PANEL_COLLAPSED_PX = 72;
+const MOBILE_PANEL_EXPANDED_PX = 390;
+
 /* ─── ServicePanel — accordion slot ─── */
 function ServicePanel({
   service,
@@ -476,6 +482,11 @@ export function ServicesSection({
           display: "flex",
           height: "clamp(460px, 60vh, 680px)",
           overflow: "hidden",
+          /* Both layouts animate a layout property (flex-basis on desktop,
+             height on mobile). Containment tells the browser that work cannot
+             affect anything outside this box, so it never escalates into a
+             document-wide reflow. */
+          contain: "layout",
         }}
       >
         {services.map((s, i) => (
@@ -494,16 +505,25 @@ export function ServicesSection({
         @media (max-width: 768px) {
           .services-accordion {
             flex-direction: column !important;
-            height: auto !important;
+            /* Pinned, exactly like the desktop layout. With height:auto the
+               container grew by 318px as a panel opened, so the gallery,
+               formulas, pavillon, testimonials and footer below it were all
+               re-laid-out on every frame of the 0.55s transition. A fixed
+               height keeps that work inside the accordion: panels still resize,
+               but the rest of the document never moves. */
+            height: ${
+              MOBILE_PANEL_COLLAPSED_PX * (services.length - 1) +
+              MOBILE_PANEL_EXPANDED_PX
+            }px !important;
           }
           .service-panel {
             flex: none !important;
-            height: 72px !important;
-            min-height: 72px !important;
+            height: ${MOBILE_PANEL_COLLAPSED_PX}px !important;
+            min-height: ${MOBILE_PANEL_COLLAPSED_PX}px !important;
             transition: height 0.55s cubic-bezier(0.16, 1, 0.3, 1) !important;
           }
           .service-panel[data-active="true"] {
-            height: 390px !important;
+            height: ${MOBILE_PANEL_EXPANDED_PX}px !important;
           }
           .service-panel-collapsed {
             display: flex !important;
@@ -530,6 +550,15 @@ export function ServicesSection({
           .service-panel .service-panel-collapsed > div > div {
             width: 24px !important;
             height: 1px !important;
+          }
+        }
+
+        /* The desktop flex transition is already gated on useReducedMotion, but
+           this one lives in a stylesheet with !important, so JS could not reach
+           it — visitors who ask for less motion still got the full 0.55s resize. */
+        @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+          .service-panel {
+            transition: none !important;
           }
         }
       `}</style>
